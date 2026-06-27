@@ -186,7 +186,7 @@
     #chap-sel { max-width: 250px; }
     #font-sel { max-width: 120px; }
 
-    #theme-btn {
+    #theme-btn, #mode-btn {
       background: var(--ctrl-bg);
       border: 1px solid var(--ctrl-border);
       border-radius: 7px;
@@ -201,8 +201,16 @@
       color: inherit;
     }
 
-    #theme-btn:hover  { transform: scale(1.1); box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
-    #theme-btn:active { transform: scale(0.94); }
+    #theme-btn:hover:not(:disabled), #mode-btn:hover:not(:disabled) {
+      transform: scale(1.1); box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    #theme-btn:active, #mode-btn:active { transform: scale(0.94); }
+
+    #mode-btn {
+      font-size: 0.8rem;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0.05em;
+    }
 
     /* ── Main content ─────────────────────────────── */
     main {
@@ -392,6 +400,7 @@
       <select id="book-sel" aria-label="选择书目"></select>
       <select id="chap-sel" aria-label="选择章节"></select>
       <select id="font-sel" aria-label="选择字体"></select>
+      <button id="mode-btn"  aria-label="切换词元/阅读模式">阅读</button>
       <button id="theme-btn" aria-label="切换主题">☀</button>
     </div>
   </div>
@@ -421,6 +430,7 @@
     scroll:  'four_scroll',
     font:    'four_font',
     theme:   'four_theme',
+    mode:    'four_mode',
   };
 
   const BOOKS = [
@@ -436,6 +446,15 @@
     { label: '小薇体',    value: "'ZCOOL XiaoWei', serif" },
     { label: '马善政楷书', value: "'Ma Shan Zheng', cursive" },
     { label: '青柯黄油体', value: "'ZCOOL QingKe HuangYou', cursive" },
+  ];
+
+  const COLORS = [
+    'rgba(220,80,60,.8)',
+    'rgba(60,185,195,.8)',
+    'rgba(170,100,220,.8)',
+    'rgba(80,190,100,.8)',
+    'rgba(230,160,40,.8)',
+    'rgba(60,130,230,.8)',
   ];
 
   /* ── DOM refs ───────────────────────────────── */
@@ -454,10 +473,14 @@
   const topbar      = document.getElementById('topbar');
   const panelBtn    = document.getElementById('panel-btn');
   const controlPanel = document.getElementById('control-panel');
+  const modeBtn     = document.getElementById('mode-btn');
 
   /* ── State ──────────────────────────────────── */
-  let metadata  = null;
-  let loading   = false;
+  let metadata     = null;
+  let loading      = false;
+  let tokenMode    = true;
+  let vocabCache   = {};
+  let chapterCache = {};
 
   /* ── Storage ────────────────────────────────── */
   function lsGet(k)    { try { return localStorage.getItem(k); }    catch(e) { return null; } }
@@ -534,6 +557,141 @@
 
   window.addEventListener('resize', debounce(adjustPadding, 80));
 
+  /* ── Book key helper ────────────────────────── */
+  function getBookKey(bookName) {
+    const b = BOOKS.find(b => b.name === bookName);
+    return b ? b.key : bookName;
+  }
+
+  /* ── BPE ────────────────────────────────────── */
+  function buildPairToCode(vocab) {
+    const map = new Map();
+    for (const [id, pair] of Object.entries(vocab)) {
+      map.set(pair[0] + ',' + pair[1], parseInt(id, 10));
+    }
+    return map;
+  }
+
+  function bpeEncode(text, pairToCode) {
+    let codes = Array.from(new TextEncoder().encode(text));
+    if (codes.length < 2) return codes;
+    while (codes.length > 1) {
+      let minToken = Infinity, minPair = null;
+      for (let i = 0; i < codes.length - 1; i++) {
+        const tok = pairToCode.get(codes[i] + ',' + codes[i + 1]);
+        if (tok !== undefined && tok < minToken) {
+          minToken = tok;
+          minPair  = [codes[i], codes[i + 1]];
+        }
+      }
+      if (!minPair) break;
+      const next = [];
+      let i = 0;
+      while (i < codes.length) {
+        if (i < codes.length - 1 && codes[i] === minPair[0] && codes[i + 1] === minPair[1]) {
+          next.push(minToken);
+          i += 2;
+        } else {
+          next.push(codes[i]);
+          i++;
+        }
+      }
+      codes = next;
+    }
+    return codes;
+  }
+
+  function bpeDecodeBytes(token, vocab) {
+    let result = [token];
+    while (true) {
+      let maxTok = -1;
+      for (const t of result) {
+        if (vocab[t] !== undefined && t > maxTok) maxTok = t;
+      }
+      if (maxTok === -1) break;
+      const [c1, c2] = vocab[maxTok];
+      const next = [];
+      for (const t of result) {
+        if (t === maxTok) { next.push(c1); next.push(c2); }
+        else               { next.push(t); }
+      }
+      result = next;
+    }
+    return result;
+  }
+
+  function bpeDecode(token, vocab) {
+    return new TextDecoder('utf-8', { fatal: false }).decode(
+      Uint8Array.from(bpeDecodeBytes(token, vocab))
+    );
+  }
+
+  function byTokenDecode(tokens, vocab) {
+    return tokens.map(t => bpeDecode(t, vocab));
+  }
+
+  // Returns true only when `bytes` ends on a UTF-8 character boundary
+  function isUtf8Complete(bytes) {
+    let i = 0;
+    while (i < bytes.length) {
+      const b = bytes[i];
+      const len = b < 0x80 ? 1 : b < 0xC0 ? -1 : b < 0xE0 ? 2 : b < 0xF0 ? 3 : 4;
+      if (len < 0 || i + len > bytes.length) return false;
+      i += len;
+    }
+    return i === bytes.length;
+  }
+
+  // Groups tokens so each fragment contains only complete UTF-8 characters.
+  // Adjacent tokens whose bytes straddle a character boundary are merged.
+  function groupByCharBoundary(tokens, vocab) {
+    const frags = [];
+    let pending = [];
+    for (const tok of tokens) {
+      for (const b of bpeDecodeBytes(tok, vocab)) pending.push(b);
+      if (isUtf8Complete(pending)) {
+        frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
+        pending = [];
+      }
+    }
+    if (pending.length) {
+      frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
+    }
+    return frags;
+  }
+
+  async function loadVocab(bookKey) {
+    if (vocabCache[bookKey]) return vocabCache[bookKey];
+    const resp = await fetch('tokenizers/' + bookKey + '/vocab.json');
+    if (!resp.ok) throw new Error('Vocab HTTP ' + resp.status);
+    const vocab = await resp.json();
+    const pairToCode = buildPairToCode(vocab);
+    vocabCache[bookKey] = { vocab, pairToCode };
+    return vocabCache[bookKey];
+  }
+
+  function renderTokenParagraph(text, vocab, pairToCode, colorRef) {
+    // Split at sentence-ending punctuation so BPE runs on short chunks (performance)
+    const sentences = text.match(/[^。！？；\n]+[。！？；]?/g) || [text];
+    const p = document.createElement('p');
+    for (const sent of sentences) {
+      if (!sent.trim()) continue;
+      const tokens = bpeEncode(sent, pairToCode);
+      const frags  = groupByCharBoundary(tokens, vocab);
+      frags.forEach(frag => {
+        const span  = document.createElement('span');
+        span.textContent = frag;
+        const color = COLORS[colorRef.idx % COLORS.length];
+        span.style.textDecoration      = 'underline overline';
+        span.style.textDecorationColor = color;
+        span.style.textDecorationThickness = '1.5px';
+        colorRef.idx++;
+        p.appendChild(span);
+      });
+    }
+    return p;
+  }
+
   /* ── Text parsing ───────────────────────────── */
   function parseText(raw) {
     const lines = raw.split('\n');
@@ -597,25 +755,43 @@
     loading = true;
     reader.classList.add('fading');
 
+    const cacheKey = getBookKey(bookName) + ':' + chapNum;
+
     // Show spinner after a brief delay so instant loads feel fast
     const spinnerTimer = setTimeout(() => {
       reader.innerHTML = '<div class="spinner"></div>';
     }, 120);
 
     try {
-      const resp = await fetch('four/' + chapData.page);
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      const raw = await resp.text();
+      let raw = chapterCache[cacheKey];
+      if (!raw) {
+        const resp = await fetch('four/' + chapData.page);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        raw = await resp.text();
+        chapterCache[cacheKey] = raw;
+      }
+
       const { heading, paragraphs } = parseText(raw);
+
+      let vocabData = null;
+      if (tokenMode) {
+        vocabData = await loadVocab(getBookKey(bookName));
+      }
 
       clearTimeout(spinnerTimer);
 
       chapTitle.textContent = heading || chapData.chapter;
 
-      const frag = document.createDocumentFragment();
+      const frag     = document.createDocumentFragment();
+      const colorRef = { idx: 0 };
       paragraphs.forEach(text => {
-        const p = document.createElement('p');
-        p.textContent = text;
+        let p;
+        if (tokenMode && vocabData) {
+          p = renderTokenParagraph(text, vocabData.vocab, vocabData.pairToCode, colorRef);
+        } else {
+          p = document.createElement('p');
+          p.textContent = text;
+        }
         frag.appendChild(p);
       });
 
@@ -711,6 +887,17 @@
 
   panelBtn.addEventListener('click', togglePanel);
 
+  function applyMode(m) {
+    tokenMode = m;
+    modeBtn.textContent = m ? '阅读' : '词元';
+  }
+
+  modeBtn.addEventListener('click', () => {
+    applyMode(!tokenMode);
+    lsSet(LS.mode, tokenMode ? '1' : '0');
+    loadChapter(bookSel.value, chapSel.value, true);
+  });
+
   // Close panel when clicking outside topbar + control panel
   document.addEventListener('click', e => {
     if (!controlPanel.classList.contains('panel-open')) return;
@@ -743,6 +930,7 @@
     // Apply saved prefs before anything renders
     applyTheme(lsGet(LS.theme) || 'dark');
     applyFont(lsGet(LS.font)   || FONTS[0].value);
+    applyMode(lsGet(LS.mode) !== '0');
     adjustPadding();
 
     // Fetch all 4 meta.json files in parallel
