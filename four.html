@@ -671,24 +671,29 @@
   }
 
   function renderTokenParagraph(text, vocab, pairToCode, colorRef) {
-    // Split at sentence-ending punctuation so BPE runs on short chunks (performance)
-    const sentences = text.match(/[^。！？；\n]+[。！？；]?/g) || [text];
     const p = document.createElement('p');
-    for (const sent of sentences) {
-      if (!sent.trim()) continue;
-      const tokens = bpeEncode(sent, pairToCode);
-      const frags  = groupByCharBoundary(tokens, vocab);
-      frags.forEach(frag => {
-        const span  = document.createElement('span');
-        span.textContent = frag;
-        const color = COLORS[colorRef.idx % COLORS.length];
-        span.style.textDecoration      = 'underline overline';
-        span.style.textDecorationColor = color;
-        span.style.textDecorationThickness = '1.5px';
-        colorRef.idx++;
-        p.appendChild(span);
-      });
-    }
+    const lines = text.split('\n');
+    lines.forEach((line, li) => {
+      if (li > 0) p.appendChild(document.createElement('br'));
+      if (!line.trim()) return;
+      // Split at sentence-ending punctuation so BPE runs on short chunks (performance)
+      const sentences = line.match(/[^。！？；]+[。！？；]?/g) || [line];
+      for (const sent of sentences) {
+        if (!sent.trim()) continue;
+        const tokens = bpeEncode(sent, pairToCode);
+        const frags  = groupByCharBoundary(tokens, vocab);
+        frags.forEach(frag => {
+          const span  = document.createElement('span');
+          span.textContent = frag;
+          const color = COLORS[colorRef.idx % COLORS.length];
+          span.style.textDecoration      = 'underline overline';
+          span.style.textDecorationColor = color;
+          span.style.textDecorationThickness = '1.5px';
+          colorRef.idx++;
+          p.appendChild(span);
+        });
+      }
+    });
     return p;
   }
 
@@ -713,14 +718,14 @@
     for (const line of content) {
       if (line.trim() === '') {
         if (buf.length) {
-          paragraphs.push(buf.map(l => l.trim()).join(''));
+          paragraphs.push(buf.map(l => l.trim()).join('\n'));
           buf = [];
         }
       } else {
         buf.push(line);
       }
     }
-    if (buf.length) paragraphs.push(buf.map(l => l.trim()).join(''));
+    if (buf.length) paragraphs.push(buf.map(l => l.trim()).join('\n'));
 
     return {
       heading,
@@ -790,7 +795,10 @@
           p = renderTokenParagraph(text, vocabData.vocab, vocabData.pairToCode, colorRef);
         } else {
           p = document.createElement('p');
-          p.textContent = text;
+          text.split('\n').forEach((part, i) => {
+            if (i > 0) p.appendChild(document.createElement('br'));
+            p.appendChild(document.createTextNode(part));
+          });
         }
         frag.appendChild(p);
       });
