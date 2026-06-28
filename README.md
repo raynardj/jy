@@ -39,7 +39,7 @@ We try to train a tokenizer out of sampled Jinyong [corpus](./corpus) and [four 
 
 我们可以观察在完整的著作中, 词元是以什么粒度存在的:
 
-[四大名著](https://raynardj.github.io/ciyuan/four.html), [金庸](https://raynardj.github.io/jy/four.html)可以典籍右上角齿轮选择著作和章节
+[四大名著](https://raynardj.github.io/ciyuan/four.html), [金庸](https://raynardj.github.io/ciyuan/four.html)可以典籍右上角齿轮选择著作和章节
 <img width="1626" height="962" alt="image" src="https://github.com/user-attachments/assets/f3f3f231-08d4-4767-8ca0-77975d9a896b" />
 <img width="852" height="615" alt="image" src="https://github.com/user-attachments/assets/65360e17-5673-40fc-84c9-0b3a91d5030e" />
 
