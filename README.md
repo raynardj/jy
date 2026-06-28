@@ -6,6 +6,10 @@ We try to train a tokenizer out of sampled Jinyong [corpus](./corpus) and [four 
 ## 分词器 / Tokenizer
 训练了5套分词器, 分别根据四大名著+金庸全文.
 
+采用了比较基础款的Bytes Pair Encoding, 原文按utf8转成bytes, 所有词元上游都可以追溯到一对基础bytes 单元的组合.
+
+整个树的组合方式是每一层能用2个词元(Pair)组合出一个新词元.
+
 ## 分词界面/分词器
 可以试玩这个[词元树的界面](https://raynardj.github.io/ciyuan/), 会显示上下游的词元.
 
@@ -37,6 +41,8 @@ We try to train a tokenizer out of sampled Jinyong [corpus](./corpus) and [four 
 
 [四大名著](https://raynardj.github.io/ciyuan/four.html), [金庸](https://raynardj.github.io/jy/four.html)可以典籍右上角齿轮选择著作和章节
 <img width="1626" height="962" alt="image" src="https://github.com/user-attachments/assets/f3f3f231-08d4-4767-8ca0-77975d9a896b" />
+<img width="852" height="615" alt="image" src="https://github.com/user-attachments/assets/65360e17-5673-40fc-84c9-0b3a91d5030e" />
+
 
 
 
