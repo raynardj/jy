@@ -6,6 +6,15 @@
 We trainend tokenizers out of corpus of [four great classic romance](./four) and Jinyong [corpus](./corpus) . This is an exercise toward understanding of BPE tokenizer, a popular tokenizer for many of the large language model. Thanks great deals to [this Andrej Karpathy video: Let's build a GPT tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE), I have more intuitive sense about it now.
 
 Many of the visualization aimed to have more intuitive 1 glance grasp of the idea. 
+<table>
+  <tr>
+    <td><img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/d1eca549-ccf3-48ae-8594-c485894dfcdb" /></td>
+    <td><img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/c240a898-ced8-4b42-8b7c-494ef913079b" /></td>
+    <td><img width="400" height="280" alt="image" src="https://github.com/user-attachments/assets/f3f3f231-08d4-4767-8ca0-77975d9a896b" /></td>
+  </tr>
+</table>
+
+
 
 训练了几个分词器, 分别根据四大名著+金庸全文.
 
@@ -46,6 +55,11 @@ Many of the visualization aimed to have more intuitive 1 glance grasp of the ide
 [四大名著](https://raynardj.github.io/ciyuan/four.html), [金庸](https://raynardj.github.io/ciyuan/four.html)可以典籍右上角齿轮选择著作和章节
 <img width="1626" height="962" alt="image" src="https://github.com/user-attachments/assets/f3f3f231-08d4-4767-8ca0-77975d9a896b" />
 <img width="852" height="615" alt="image" src="https://github.com/user-attachments/assets/65360e17-5673-40fc-84c9-0b3a91d5030e" />
+
+## 统计分析
+[分词器统计页面](https://raynardj.github.io/ciyuan/stats.html)
+<img width="1091" height="784" alt="image" src="https://github.com/user-attachments/assets/2fe2dec1-77e6-42ff-a25a-859e4531e42a" />
+
 
 
 
