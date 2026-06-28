@@ -1,11 +1,15 @@
 # BPE Tokenizers on classical romance master pieces
 # 四大名著 + 金庸 定制BPE 词元 / 分词器
 
-We try to train a tokenizer out of sampled Jinyong [corpus](./corpus) and [four great classic romance](./four)
+[![pages-build-deployment](https://github.com/raynardj/ciyuan/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/raynardj/ciyuan/actions/workflows/pages/pages-build-deployment)
+
+We trainend tokenizers out of corpus of [four great classic romance](./four) and Jinyong [corpus](./corpus) . This is an exercise toward understanding of BPE tokenizer, a popular tokenizer for many of the large language model. Thanks great deals to [this Andrej Karpathy video: Let's build a GPT tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE), I have more intuitive sense about it now.
+
+Many of the visualization aimed to have more intuitive 1 glance grasp of the idea. 
+
+训练了几个分词器, 分别根据四大名著+金庸全文.
 
 ## 分词器 / Tokenizer
-训练了5套分词器, 分别根据四大名著+金庸全文.
-
 采用了比较基础款的Bytes Pair Encoding, 原文按utf8转成bytes, 所有词元上游都可以追溯到一对基础bytes 单元的组合.
 
 整个树的组合方式是每一层能用2个词元(Pair)组合出一个新词元.
