@@ -1,5 +1,5 @@
-# Tokenizer Training
-# 四大名著 + 金庸 定制词元 / 分词器
+# BPE Tokenizers on classical romance master pieces
+# 四大名著 + 金庸 定制BPE 词元 / 分词器
 
 We try to train a tokenizer out of sampled Jinyong [corpus](./corpus) and [four great classic romance](./four)
 
