@@ -150,6 +150,38 @@
     }
     #tip .tip-text { font-size: 1rem; font-weight: 600; font-family: "PingFang SC","Noto Serif SC",serif; }
     #tip .tip-meta { opacity: 0.65; font-size: 0.72rem; font-family: monospace; }
+    #tip .tip-bytes,
+    #tip .tip-lineage {
+      margin-top: 0.32rem;
+      padding-top: 0.32rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    [data-theme="light"] #tip .tip-bytes,
+    [data-theme="light"] #tip .tip-lineage {
+      border-top-color: rgba(0,0,0,0.10);
+    }
+    #tip .tip-label {
+      opacity: 0.58;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.12rem;
+    }
+    #tip .tip-byte-list,
+    #tip .tip-layer {
+      font-family: monospace;
+      font-size: 0.7rem;
+      overflow-wrap: anywhere;
+    }
+    #tip .tip-byte-list {
+      max-width: 440px;
+      max-height: 8.8rem;
+      overflow-y: auto;
+    }
+    #tip .tip-layer {
+      max-width: 440px;
+      opacity: 0.88;
+    }
+    #tip .tip-layer + .tip-layer { margin-top: 0.1rem; }
 
     svg text { user-select: none; }
     .tok-g { cursor: pointer; transition: opacity 0.12s; }
@@ -196,7 +228,7 @@
   const PARENT_NODE_GAP = 8;
   const DESC_MAX_NODES_PER_ROW = 10;
   const DESC_ROW_GAP  = 10;
-  const DESC_LAYER_GAP = 34;
+  const DESC_LAYER_GAP = 56;
   const GROUP_GAP     = 24;
   const LAYER_SEG_PAD  = 8;
   const SVG_PAD       = 24;
@@ -212,11 +244,11 @@
   ];
 
   const BOOKS = [
-    { key: 'jy',  name: '金庸'   },
     { key: 'xyj', name: '西游记' },
     { key: 'wm',  name: '水浒传' },
     { key: 'rtk', name: '三国演义' },
     { key: 'drc', name: '红楼梦' },
+    { key: 'jy',  name: '金庸'   },
   ];
 
   /* ── DOM ───────────────────────────────────── */
@@ -294,8 +326,9 @@
 
   /* ── Decomposition levels (same as before) ── */
   function decomposeLevels(tokenId, xBase, w) {
-    let cur = [{ id: tokenId, x: xBase, w }];
-    const levels = [[{ id: tokenId, x: xBase, w }]];
+    const rootBytes = byteLen(tokenId);
+    let cur = [{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }];
+    const levels = [[{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }]];
     for (;;) {
       let maxId = -1, maxIdx = -1;
       for (let i = 0; i < cur.length; i++) {
@@ -314,8 +347,8 @@
       const extra = (ac1w + ac2w) - item.w;
       const next = [
         ...cur.slice(0, maxIdx),
-        { id: c1, x: item.x,        w: ac1w },
-        { id: c2, x: item.x + ac1w, w: ac2w },
+        { id: c1, x: item.x,        w: ac1w, b0: item.b0,       b1: item.b0 + c1b },
+        { id: c2, x: item.x + ac1w, w: ac2w, b0: item.b0 + c1b, b1: item.b1 },
         ...cur.slice(maxIdx + 1).map(n => ({ ...n, x: n.x + extra })),
       ];
       levels.push(next.map(n => ({ ...n })));
@@ -397,7 +430,7 @@
   }
 
   /* ── Draw one token rect ────────────────────── */
-  function drawBox(container, id, x, y, w, h, role) {
+  function drawBox(container, id, x, y, w, h, role, meta = {}) {
     const s      = getStat(id);
     const ok     = !!(s && s.integrity && s.text);
     const pi     = paletteIdx(id);
@@ -413,9 +446,17 @@
       'data-tid': String(id),
       'data-ct':  String(s ? s.ct : 0),
       'data-txt': ok ? (s.text.replace(/\n/g, '↵')) : '',
+      'data-role': role,
+      'data-base-filter': ok ? `url(#fcs${pi})` : '',
       opacity: roleOpacity,
       filter: ok ? `url(#fcs${pi})` : '',
     });
+    if (meta.key !== undefined) g.dataset.key = String(meta.key);
+    if (meta.tokenIndex !== undefined) g.dataset.tokenIndex = String(meta.tokenIndex);
+    if (meta.b0 !== undefined) g.dataset.b0 = String(meta.b0);
+    if (meta.b1 !== undefined) g.dataset.b1 = String(meta.b1);
+    if (meta.layer !== undefined) g.dataset.layer = String(meta.layer);
+    if (meta.childIds !== undefined) g.dataset.childIds = meta.childIds.join(',');
 
     // Dark background
     g.appendChild(el('rect', {
@@ -680,10 +721,13 @@
 
     /* ── Sentence positions ── */
     let xPos = SVG_PAD;
+    let bytePos = 0;
     const sent = tokenIds.map(id => {
       const w = Math.max(dispW(id), BYTE_W * 2);
-      const tok = { id, x: xPos, w };
+      const len = byteLen(id);
+      const tok = { id, x: xPos, w, b0: bytePos, b1: bytePos + len };
       xPos += w;
+      bytePos += len;
       return tok;
     });
 
@@ -856,7 +900,13 @@
       rows.forEach((row, ri) => {
         const y = ancY(row.depth);
         for (const node of row.nodes) {
-          drawBox(nodeG, node.id, node.x, y, node.w, NODE_H, 'anc');
+          drawBox(nodeG, node.id, node.x, y, node.w, NODE_H, 'anc', {
+            key: `anc-${ti}-${row.depth}-${node.b0}-${node.b1}-${node.id}`,
+            tokenIndex: ti,
+            b0: st.b0 + node.b0,
+            b1: st.b0 + node.b1,
+            layer: row.depth,
+          });
 
           const cx   = node.x + node.w / 2;
           const botY = y + NODE_H;
@@ -884,8 +934,14 @@
     });
 
     /* ── Draw sentence row ── */
-    sent.forEach(t => {
-      drawBox(nodeG, t.id, t.x, sentY, t.w, SENT_H, 'sent');
+    sent.forEach((t, ti) => {
+      drawBox(nodeG, t.id, t.x, sentY, t.w, SENT_H, 'sent', {
+        key: `sent-${ti}-${t.id}`,
+        tokenIndex: ti,
+        b0: t.b0,
+        b1: t.b1,
+        layer: 0,
+      });
     });
 
     /* ── Draw parent rows ── */
@@ -895,7 +951,12 @@
       layers.forEach((layer, li) => {
         layer.rows.forEach(row => {
           row.forEach(pn => {
-            drawBox(nodeG, pn.id, pn.x, pn.y, pn.w, PARENT_H, 'par');
+            drawBox(nodeG, pn.id, pn.x, pn.y, pn.w, PARENT_H, 'par', {
+              key: `par-${ti}-${li}-${pn.id}`,
+              tokenIndex: ti,
+              layer: li + 1,
+              childIds: pn.childIds,
+            });
             if (li === 0) {
               drawEdge(edgeG, cx, sentY + SENT_H, pn.x + pn.w / 2, pn.y,
               PALETTE[paletteIdx(pn.id)][0]);
@@ -924,11 +985,78 @@
     let hovered = null;
     const allGroups = () => svg.querySelectorAll('.tok-g');
 
-    function setHover(tid) {
-      if (tid === hovered) return;
-      hovered = tid;
+    function nodeKey(g) {
+      return g.dataset.key || `${g.dataset.role}-${g.dataset.tokenIndex}-${g.dataset.tid}`;
+    }
+
+    function hasSpan(g) {
+      return g.dataset.b0 !== undefined && g.dataset.b1 !== undefined;
+    }
+
+    function spanContains(a, b) {
+      return Number(a.dataset.b0) <= Number(b.dataset.b0) &&
+        Number(a.dataset.b1) >= Number(b.dataset.b1);
+    }
+
+    function childIds(g) {
+      return (g.dataset.childIds || '')
+        .split(',')
+        .filter(Boolean);
+    }
+
+    function hoverKeys(target) {
+      const groups = [...allGroups()];
+      const keys = new Set([nodeKey(target)]);
+      const ti = target.dataset.tokenIndex;
+
+      if (target.dataset.role === 'sent') {
+        groups.forEach(g => {
+          if (g.dataset.tokenIndex === ti && hasSpan(g)) keys.add(nodeKey(g));
+        });
+      } else if (hasSpan(target)) {
+        groups.forEach(g => {
+          if (g.dataset.tokenIndex === ti && hasSpan(g) && spanContains(g, target)) {
+            keys.add(nodeKey(g));
+          }
+        });
+      }
+
+      const connectedIds = new Set();
+      if (target.dataset.role === 'sent' || target.dataset.role === 'par') {
+        connectedIds.add(target.dataset.tid);
+        let changed = true;
+        while (changed) {
+          changed = false;
+          groups.forEach(g => {
+            if (g.dataset.tokenIndex !== ti || g.dataset.role !== 'par') return;
+            const links = childIds(g);
+            if (connectedIds.has(g.dataset.tid) || links.some(id => connectedIds.has(id))) {
+              if (!keys.has(nodeKey(g))) { keys.add(nodeKey(g)); changed = true; }
+              if (!connectedIds.has(g.dataset.tid)) { connectedIds.add(g.dataset.tid); changed = true; }
+              links.forEach(id => {
+                if (!connectedIds.has(id)) { connectedIds.add(id); changed = true; }
+              });
+            }
+          });
+        }
+
+        groups.forEach(g => {
+          if (g.dataset.tokenIndex === ti && connectedIds.has(g.dataset.tid)) {
+            keys.add(nodeKey(g));
+          }
+        });
+      }
+
+      return keys;
+    }
+
+    function setHover(g0) {
+      const key = nodeKey(g0);
+      if (key === hovered) return;
+      hovered = key;
+      const lit = hoverKeys(g0);
       allGroups().forEach(g => {
-        if (g.dataset.tid === tid) {
+        if (lit.has(nodeKey(g))) {
           g.classList.remove('dimmed');
           g.style.filter = 'url(#fglow)';
         } else {
@@ -943,7 +1071,7 @@
       hovered = null;
       allGroups().forEach(g => {
         g.classList.remove('dimmed');
-        g.style.filter = '';
+        g.style.filter = g.dataset.baseFilter || '';
       });
       hideTooltip();
     }
@@ -951,8 +1079,8 @@
     svg.addEventListener('mouseover', e => {
       const g = e.target.closest('.tok-g');
       if (!g) { clearHover(); return; }
-      setHover(g.dataset.tid);
-      showTooltip(e, g.dataset.tid, g.dataset.ct, g.dataset.txt);
+      setHover(g);
+      showTooltip(e, g);
     });
 
     svg.addEventListener('mousemove', e => {
@@ -966,13 +1094,37 @@
   }
 
   /* ── Tooltip ────────────────────────────────── */
-  function showTooltip(e, tid, ct, txtVal) {
+  function tokenLineage(id) {
+    const levels = decomposeLevels(id, 0, Math.max(dispW(id), BYTE_W * 2)).reverse();
+    return levels.map((level, idx) => ({
+      label: idx === 0 ? '当前' : (idx === levels.length - 1 ? '字节' : '层 ' + idx),
+      ids: level.map(n => n.id),
+    }));
+  }
+
+  function tokenLabel(id) {
+    const s = getStat(id);
+    if (s && s.text) return '#' + id + ' ' + s.text.replace(/\n/g, '↵');
+    return '#' + id;
+  }
+
+  function showTooltip(e, g) {
+    const tid = g.dataset.tid;
     const s = getStat(parseInt(tid));
     const text2 = (s && s.text) ? s.text.replace(/\n/g, '↵') : null;
-    const count  = s ? s.ct : parseInt(ct);
+    const count  = s ? s.ct : parseInt(g.dataset.ct);
+    const bytes = decodeBytes(parseInt(tid, 10));
+    const lineage = tokenLineage(parseInt(tid, 10));
     tipEl.innerHTML =
       (text2 ? `<div class="tip-text">${escHtml(text2)}</div>` : '') +
-      `<div class="tip-meta">#${tid}&nbsp;&nbsp;出现 ${count > 0 ? fmtCt(count) + ' 次' : '—'}</div>`;
+      `<div class="tip-meta">#${tid}&nbsp;&nbsp;出现 ${count > 0 ? fmtCt(count) + ' 次' : '—'}</div>` +
+      `<div class="tip-bytes"><div class="tip-label">BYTES 0-255</div>` +
+      `<div class="tip-byte-list">[${bytes.map(n => escHtml(String(n))).join(', ')}]</div></div>` +
+      `<div class="tip-lineage"><div class="tip-label">LAYER BY LAYER</div>` +
+      lineage.map(layer =>
+        `<div class="tip-layer">${escHtml(layer.label)} · ${escHtml(layer.ids.map(tokenLabel).join('  +  '))}</div>`
+      ).join('') +
+      `</div>`;
     tipEl.style.display = 'block';
     moveTip(e);
   }
@@ -980,8 +1132,13 @@
   function moveTip(e) {
     const pad = 14;
     let lx = e.clientX + pad, ly = e.clientY + pad;
-    if (lx + 160 > window.innerWidth)  lx = e.clientX - 160 - pad;
-    if (ly + 80  > window.innerHeight) ly = e.clientY - 80  - pad;
+    const rect = tipEl.getBoundingClientRect();
+    const tw = Math.max(rect.width, 220);
+    const th = Math.max(rect.height, 90);
+    if (lx + tw > window.innerWidth)  lx = e.clientX - tw - pad;
+    if (ly + th > window.innerHeight) ly = e.clientY - th - pad;
+    lx = Math.max(8, Math.min(lx, window.innerWidth - tw - 8));
+    ly = Math.max(8, Math.min(ly, window.innerHeight - th - 8));
     tipEl.style.left = lx + 'px';
     tipEl.style.top  = ly + 'px';
   }
