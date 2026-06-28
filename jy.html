@@ -104,6 +104,41 @@
       transition: color var(--transition);
     }
 
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .page-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .page-links a {
+      background: var(--ctrl-bg);
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--ctrl-border);
+      border-radius: 7px;
+      padding: 0.3rem 0.58rem;
+      font-size: 0.78rem;
+      line-height: 1;
+      box-shadow: var(--shadow-ctrl);
+      transition: border-color var(--transition), box-shadow var(--transition),
+                  transform 0.15s ease, color var(--transition), background-color var(--transition);
+    }
+
+    .page-links a:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
     /* ── Control panel (collapsible dropdown) ────── */
     #control-panel {
       position: fixed;
@@ -390,7 +425,14 @@
   <div id="progress-bar"></div>
 
   <header id="topbar">
-    <span class="bar-logo">金庸</span>
+    <div class="bar-left">
+      <span class="bar-logo">金庸</span>
+      <nav class="page-links" aria-label="页面导航">
+        <a href="index.html">词元树</a>
+        <a href="four.html">四大名著</a>
+        <a href="stats.html">统计</a>
+      </nav>
+    </div>
     <button id="panel-btn" aria-label="设置" aria-expanded="false">⚙</button>
   </header>
   <div id="control-panel" aria-hidden="true">

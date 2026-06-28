@@ -66,6 +66,16 @@
       font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
       color: var(--accent); white-space: nowrap; user-select: none; flex-shrink: 0;
     }
+    .page-links {
+      display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; flex-shrink: 0;
+    }
+    .page-links a {
+      background: var(--ctrl-bg); color: var(--text); text-decoration: none;
+      border: 1px solid var(--ctrl-border); border-radius: 8px;
+      padding: 0.3rem 0.58rem; font-size: 0.78rem; line-height: 1;
+      box-shadow: var(--shadow-ctrl); transition: border-color var(--transition), transform 0.15s;
+    }
+    .page-links a:hover { border-color: var(--accent); transform: translateY(-1px); }
     select, #text-input {
       background: var(--ctrl-bg); color: var(--text);
       border: 1px solid var(--ctrl-border); border-radius: 8px;
@@ -192,6 +202,11 @@
 
 <header id="topbar">
   <span class="bar-logo">词元树</span>
+  <nav class="page-links" aria-label="页面导航">
+    <a href="four.html">四大名著</a>
+    <a href="jy.html">金庸阅读</a>
+    <a href="stats.html">统计</a>
+  </nav>
   <select id="book-sel" aria-label="选择词表"></select>
   <input id="text-input" type="text"
     placeholder="输入文字，查看词元分解树…"
