@@ -711,10 +711,10 @@
 
   /* ── Render ─────────────────────────────────── */
   function render() {
-    const text = textInput.value.trim();
+    const text = textInput.value;
     hideTooltip();
     if (!vocab) { vizEl.innerHTML = '<p class="placeholder">数据加载中…</p>'; return; }
-    if (!text)  { vizEl.innerHTML = '<p class="placeholder">请输入文字以查看词元树</p>'; return; }
+    if (!text.length) { vizEl.innerHTML = '<p class="placeholder">请输入文字以查看词元树</p>'; return; }
 
     const tokenIds = bpeEncode(text);
     if (!tokenIds.length) return;
@@ -1091,6 +1091,20 @@
       const g = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.tok-g');
       if (!g) clearHover();
     });
+
+    svg.addEventListener('click', e => {
+      const g = e.target.closest('.tok-g');
+      if (!g) return;
+      const s = getStat(parseInt(g.dataset.tid, 10));
+      if (!s || !s.integrity || !s.text) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      clearTimeout(debTimer);
+      textInput.value = s.text;
+      render();
+      textInput.focus({ preventScroll: true });
+    });
   }
 
   /* ── Tooltip ────────────────────────────────── */
@@ -1221,6 +1235,7 @@
 
   vizWrap.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
+    if (e.target.closest && e.target.closest('.tok-g')) return;
     drag = { sx: e.clientX, sy: e.clientY, sl: vizWrap.scrollLeft, st: vizWrap.scrollTop };
     vizWrap.classList.add('dragging');
     if (activeSvg) activeSvg.style.pointerEvents = 'none';
