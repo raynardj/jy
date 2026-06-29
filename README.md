@@ -3,7 +3,7 @@
 
 [![pages-build-deployment](https://github.com/raynardj/ciyuan/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/raynardj/ciyuan/actions/workflows/pages/pages-build-deployment)
 
-We trainend tokenizers out of corpus of [four great classic romance](./four) and Jinyong [corpus](./corpus) . This is an exercise toward understanding of BPE tokenizer, a popular tokenizer for many of the large language model. Thanks great deals to [this Andrej Karpathy video: Let's build a GPT tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE), I have more intuitive sense about it now.
+We trainend tokenizers out of corpus of [four great classic romance](./four) and Jinyong [corpus](./corpus) with [notebook here](./notebooks). This is an exercise toward understanding of BPE tokenizer, a popular tokenizer for many of the large language model. Thanks great deals to [this Andrej Karpathy video: Let's build a GPT tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE), I have more intuitive sense about it now.
 
 Many of the visualization aimed to have more intuitive 1 glance grasp of the idea. 
 <table>
@@ -14,16 +14,19 @@ Many of the visualization aimed to have more intuitive 1 glance grasp of the ide
   </tr>
 </table>
 
-
-
-训练了几个分词器, 分别根据四大名著+金庸全文.
+用这里的[笔记](./notebooks)训练了几个分词器, 分别根据[四大名著](./four)+[金庸](./corpus)全文.
 
 ## 分词器 / Tokenizer
+I implemented the very basic version of `Bytes Pair Encoding`, the original corpus was turned into bytes encoded utf8, all tokens' ancestry can be traced up to pairs of bytes.
+
 采用了比较基础款的Bytes Pair Encoding, 原文按utf8转成bytes, 所有词元上游都可以追溯到一对基础bytes 单元的组合.
+
+For the entire try, the combination is to combine `pairs` of tokens into new tokens.
 
 整个树的组合方式是每一层能用2个词元(Pair)组合出一个新词元.
 
-## 分词界面/分词器
+You can try this [tokenizing tree interface](https://raynardj.github.io/ciyuan/), it will display its ancestry and for each token, their possible descendants.
+
 可以试玩这个[词元树的界面](https://raynardj.github.io/ciyuan/), 会显示上下游的词元.
 
 可以选择分词器的语料典籍来源, 输入一句话(最好是文章里的原话) 
@@ -48,7 +51,7 @@ Many of the visualization aimed to have more intuitive 1 glance grasp of the ide
   </tr>
 </table>
 
-## 分词原文
+## 分词原文 / Tokenizing Corpus
 
 我们可以观察在完整的著作中, 词元是以什么粒度存在的:
 
@@ -56,7 +59,7 @@ Many of the visualization aimed to have more intuitive 1 glance grasp of the ide
 <img width="1626" height="962" alt="image" src="https://github.com/user-attachments/assets/f3f3f231-08d4-4767-8ca0-77975d9a896b" />
 <img width="852" height="615" alt="image" src="https://github.com/user-attachments/assets/65360e17-5673-40fc-84c9-0b3a91d5030e" />
 
-## 统计分析
+## 统计分析 / Stats & Dashboard
 [分词器统计页面](https://raynardj.github.io/ciyuan/stats.html)
 <img width="1091" height="784" alt="image" src="https://github.com/user-attachments/assets/2fe2dec1-77e6-42ff-a25a-859e4531e42a" />
 
