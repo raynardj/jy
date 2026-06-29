@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,1269 +8,1443 @@
   <meta name="description" content="BPE词元分解树可视化">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --bg:          #faf8f5;
-      --text:        #2c2416;
-      --muted:       #9a8a78;
-      --bar-bg:      rgba(250,248,245,0.93);
-      --bar-border:  rgba(0,0,0,0.09);
-      --accent:      #8b3a1a;
-      --ctrl-bg:     rgba(255,255,255,0.72);
-      --ctrl-border: rgba(0,0,0,0.14);
-      --shadow-bar:  0 2px 20px rgba(0,0,0,0.08);
-      --shadow-ctrl: 0 1px 3px rgba(0,0,0,0.08);
-      --transition:  0.25s ease;
-      --stripe-a:    rgba(0,0,0,0.025);
-      --stripe-b:    rgba(0,0,0,0.055);
-    }
-    [data-theme="dark"] {
-      --bg:          #131210;
-      --text:        #e5d9c0;
-      --muted:       #7a6e5e;
-      --bar-bg:      rgba(16,14,11,0.94);
-      --bar-border:  rgba(255,255,255,0.07);
-      --accent:      #d08040;
-      --ctrl-bg:     rgba(40,36,28,0.88);
-      --ctrl-border: rgba(255,255,255,0.11);
-      --shadow-bar:  0 2px 20px rgba(0,0,0,0.6);
-      --shadow-ctrl: 0 1px 4px rgba(0,0,0,0.45);
-      --stripe-a:    rgba(255,255,255,0.018);
-      --stripe-b:    rgba(255,255,255,0.04);
+      --bg: #faf8f5;
+      --text: #2c2416;
+      --muted: #9a8a78;
+      --bar-bg: rgba(250, 248, 245, 0.93);
+      --bar-border: rgba(0, 0, 0, 0.09);
+      --accent: #8b3a1a;
+      --ctrl-bg: rgba(255, 255, 255, 0.72);
+      --ctrl-border: rgba(0, 0, 0, 0.14);
+      --shadow-bar: 0 2px 20px rgba(0, 0, 0, 0.08);
+      --shadow-ctrl: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --transition: 0.25s ease;
+      --stripe-a: rgba(0, 0, 0, 0.025);
+      --stripe-b: rgba(0, 0, 0, 0.055);
     }
 
-    html { font-size: 16px; }
+    [data-theme="dark"] {
+      --bg: #131210;
+      --text: #e5d9c0;
+      --muted: #7a6e5e;
+      --bar-bg: rgba(16, 14, 11, 0.94);
+      --bar-border: rgba(255, 255, 255, 0.07);
+      --accent: #d08040;
+      --ctrl-bg: rgba(40, 36, 28, 0.88);
+      --ctrl-border: rgba(255, 255, 255, 0.11);
+      --shadow-bar: 0 2px 20px rgba(0, 0, 0, 0.6);
+      --shadow-ctrl: 0 1px 4px rgba(0, 0, 0, 0.45);
+      --stripe-a: rgba(255, 255, 255, 0.018);
+      --stripe-b: rgba(255, 255, 255, 0.04);
+    }
+
+    html {
+      font-size: 16px;
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
       transition: background var(--transition), color var(--transition);
-      min-height: 100vh; height: 100vh; overflow: hidden;
+      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
     }
 
     /* ── Top bar ── */
     #topbar {
-      position: fixed; top: 0; left: 0; right: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       background: var(--bar-bg);
       backdrop-filter: blur(20px) saturate(1.7);
       -webkit-backdrop-filter: blur(20px) saturate(1.7);
       border-bottom: 1px solid var(--bar-border);
       box-shadow: var(--shadow-bar);
-      display: flex; align-items: center; gap: 0.55rem;
-      padding: 0 1.25rem; z-index: 300; min-height: 52px; flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0 1.25rem;
+      z-index: 300;
+      min-height: 52px;
+      flex-wrap: wrap;
       transition: background var(--transition), border-color var(--transition);
     }
+
     .bar-logo {
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
-      color: var(--accent); white-space: nowrap; user-select: none; flex-shrink: 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      white-space: nowrap;
+      user-select: none;
+      flex-shrink: 0;
     }
+
     .page-links {
-      display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      flex-shrink: 0;
     }
+
     .page-links a {
-      background: var(--ctrl-bg); color: var(--text); text-decoration: none;
-      border: 1px solid var(--ctrl-border); border-radius: 8px;
-      padding: 0.3rem 0.58rem; font-size: 0.78rem; line-height: 1;
-      box-shadow: var(--shadow-ctrl); transition: border-color var(--transition), transform 0.15s;
+      background: var(--ctrl-bg);
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--ctrl-border);
+      border-radius: 8px;
+      padding: 0.3rem 0.58rem;
+      font-size: 0.78rem;
+      line-height: 1;
+      box-shadow: var(--shadow-ctrl);
+      transition: border-color var(--transition), transform 0.15s;
     }
-    .page-links a:hover { border-color: var(--accent); transform: translateY(-1px); }
-    select, #text-input {
-      background: var(--ctrl-bg); color: var(--text);
-      border: 1px solid var(--ctrl-border); border-radius: 8px;
-      padding: 0.3rem 0.65rem; font-size: 0.83rem;
-      font-family: "PingFang SC","Microsoft YaHei",sans-serif;
-      outline: none; box-shadow: var(--shadow-ctrl);
+
+    .page-links a:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    select,
+    #text-input {
+      background: var(--ctrl-bg);
+      color: var(--text);
+      border: 1px solid var(--ctrl-border);
+      border-radius: 8px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.83rem;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      outline: none;
+      box-shadow: var(--shadow-ctrl);
       transition: border-color var(--transition), background var(--transition);
     }
+
     select {
-      appearance: none; -webkit-appearance: none;
-      padding-right: 1.6rem; cursor: pointer; flex-shrink: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 1.6rem;
+      cursor: pointer;
+      flex-shrink: 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%23776655'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
     }
+
     [data-theme="dark"] select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%23998877'/%3E%3C/svg%3E");
     }
-    select:focus, #text-input:focus { border-color: var(--accent); }
-    #text-input { flex: 1; min-width: 120px; max-width: 380px; }
+
+    select:focus,
+    #text-input:focus {
+      border-color: var(--accent);
+    }
+
+    #text-input {
+      flex: 1;
+      min-width: 120px;
+      max-width: 380px;
+    }
+
     #theme-btn {
-      background: var(--ctrl-bg); border: 1px solid var(--ctrl-border);
-      border-radius: 8px; padding: 0.3rem 0.6rem; cursor: pointer;
-      font-size: 1rem; line-height: 1; box-shadow: var(--shadow-ctrl);
-      user-select: none; color: inherit; flex-shrink: 0;
+      background: var(--ctrl-bg);
+      border: 1px solid var(--ctrl-border);
+      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      box-shadow: var(--shadow-ctrl);
+      user-select: none;
+      color: inherit;
+      flex-shrink: 0;
       transition: background var(--transition), border-color var(--transition), transform 0.15s;
     }
-    #theme-btn:hover  { transform: scale(1.1); }
-    #theme-btn:active { transform: scale(0.94); }
+
+    #theme-btn:hover {
+      transform: scale(1.1);
+    }
+
+    #theme-btn:active {
+      transform: scale(0.94);
+    }
 
     /* ── Status ── */
     #status {
-      position: fixed; top: 52px; left: 0; right: 0;
-      font-size: 0.72rem; color: var(--muted); padding: 0.22rem 1.3rem;
-      background: var(--bar-bg); border-bottom: 1px solid var(--bar-border);
-      z-index: 290; letter-spacing: 0.03em;
+      position: fixed;
+      top: 52px;
+      left: 0;
+      right: 0;
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 0.22rem 1.3rem;
+      background: var(--bar-bg);
+      border-bottom: 1px solid var(--bar-border);
+      z-index: 290;
+      letter-spacing: 0.03em;
       transition: color var(--transition), background var(--transition);
     }
 
     /* ── Main ── */
-    main { padding-top: 80px; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; }
+    main {
+      padding-top: 80px;
+      height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
     #legend {
-      font-size: 0.7rem; color: var(--muted);
+      font-size: 0.7rem;
+      color: var(--muted);
       padding: 0.5rem 1.3rem 0.2rem;
-      display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      align-items: center;
       flex-shrink: 0;
     }
-    #legend span { display: flex; align-items: center; gap: 0.3rem; }
-    #legend i {
-      display: inline-block; width: 12px; height: 12px;
-      border-radius: 3px; flex-shrink: 0;
-    }
-    .leg-anc  { background: rgba(80,150,220,0.55); border: 1px solid rgba(80,150,220,0.4); }
-    .leg-sent { background: rgba(220,140,50,0.85);  border: 1px solid rgba(220,140,50,0.9); }
-    .leg-par  { background: rgba(70,180,90,0.55);   border: 1px solid rgba(70,180,90,0.4); }
-    .leg-na   { background: rgba(100,90,80,0.35);   border: 1px solid rgba(140,130,120,0.3); }
 
-    #viz-wrap { flex: 1; overflow: auto; padding: 1rem 1.25rem; cursor: grab; user-select: none; }
-    #viz-wrap.dragging { cursor: grabbing; }
-    #viz      { display: inline-block; min-width: 100%; }
+    #legend span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    #legend i {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .leg-anc {
+      background: rgba(80, 150, 220, 0.55);
+      border: 1px solid rgba(80, 150, 220, 0.4);
+    }
+
+    .leg-sent {
+      background: rgba(220, 140, 50, 0.85);
+      border: 1px solid rgba(220, 140, 50, 0.9);
+    }
+
+    .leg-par {
+      background: rgba(70, 180, 90, 0.55);
+      border: 1px solid rgba(70, 180, 90, 0.4);
+    }
+
+    .leg-na {
+      background: rgba(100, 90, 80, 0.35);
+      border: 1px solid rgba(140, 130, 120, 0.3);
+    }
+
+    #viz-wrap {
+      flex: 1;
+      overflow: auto;
+      padding: 1rem 1.25rem;
+      cursor: grab;
+      user-select: none;
+    }
+
+    #viz-wrap.dragging {
+      cursor: grabbing;
+    }
+
+    #viz {
+      display: inline-block;
+      min-width: 100%;
+    }
+
     .placeholder {
-      color: var(--muted); font-size: 0.92rem;
-      padding: 5rem 1rem; text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      padding: 5rem 1rem;
+      text-align: center;
     }
 
     /* ── Tooltip ── */
     #tip {
-      position: fixed; display: none;
-      background: rgba(20,18,14,0.95);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px; padding: 0.45rem 0.75rem;
-      font-size: 0.78rem; color: #e5d9c0;
-      pointer-events: none; z-index: 999;
+      position: fixed;
+      display: none;
+      background: rgba(20, 18, 14, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.78rem;
+      color: #e5d9c0;
+      pointer-events: none;
+      z-index: 999;
       backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       line-height: 1.55;
     }
+
     [data-theme="light"] #tip {
-      background: rgba(255,254,252,0.96);
-      border-color: rgba(0,0,0,0.12);
+      background: rgba(255, 254, 252, 0.96);
+      border-color: rgba(0, 0, 0, 0.12);
       color: #2c2416;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
-    #tip .tip-text { font-size: 1rem; font-weight: 600; font-family: "PingFang SC","Noto Serif SC",serif; }
-    #tip .tip-meta { opacity: 0.65; font-size: 0.72rem; font-family: monospace; }
+
+    #tip .tip-text {
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: "PingFang SC", "Noto Serif SC", serif;
+    }
+
+    #tip .tip-meta {
+      opacity: 0.65;
+      font-size: 0.72rem;
+      font-family: monospace;
+    }
+
     #tip .tip-bytes,
     #tip .tip-lineage {
       margin-top: 0.32rem;
       padding-top: 0.32rem;
-      border-top: 1px solid rgba(255,255,255,0.12);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
+
     [data-theme="light"] #tip .tip-bytes,
     [data-theme="light"] #tip .tip-lineage {
-      border-top-color: rgba(0,0,0,0.10);
+      border-top-color: rgba(0, 0, 0, 0.10);
     }
+
     #tip .tip-label {
       opacity: 0.58;
       font-size: 0.7rem;
       letter-spacing: 0.04em;
       margin-bottom: 0.12rem;
     }
+
     #tip .tip-byte-list,
     #tip .tip-layer {
       font-family: monospace;
       font-size: 0.7rem;
       overflow-wrap: anywhere;
     }
+
     #tip .tip-byte-list {
       max-width: 440px;
       max-height: 8.8rem;
       overflow-y: auto;
     }
+
     #tip .tip-layer {
       max-width: 440px;
       opacity: 0.88;
     }
-    #tip .tip-layer + .tip-layer { margin-top: 0.1rem; }
 
-    svg text { user-select: none; }
-    .tok-g { cursor: pointer; transition: opacity 0.12s; }
-    .tok-g.dimmed { opacity: 0.22; }
+    #tip .tip-layer+.tip-layer {
+      margin-top: 0.1rem;
+    }
+
+    svg text {
+      user-select: none;
+    }
+
+    .tok-g {
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+
+    .tok-g.dimmed {
+      opacity: 0.22;
+    }
   </style>
 </head>
+
 <body>
 
-<header id="topbar">
-  <span class="bar-logo">词元树</span>
-  <nav class="page-links" aria-label="页面导航">
-    <a href="four.html">四大名著</a>
-    <a href="jy.html">金庸阅读</a>
-    <a href="stats.html">统计</a>
-  </nav>
-  <select id="book-sel" aria-label="选择词表"></select>
-  <input id="text-input" type="text"
-    placeholder="输入文字，查看词元分解树…"
-    autocomplete="off" spellcheck="false" maxlength="60">
-  <button id="theme-btn" aria-label="切换主题">☀</button>
-</header>
-<div id="status">选择词表后输入文字</div>
-<div id="tip" hidden></div>
+  <header id="topbar">
+    <span class="bar-logo">词元树</span>
+    <nav class="page-links" aria-label="页面导航">
+      <a href="four.html">四大名著</a>
+      <a href="jy.html">金庸</a>
+      <a href="stats.html">统计</a>
+    </nav>
+    <select id="book-sel" aria-label="选择词表"></select>
+    <input id="text-input" type="text" placeholder="输入文字，查看词元分解树…" autocomplete="off" spellcheck="false" maxlength="60">
+    <button id="theme-btn" aria-label="切换主题">☀</button>
+  </header>
+  <div id="status">选择词表后输入文字</div>
+  <div id="tip" hidden></div>
 
-<main>
-  <div id="legend">
-    <span><i class="leg-anc"></i>祖先词元（分解层）</span>
-    <span><i class="leg-sent"></i>句中词元</span>
-    <span><i class="leg-par"></i>父级词元（递归可合并为）</span>
-    <span><i class="leg-na"></i>不完整字节（无文字）</span>
-  </div>
-  <div id="viz-wrap">
-    <div id="viz"><p class="placeholder">请选择词表并输入文字</p></div>
-  </div>
-</main>
+  <main>
+    <div id="legend">
+      <span><i class="leg-anc"></i>祖先词元（分解层）</span>
+      <span><i class="leg-sent"></i>句中词元</span>
+      <span><i class="leg-par"></i>父级词元（递归可合并为）</span>
+      <span><i class="leg-na"></i>不完整字节（无文字）</span>
+    </div>
+    <div id="viz-wrap">
+      <div id="viz">
+        <p class="placeholder">请选择词表并输入文字</p>
+      </div>
+    </div>
+  </main>
 
-<script>
-(function () {
-  'use strict';
+  <script>
+    (function () {
+      'use strict';
 
-  /* ── Constants ─────────────────────────────── */
-  const BYTE_W        = 20;
-  const LEVEL_H       = 54;
-  const NODE_H        = LEVEL_H - 10;   // single-level rect height
-  const SENT_H        = 70;
-  const PARENT_H      = 52;
-  const PARENT_W      = 92;
-  const NODE_GAP      = 3;
-  const PARENT_NODE_GAP = 8;
-  const DESC_MAX_NODES_PER_ROW = 10;
-  const DESC_ROW_GAP  = 10;
-  const DESC_LAYER_GAP = 56;
-  const GROUP_GAP     = 24;
-  const LAYER_SEG_PAD  = 8;
-  const SVG_PAD       = 24;
+      /* ── Constants ─────────────────────────────── */
+      const BYTE_W = 20;
+      const LEVEL_H = 54;
+      const NODE_H = LEVEL_H - 10;   // single-level rect height
+      const SENT_H = 70;
+      const PARENT_H = 52;
+      const PARENT_W = 92;
+      const NODE_GAP = 3;
+      const PARENT_NODE_GAP = 8;
+      const DESC_MAX_NODES_PER_ROW = 10;
+      const DESC_ROW_GAP = 10;
+      const DESC_LAYER_GAP = 56;
+      const GROUP_GAP = 24;
+      const LAYER_SEG_PAD = 8;
+      const SVG_PAD = 24;
 
-  // [bright_top, deep_bottom] gradient stops per palette index
-  const PALETTE = [
-    ['#f07868', '#901828'],   // red-rose
-    ['#40c8d8', '#186070'],   // teal
-    ['#a060e8', '#501888'],   // violet
-    ['#48d868', '#108038'],   // emerald
-    ['#e8a828', '#885818'],   // amber
-    ['#4888e8', '#103880'],   // sapphire
-  ];
-
-  const BOOKS = [
-    { key: 'xyj', name: '西游记' },
-    { key: 'wm',  name: '水浒传' },
-    { key: 'rtk', name: '三国演义' },
-    { key: 'drc', name: '红楼梦' },
-    { key: 'jy',  name: '金庸'   },
-  ];
-
-  /* ── DOM ───────────────────────────────────── */
-  const bookSel   = document.getElementById('book-sel');
-  const textInput = document.getElementById('text-input');
-  const themeBtn  = document.getElementById('theme-btn');
-  const vizEl     = document.getElementById('viz');
-  const statusEl  = document.getElementById('status');
-  const tipEl     = document.getElementById('tip');
-
-  /* ── State ─────────────────────────────────── */
-  let vocab = null, stats = null, pairToCode = null, parentIdx = null;
-  let maxTokenId = 255;
-  let bytesCache = {};
-  let activeSvg  = null;
-
-  /* ── Storage ───────────────────────────────── */
-  const ls = {
-    get: k  => { try { return localStorage.getItem(k); }    catch { return null; } },
-    set: (k, v) => { try { localStorage.setItem(k, v); } catch {} },
-  };
-
-  /* ── BPE ────────────────────────────────────── */
-  function buildPairToCode(v) {
-    const map = new Map();
-    for (const [id, pair] of Object.entries(v))
-      map.set(pair[0] + ',' + pair[1], parseInt(id, 10));
-    return map;
-  }
-
-  function bpeEncode(text) {
-    let codes = Array.from(new TextEncoder().encode(text));
-    if (codes.length < 2) return codes;
-    while (codes.length > 1) {
-      let minTok = Infinity, minPair = null;
-      for (let i = 0; i < codes.length - 1; i++) {
-        const t = pairToCode.get(codes[i] + ',' + codes[i + 1]);
-        if (t !== undefined && t < minTok) { minTok = t; minPair = [codes[i], codes[i + 1]]; }
-      }
-      if (!minPair) break;
-      const next = []; let i = 0;
-      while (i < codes.length) {
-        if (i < codes.length - 1 && codes[i] === minPair[0] && codes[i + 1] === minPair[1]) {
-          next.push(minTok); i += 2;
-        } else { next.push(codes[i]); i++; }
-      }
-      codes = next;
-    }
-    return codes;
-  }
-
-  function decodeBytes(id) {
-    if (bytesCache[id] !== undefined) return bytesCache[id];
-    if (vocab[id] === undefined) { bytesCache[id] = [id]; return [id]; }
-    const [c1, c2] = vocab[id];
-    const r = decodeBytes(c1).concat(decodeBytes(c2));
-    bytesCache[id] = r;
-    return r;
-  }
-
-  function byteLen(id)  { return decodeBytes(id).length; }
-  function dispW(id)    { return byteLen(id) * BYTE_W; }
-
-  function buildParentIdx(v) {
-    const idx = {};
-    for (const [idStr, [c1, c2]] of Object.entries(v)) {
-      const id = parseInt(idStr);
-      (idx[c1] = idx[c1] || []).push(id);
-      if (c2 !== c1) (idx[c2] = idx[c2] || []).push(id);
-    }
-    return idx;
-  }
-
-  function getStat(id) { return stats[id] || stats[String(id)]; }
-
-  /* ── Decomposition levels (same as before) ── */
-  function decomposeLevels(tokenId, xBase, w) {
-    const rootBytes = byteLen(tokenId);
-    let cur = [{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }];
-    const levels = [[{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }]];
-    for (;;) {
-      let maxId = -1, maxIdx = -1;
-      for (let i = 0; i < cur.length; i++) {
-        if (vocab[cur[i].id] !== undefined && cur[i].id > maxId) {
-          maxId = cur[i].id; maxIdx = i;
-        }
-      }
-      if (maxIdx === -1) break;
-      const item = cur[maxIdx];
-      const [c1, c2] = vocab[maxId];
-      const total = byteLen(maxId), c1b = byteLen(c1);
-      const c1w = total > 0 ? Math.round(c1b / total * item.w) : Math.floor(item.w / 2);
-      const c2w = item.w - c1w;
-      const ac1w  = Math.max(c1w, BYTE_W);
-      const ac2w  = Math.max(c2w, BYTE_W);
-      const extra = (ac1w + ac2w) - item.w;
-      const next = [
-        ...cur.slice(0, maxIdx),
-        { id: c1, x: item.x,        w: ac1w, b0: item.b0,       b1: item.b0 + c1b },
-        { id: c2, x: item.x + ac1w, w: ac2w, b0: item.b0 + c1b, b1: item.b1 },
-        ...cur.slice(maxIdx + 1).map(n => ({ ...n, x: n.x + extra })),
+      // [bright_top, deep_bottom] gradient stops per palette index
+      const PALETTE = [
+        ['#f07868', '#901828'],   // red-rose
+        ['#40c8d8', '#186070'],   // teal
+        ['#a060e8', '#501888'],   // violet
+        ['#48d868', '#108038'],   // emerald
+        ['#e8a828', '#885818'],   // amber
+        ['#4888e8', '#103880'],   // sapphire
       ];
-      levels.push(next.map(n => ({ ...n })));
-      cur = next;
-    }
-    return levels.reverse(); // [0]=raw bytes, [N-1]=[sentence token]
-  }
 
-  /* ── SVG helpers ────────────────────────────── */
-  const NS = 'http://www.w3.org/2000/svg';
-  function el(tag, attrs) {
-    const e = document.createElementNS(NS, tag);
-    for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v);
-    return e;
-  }
-  function txt(tag, attrs, content) {
-    const e = el(tag, attrs);
-    e.textContent = content;
-    return e;
-  }
+      const BOOKS = [
+        { key: 'xyj', name: '西游记' },
+        { key: 'wm', name: '水浒传' },
+        { key: 'rtk', name: '三国演义' },
+        { key: 'drc', name: '红楼梦' },
+        { key: 'jy', name: '金庸' },
+      ];
 
-  function paletteIdx(id) { return id % PALETTE.length; }
+      /* ── DOM ───────────────────────────────────── */
+      const bookSel = document.getElementById('book-sel');
+      const textInput = document.getElementById('text-input');
+      const themeBtn = document.getElementById('theme-btn');
+      const vizEl = document.getElementById('viz');
+      const statusEl = document.getElementById('status');
+      const tipEl = document.getElementById('tip');
 
-  /* ── Build SVG defs (gradients + filters) ─── */
-  function buildDefs(svg) {
-    const defs = el('defs');
+      /* ── State ─────────────────────────────────── */
+      let vocab = null, stats = null, pairToCode = null, parentIdx = null;
+      let maxTokenId = 255;
+      let bytesCache = {};
+      let activeSvg = null;
 
-    // Per-colour gradients (vertical, dark theme optimized)
-    PALETTE.forEach(([top, bot], i) => {
-      const g = el('linearGradient', { id: `g${i}`, x1: '0', y1: '0', x2: '0', y2: '1' });
-      const s0 = el('stop', { offset: '0%',   'stop-color': top, 'stop-opacity': '1' });
-      const s1 = el('stop', { offset: '100%', 'stop-color': bot, 'stop-opacity': '1' });
-      g.appendChild(s0); g.appendChild(s1);
-      defs.appendChild(g);
-    });
+      /* ── Storage ───────────────────────────────── */
+      const ls = {
+        get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+        set: (k, v) => { try { localStorage.setItem(k, v); } catch { } },
+      };
 
-    // Dead token gradient (integrity=false)
-    const gd = el('linearGradient', { id: 'gdead', x1: '0', y1: '0', x2: '0', y2: '1' });
-    gd.appendChild(el('stop', { offset: '0%',   'stop-color': '#3a3530', 'stop-opacity': '0.85' }));
-    gd.appendChild(el('stop', { offset: '100%', 'stop-color': '#1e1b18', 'stop-opacity': '0.85' }));
-    defs.appendChild(gd);
-
-    // Per-color ambient glow filters for normal state
-    PALETTE.forEach(([top], i) => {
-      const f = el('filter', { id: `fcs${i}`, x: '-25%', y: '-25%', width: '150%', height: '150%' });
-      f.appendChild(el('feDropShadow', { dx: '0', dy: '0', stdDeviation: '4', 'flood-color': top, 'flood-opacity': '0.45' }));
-      defs.appendChild(f);
-    });
-
-    // Glow filter (applied via JS on hover)
-    const fGlow = el('filter', { id: 'fglow', x: '-20%', y: '-20%', width: '140%', height: '140%' });
-    const fGb = el('feGaussianBlur', { in: 'SourceAlpha', stdDeviation: '4', result: 'blur' });
-    const fFlood = el('feFlood', { 'flood-color': 'rgba(255,220,120,0.55)', result: 'color' });
-    const fComp = el('feComposite', { in: 'color', in2: 'blur', operator: 'in', result: 'glow' });
-    const fMerge = el('feMerge');
-    fMerge.appendChild(el('feMergeNode', { in: 'glow' }));
-    fMerge.appendChild(el('feMergeNode', { in: 'SourceGraphic' }));
-    fGlow.appendChild(fGb); fGlow.appendChild(fFlood);
-    fGlow.appendChild(fComp); fGlow.appendChild(fMerge);
-    defs.appendChild(fGlow);
-
-    // Drop shadow filter
-    const fSh = el('filter', { id: 'fsh', x: '-5%', y: '-5%', width: '115%', height: '130%' });
-    fSh.appendChild(el('feDropShadow', {
-      dx: '0', dy: '2', stdDeviation: '3',
-      'flood-color': 'rgba(0,0,0,0.45)', 'flood-opacity': '1'
-    }));
-    defs.appendChild(fSh);
-
-    // Stronger shadow for sentence tokens
-    const fSs = el('filter', { id: 'fss', x: '-8%', y: '-8%', width: '120%', height: '140%' });
-    fSs.appendChild(el('feDropShadow', {
-      dx: '0', dy: '3', stdDeviation: '5',
-      'flood-color': 'rgba(0,0,0,0.6)', 'flood-opacity': '1'
-    }));
-    defs.appendChild(fSs);
-
-    svg.appendChild(defs);
-  }
-
-  /* ── Draw one token rect ────────────────────── */
-  function drawBox(container, id, x, y, w, h, role, meta = {}) {
-    const s      = getStat(id);
-    const ok     = !!(s && s.integrity && s.text);
-    const pi     = paletteIdx(id);
-    const [topC] = PALETTE[pi];
-    const isSent = role === 'sent';
-    const roleOpacity = role === 'sent' ? 1 : (role === 'anc' ? 0.68 : 0.78);
-    const rx     = isSent ? 8 : 6;
-    const BAR_H  = 4;
-    const ng     = NODE_GAP / 2;
-
-    const g = el('g', {
-      class: 'tok-g',
-      'data-tid': String(id),
-      'data-ct':  String(s ? s.ct : 0),
-      'data-txt': ok ? (s.text.replace(/\n/g, '↵')) : '',
-      'data-role': role,
-      'data-base-filter': ok ? `url(#fcs${pi})` : '',
-      opacity: roleOpacity,
-      filter: ok ? `url(#fcs${pi})` : '',
-    });
-    if (meta.key !== undefined) g.dataset.key = String(meta.key);
-    if (meta.tokenIndex !== undefined) g.dataset.tokenIndex = String(meta.tokenIndex);
-    if (meta.b0 !== undefined) g.dataset.b0 = String(meta.b0);
-    if (meta.b1 !== undefined) g.dataset.b1 = String(meta.b1);
-    if (meta.layer !== undefined) g.dataset.layer = String(meta.layer);
-    if (meta.childIds !== undefined) g.dataset.childIds = meta.childIds.join(',');
-
-    // Dark background
-    g.appendChild(el('rect', {
-      x: x + ng, y: y + 1,
-      width: Math.max(w - NODE_GAP, 2), height: Math.max(h - 2, 2),
-      rx, ry: rx,
-      fill: '#0d0c0a',
-      'fill-opacity': isSent ? '0.98' : '0.9',
-    }));
-
-    // Colored border
-    g.appendChild(el('rect', {
-      x: x + ng + 0.5, y: y + 1.5,
-      width: Math.max(w - NODE_GAP - 1, 2), height: Math.max(h - 3, 2),
-      rx, ry: rx,
-      fill: 'none',
-      stroke: topC,
-      'stroke-width': isSent ? '3' : '1.5',
-      'stroke-opacity': ok ? (isSent ? '1' : '0.52') : '0.16',
-    }));
-
-    if (ok) {
-      const disp     = s.text.replace(/\n/g, '↵');
-      const textSize = Math.min(isSent ? 18 : 13, Math.max(w * 0.36, 7));
-      const canText  = w >= BYTE_W * 2;
-      const textAreaH = h - BAR_H - 2;
-
-      if (canText) {
-        g.appendChild(txt('text', {
-          x: x + w / 2, y: y + textAreaH * (h > 50 ? 0.44 : 0.5),
-          'text-anchor': 'middle', 'dominant-baseline': 'middle',
-          'font-size': textSize,
-          fill: '#fff',
-          'font-family': '"PingFang SC","Noto Serif SC","STSong",serif',
-          'font-weight': isSent ? '700' : '500',
-          'pointer-events': 'none',
-        }, disp));
+      /* ── BPE ────────────────────────────────────── */
+      function buildPairToCode(v) {
+        const map = new Map();
+        for (const [id, pair] of Object.entries(v))
+          map.set(pair[0] + ',' + pair[1], parseInt(id, 10));
+        return map;
       }
 
-      // Token ID – colored and bold
-      if (h >= 28 && w >= 26) {
-        g.appendChild(txt('text', {
-          x: x + ng + 4, y: y + h - BAR_H - 5,
-          'text-anchor': 'start', 'dominant-baseline': 'auto',
-          'font-size': isSent ? 10 : 9,
-          fill: topC,
-          'fill-opacity': '1',
-          'font-family': 'monospace',
-          'font-weight': '700',
-          'pointer-events': 'none',
-        }, '#' + id));
-
-        const s2 = getStat(id);
-        if (s2 && s2.ct > 0 && w >= 52) {
-          g.appendChild(txt('text', {
-            x: x + w - ng - 4, y: y + h - BAR_H - 5,
-            'text-anchor': 'end', 'dominant-baseline': 'auto',
-            'font-size': 8,
-            fill: 'rgba(255,255,255,0.5)',
-            'font-family': 'monospace',
-            'pointer-events': 'none',
-          }, fmtCt(s2.ct)));
+      function bpeEncode(text) {
+        let codes = Array.from(new TextEncoder().encode(text));
+        if (codes.length < 2) return codes;
+        while (codes.length > 1) {
+          let minTok = Infinity, minPair = null;
+          for (let i = 0; i < codes.length - 1; i++) {
+            const t = pairToCode.get(codes[i] + ',' + codes[i + 1]);
+            if (t !== undefined && t < minTok) { minTok = t; minPair = [codes[i], codes[i + 1]]; }
+          }
+          if (!minPair) break;
+          const next = []; let i = 0;
+          while (i < codes.length) {
+            if (i < codes.length - 1 && codes[i] === minPair[0] && codes[i + 1] === minPair[1]) {
+              next.push(minTok); i += 2;
+            } else { next.push(codes[i]); i++; }
+          }
+          codes = next;
         }
+        return codes;
       }
 
-      // Rank bar – position among all tokens
-      const barFrac = maxTokenId > 0 ? id / maxTokenId : 0;
-      const barInnerW = Math.max(w - NODE_GAP - 2, 2);
-      const barW = Math.max(barInnerW * barFrac, 2);
-      g.appendChild(el('rect', {
-        x: x + ng + 1, y: y + h - BAR_H - 1,
-        width: barW, height: BAR_H - 1,
-        rx: 1, ry: 1,
-        fill: topC,
-        'fill-opacity': '0.8',
-        'pointer-events': 'none',
-      }));
-    } else {
-      // integrity=false: show byte count + byte values
-      const bytes    = decodeBytes(id);
-      const innerH   = h - BAR_H - 2;
+      function decodeBytes(id) {
+        if (bytesCache[id] !== undefined) return bytesCache[id];
+        if (vocab[id] === undefined) { bytesCache[id] = [id]; return [id]; }
+        const [c1, c2] = vocab[id];
+        const r = decodeBytes(c1).concat(decodeBytes(c2));
+        bytesCache[id] = r;
+        return r;
+      }
 
-      if (w >= 20 && innerH >= 14) {
-        g.appendChild(txt('text', {
-          x: x + w / 2, y: y + innerH * 0.35 + 2,
-          'text-anchor': 'middle', 'dominant-baseline': 'middle',
-          'font-size': 8,
-          fill: 'rgba(255,255,255,0.45)',
-          'font-family': 'monospace',
-          'pointer-events': 'none',
-        }, bytes.length + 'B'));
+      function byteLen(id) { return decodeBytes(id).length; }
+      function dispW(id) { return byteLen(id) * BYTE_W; }
 
-        if (w >= 46 && innerH >= 26) {
-          const maxShow = Math.max(1, Math.floor((w - 8) / 22));
-          const shown = bytes.slice(0, maxShow);
-          g.appendChild(txt('text', {
-            x: x + w / 2, y: y + innerH * 0.68 + 2,
-            'text-anchor': 'middle', 'dominant-baseline': 'middle',
-            'font-size': 7,
-            fill: 'rgba(255,255,255,0.28)',
-            'font-family': 'monospace',
-            'pointer-events': 'none',
-          }, shown.join(' ') + (bytes.length > maxShow ? '…' : '')));
+      function buildParentIdx(v) {
+        const idx = {};
+        for (const [idStr, [c1, c2]] of Object.entries(v)) {
+          const id = parseInt(idStr);
+          (idx[c1] = idx[c1] || []).push(id);
+          if (c2 !== c1) (idx[c2] = idx[c2] || []).push(id);
         }
-      } else if (w >= 10) {
-        g.appendChild(txt('text', {
-          x: x + w / 2, y: y + innerH / 2 + 2,
-          'text-anchor': 'middle', 'dominant-baseline': 'middle',
-          'font-size': 7,
-          fill: 'rgba(255,255,255,0.18)',
-          'font-family': 'monospace',
-          'pointer-events': 'none',
-        }, '·'));
+        return idx;
       }
 
-      // Gray rank bar
-      if (w >= 10) {
-        const barFrac = maxTokenId > 0 ? id / maxTokenId : 0;
-        const barInnerW = Math.max(w - NODE_GAP - 2, 2);
-        g.appendChild(el('rect', {
-          x: x + ng + 1, y: y + h - BAR_H - 1,
-          width: Math.max(barInnerW * barFrac, 1), height: BAR_H - 1,
-          rx: 1, ry: 1,
-          fill: 'rgba(140,130,120,0.4)',
-          'pointer-events': 'none',
-        }));
-      }
-    }
+      function getStat(id) { return stats[id] || stats[String(id)]; }
 
-    container.appendChild(g);
-    return g;
-  }
-
-  /* ── Draw bezier edge ───────────────────────── */
-  function drawEdge(container, x1, y1, x2, y2, color) {
-    const my = (y1 + y2) / 2;
-    container.appendChild(el('path', {
-      d: `M ${x1} ${y1} C ${x1} ${my} ${x2} ${my} ${x2} ${y2}`,
-      fill: 'none',
-      stroke: color,
-      'stroke-width': '1.2',
-      'stroke-opacity': '0.28',
-      'pointer-events': 'none',
-    }));
-  }
-
-  function fmtCt(n) {
-    if (n >= 100000) return Math.round(n / 10000) + '万';
-    if (n >= 10000)  return (n / 10000).toFixed(1) + '万';
-    if (n >= 1000)   return Math.round(n / 1000) + 'k';
-    return String(n);
-  }
-
-  function sameSpan(a, b) {
-    return a.id === b.id &&
-      Math.abs(a.x - b.x) < 0.5 &&
-      Math.abs(a.w - b.w) < 0.5;
-  }
-
-  function containsCenter(parent, child) {
-    const cx = child.x + child.w / 2;
-    return parent.x <= cx + 0.5 && parent.x + parent.w >= cx - 0.5;
-  }
-
-  function ancestorPlan(levels) {
-    const N = levels.length;
-    const rows = [];
-    for (let k = 0; k < N - 1; k++) {
-      const lower = levels[k + 1] || [];
-      const nodes = levels[k].filter(node => !lower.some(p => sameSpan(p, node)));
-      if (nodes.length) rows.push({ k, depth: N - 1 - k, nodes });
-    }
-    return rows;
-  }
-
-  function buildParentLayers(rootId, cx) {
-    const layers = [];
-    const seen = new Set([rootId]);
-    let frontier = [{ id: rootId, x: cx, w: 0 }];
-
-    for (;;) {
-      const byId = new Map();
-      for (const child of frontier) {
-        for (const pid of parentIdx[child.id] || []) {
-          const s = getStat(pid);
-          if (!s || !s.integrity || seen.has(pid)) continue;
-          if (!byId.has(pid)) byId.set(pid, { id: pid, childIds: new Set(), anchors: [] });
-          const item = byId.get(pid);
-          item.childIds.add(child.id);
-          item.anchors.push(child.x + child.w / 2);
+      /* ── Decomposition levels (same as before) ── */
+      function decomposeLevels(tokenId, xBase, w) {
+        const rootBytes = byteLen(tokenId);
+        let cur = [{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }];
+        const levels = [[{ id: tokenId, x: xBase, w, b0: 0, b1: rootBytes }]];
+        for (; ;) {
+          let maxId = -1, maxIdx = -1;
+          for (let i = 0; i < cur.length; i++) {
+            if (vocab[cur[i].id] !== undefined && cur[i].id > maxId) {
+              maxId = cur[i].id; maxIdx = i;
+            }
+          }
+          if (maxIdx === -1) break;
+          const item = cur[maxIdx];
+          const [c1, c2] = vocab[maxId];
+          const total = byteLen(maxId), c1b = byteLen(c1);
+          const c1w = total > 0 ? Math.round(c1b / total * item.w) : Math.floor(item.w / 2);
+          const c2w = item.w - c1w;
+          const ac1w = Math.max(c1w, BYTE_W);
+          const ac2w = Math.max(c2w, BYTE_W);
+          const extra = (ac1w + ac2w) - item.w;
+          const next = [
+            ...cur.slice(0, maxIdx),
+            { id: c1, x: item.x, w: ac1w, b0: item.b0, b1: item.b0 + c1b },
+            { id: c2, x: item.x + ac1w, w: ac2w, b0: item.b0 + c1b, b1: item.b1 },
+            ...cur.slice(maxIdx + 1).map(n => ({ ...n, x: n.x + extra })),
+          ];
+          levels.push(next.map(n => ({ ...n })));
+          cur = next;
         }
+        return levels.reverse(); // [0]=raw bytes, [N-1]=[sentence token]
       }
 
-      const layer = [...byId.values()]
-        .map(n => ({
-          ...n,
-          anchor: n.anchors.reduce((sum, x) => sum + x, 0) / n.anchors.length,
-        }))
-        .sort((a, b) => a.anchor - b.anchor || (getStat(b.id).ct || 0) - (getStat(a.id).ct || 0) || a.id - b.id);
-
-      if (!layer.length) break;
-      layer.forEach(n => { seen.add(n.id); });
-
-      const rows = [];
-      for (let i = 0; i < layer.length; i += DESC_MAX_NODES_PER_ROW) {
-        const rowItems = layer.slice(i, i + DESC_MAX_NODES_PER_ROW);
-        const rowW = rowItems.length * PARENT_W + (rowItems.length - 1) * PARENT_NODE_GAP;
-        let px = cx - rowW / 2;
-        rows.push(rowItems.map(n => {
-          const out = { id: n.id, childIds: [...n.childIds], x: px, y: 0, w: PARENT_W };
-          px += PARENT_W + PARENT_NODE_GAP;
-          return out;
-        }));
+      /* ── SVG helpers ────────────────────────────── */
+      const NS = 'http://www.w3.org/2000/svg';
+      function el(tag, attrs) {
+        const e = document.createElementNS(NS, tag);
+        for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v);
+        return e;
+      }
+      function txt(tag, attrs, content) {
+        const e = el(tag, attrs);
+        e.textContent = content;
+        return e;
       }
 
-      layers.push({ rows });
-      frontier = rows.flat();
-    }
+      function paletteIdx(id) { return id % PALETTE.length; }
 
-    return layers;
-  }
+      /* ── Build SVG defs (gradients + filters) ─── */
+      function buildDefs(svg) {
+        const defs = el('defs');
 
-  function shiftParentLayer(layer, dx) {
-    layer.rows.forEach(row => row.forEach(n => { n.x += dx; }));
-  }
-
-  function resolveParentCollisions(allParentLayers) {
-    const maxLayers = Math.max(...allParentLayers.map(layers => layers.length), 0);
-    for (let li = 0; li < maxLayers; li++) {
-      const groups = allParentLayers
-        .map(layers => layers[li])
-        .filter(Boolean)
-        .map(g => ({
-          layer: g,
-          left: Math.min(...g.rows.flat().map(n => n.x)),
-          right: Math.max(...g.rows.flat().map(n => n.x + n.w)),
-        }))
-        .sort((a, b) => a.left - b.left);
-
-      let cursor = -Infinity;
-      for (const group of groups) {
-        const shift = Number.isFinite(cursor) ? Math.max(0, cursor - group.left) : 0;
-        if (shift > 0) {
-          shiftParentLayer(group.layer, shift);
-          group.left += shift;
-          group.right += shift;
-        }
-        cursor = group.right + GROUP_GAP;
-      }
-    }
-  }
-
-  /* ── Render ─────────────────────────────────── */
-  function render() {
-    const text = textInput.value;
-    hideTooltip();
-    if (!vocab) { vizEl.innerHTML = '<p class="placeholder">数据加载中…</p>'; return; }
-    if (!text.length) { vizEl.innerHTML = '<p class="placeholder">请输入文字以查看词元树</p>'; return; }
-
-    const tokenIds = bpeEncode(text);
-    if (!tokenIds.length) return;
-
-    /* ── Sentence positions ── */
-    let xPos = SVG_PAD;
-    let bytePos = 0;
-    const sent = tokenIds.map(id => {
-      const w = Math.max(dispW(id), BYTE_W * 2);
-      const len = byteLen(id);
-      const tok = { id, x: xPos, w, b0: bytePos, b1: bytePos + len };
-      xPos += w;
-      bytePos += len;
-      return tok;
-    });
-
-    /* ── Decompose each token ── */
-    const allLevels = sent.map(t => decomposeLevels(t.id, t.x, t.w));
-
-    /* ── Parent tokens (recursive merge layers) ── */
-    const allParentLayers = sent.map(t => buildParentLayers(t.id, t.x + t.w / 2));
-    resolveParentCollisions(allParentLayers);
-    const maxParentLayers = Math.max(...allParentLayers.map(layers => layers.length), 0);
-    const parentLayerRowCounts = Array.from({ length: maxParentLayers }, (_, li) =>
-      Math.max(...allParentLayers.map(layers => layers[li] ? layers[li].rows.length : 0), 0)
-    );
-    const parentLayerHeights = parentLayerRowCounts.map(rowCount =>
-      rowCount > 0 ? rowCount * PARENT_H + (rowCount - 1) * DESC_ROW_GAP : 0
-    );
-
-    /* ── Compute SVG dimensions (accounting for parent overflow) ── */
-    const allParentNodes = allParentLayers.flatMap(layers => layers.flatMap(layer => layer.rows.flat()));
-    const allAncNodes = allLevels.flat(2);
-    const rightEdge = Math.max(
-      xPos + SVG_PAD,
-      ...allParentNodes.map(n => n.x + n.w + SVG_PAD),
-      ...allAncNodes.map(n => n.x + n.w + SVG_PAD),
-    );
-    const leftOverflow = Math.min(0, ...allParentNodes.map(n => n.x), ...allAncNodes.map(n => n.x), 0);
-    const xShift = leftOverflow < 0 ? -leftOverflow + SVG_PAD : 0;
-
-    if (xShift > 0) {
-      sent.forEach(t => { t.x += xShift; });
-      allLevels.forEach(ls => ls.forEach(level => level.forEach(n => { n.x += xShift; })));
-      allParentLayers.forEach(layers => layers.forEach(layer => shiftParentLayer(layer, xShift)));
-    }
-
-    const svgW = rightEdge + xShift;
-    const allAncestorRows = allLevels.map(ancestorPlan);
-    const visibleDepths = [...new Set(allAncestorRows.flatMap(rows => rows.map(r => r.depth)))]
-      .sort((a, b) => b - a);
-    const depthToRow = new Map(visibleDepths.map((depth, i) => [depth, i]));
-    const visibleAncRows = visibleDepths.length;
-    const ancY = depth => SVG_PAD + depthToRow.get(depth) * LEVEL_H;
-    const sentY = SVG_PAD + visibleAncRows * LEVEL_H;
-    const parBaseY = sentY + SENT_H + 14;
-    const parentLayerY = li => parBaseY + parentLayerHeights
-      .slice(0, li)
-      .reduce((sum, h) => sum + h + DESC_LAYER_GAP, 0);
-    const parAreaH = parentLayerHeights.reduce((sum, h) => sum + h, 0) +
-      Math.max(0, maxParentLayers - 1) * DESC_LAYER_GAP;
-    allParentLayers.forEach(layers => {
-      layers.forEach((layer, li) => {
-        layer.rows.forEach((row, ri) => {
-          const y = parentLayerY(li) + ri * (PARENT_H + DESC_ROW_GAP);
-          row.forEach(n => { n.y = y; });
+        // Per-colour gradients (vertical, dark theme optimized)
+        PALETTE.forEach(([top, bot], i) => {
+          const g = el('linearGradient', { id: `g${i}`, x1: '0', y1: '0', x2: '0', y2: '1' });
+          const s0 = el('stop', { offset: '0%', 'stop-color': top, 'stop-opacity': '1' });
+          const s1 = el('stop', { offset: '100%', 'stop-color': bot, 'stop-opacity': '1' });
+          g.appendChild(s0); g.appendChild(s1);
+          defs.appendChild(g);
         });
-      });
-    });
-    const svgH = parBaseY + (maxParentLayers > 0 ? parAreaH + SVG_PAD : SVG_PAD);
 
-    /* ── Build SVG ── */
-    const svg = el('svg', {
-      width: svgW, height: svgH,
-      viewBox: `0 0 ${svgW} ${svgH}`,
-      style: 'display:block;',
-    });
+        // Dead token gradient (integrity=false)
+        const gd = el('linearGradient', { id: 'gdead', x1: '0', y1: '0', x2: '0', y2: '1' });
+        gd.appendChild(el('stop', { offset: '0%', 'stop-color': '#3a3530', 'stop-opacity': '0.85' }));
+        gd.appendChild(el('stop', { offset: '100%', 'stop-color': '#1e1b18', 'stop-opacity': '0.85' }));
+        defs.appendChild(gd);
 
-    buildDefs(svg);
+        // Per-color ambient glow filters for normal state
+        PALETTE.forEach(([top], i) => {
+          const f = el('filter', { id: `fcs${i}`, x: '-25%', y: '-25%', width: '150%', height: '150%' });
+          f.appendChild(el('feDropShadow', { dx: '0', dy: '0', stdDeviation: '4', 'flood-color': top, 'flood-opacity': '0.45' }));
+          defs.appendChild(f);
+        });
 
-    /* ── Layer background stripes ── */
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    for (let k = 0; k < visibleAncRows; k++) {
-      const ry = SVG_PAD + k * LEVEL_H;
-      svg.appendChild(el('rect', {
-        x: 0, y: ry, width: svgW, height: LEVEL_H,
-        fill: k % 2 === 0
-          ? (isDark ? 'rgba(255,255,255,0.018)' : 'rgba(0,0,0,0.022)')
-          : (isDark ? 'rgba(255,255,255,0.038)' : 'rgba(0,0,0,0.042)'),
-        'pointer-events': 'none',
-      }));
-    }
+        // Glow filter (applied via JS on hover)
+        const fGlow = el('filter', { id: 'fglow', x: '-20%', y: '-20%', width: '140%', height: '140%' });
+        const fGb = el('feGaussianBlur', { in: 'SourceAlpha', stdDeviation: '4', result: 'blur' });
+        const fFlood = el('feFlood', { 'flood-color': 'rgba(255,220,120,0.55)', result: 'color' });
+        const fComp = el('feComposite', { in: 'color', in2: 'blur', operator: 'in', result: 'glow' });
+        const fMerge = el('feMerge');
+        fMerge.appendChild(el('feMergeNode', { in: 'glow' }));
+        fMerge.appendChild(el('feMergeNode', { in: 'SourceGraphic' }));
+        fGlow.appendChild(fGb); fGlow.appendChild(fFlood);
+        fGlow.appendChild(fComp); fGlow.appendChild(fMerge);
+        defs.appendChild(fGlow);
 
-    /* ── Sentence and descendant layer emphasis ── */
-    svg.appendChild(el('rect', {
-      x: 0, y: sentY - 8, width: svgW, height: SENT_H + 16,
-      fill: isDark ? 'rgba(220,140,50,0.105)' : 'rgba(180,100,30,0.085)',
-      stroke: isDark ? 'rgba(255,210,130,0.16)' : 'rgba(130,80,25,0.14)',
-      'stroke-width': '1',
-      'pointer-events': 'none',
-    }));
+        // Drop shadow filter
+        const fSh = el('filter', { id: 'fsh', x: '-5%', y: '-5%', width: '115%', height: '130%' });
+        fSh.appendChild(el('feDropShadow', {
+          dx: '0', dy: '2', stdDeviation: '3',
+          'flood-color': 'rgba(0,0,0,0.45)', 'flood-opacity': '1'
+        }));
+        defs.appendChild(fSh);
 
-    for (let li = 0; li < maxParentLayers; li++) {
-      const py = parentLayerY(li);
-      const bandTopPad = li === 0 ? 8 : DESC_LAYER_GAP / 2;
-      svg.appendChild(el('rect', {
-        x: 0, y: py - bandTopPad, width: svgW,
-        height: parentLayerHeights[li] + bandTopPad + DESC_LAYER_GAP / 2,
-        fill: li % 2 === 0
-          ? (isDark ? 'rgba(255,255,255,0.012)' : 'rgba(0,0,0,0.015)')
-          : (isDark ? 'rgba(255,255,255,0.024)' : 'rgba(0,0,0,0.028)'),
-        'pointer-events': 'none',
-      }));
-    }
+        // Stronger shadow for sentence tokens
+        const fSs = el('filter', { id: 'fss', x: '-8%', y: '-8%', width: '120%', height: '140%' });
+        fSs.appendChild(el('feDropShadow', {
+          dx: '0', dy: '3', stdDeviation: '5',
+          'flood-color': 'rgba(0,0,0,0.6)', 'flood-opacity': '1'
+        }));
+        defs.appendChild(fSs);
 
-    allParentLayers.forEach(layers => {
-      layers.forEach((layer, li) => {
-        const nodes = layer.rows.flat();
-        if (!nodes.length) return;
-        const py = parentLayerY(li);
-        const left = Math.min(...nodes.map(n => n.x));
-        const right = Math.max(...nodes.map(n => n.x + n.w));
+        svg.appendChild(defs);
+      }
+
+      /* ── Draw one token rect ────────────────────── */
+      function drawBox(container, id, x, y, w, h, role, meta = {}) {
+        const s = getStat(id);
+        const ok = !!(s && s.integrity && s.text);
+        const pi = paletteIdx(id);
+        const [topC] = PALETTE[pi];
+        const isSent = role === 'sent';
+        const roleOpacity = role === 'sent' ? 1 : (role === 'anc' ? 0.68 : 0.78);
+        const rx = isSent ? 8 : 6;
+        const BAR_H = 4;
+        const ng = NODE_GAP / 2;
+
+        const g = el('g', {
+          class: 'tok-g',
+          'data-tid': String(id),
+          'data-ct': String(s ? s.ct : 0),
+          'data-txt': ok ? (s.text.replace(/\n/g, '↵')) : '',
+          'data-role': role,
+          'data-base-filter': ok ? `url(#fcs${pi})` : '',
+          opacity: roleOpacity,
+          filter: ok ? `url(#fcs${pi})` : '',
+        });
+        if (meta.key !== undefined) g.dataset.key = String(meta.key);
+        if (meta.tokenIndex !== undefined) g.dataset.tokenIndex = String(meta.tokenIndex);
+        if (meta.b0 !== undefined) g.dataset.b0 = String(meta.b0);
+        if (meta.b1 !== undefined) g.dataset.b1 = String(meta.b1);
+        if (meta.layer !== undefined) g.dataset.layer = String(meta.layer);
+        if (meta.childIds !== undefined) g.dataset.childIds = meta.childIds.join(',');
+
+        // Dark background
+        g.appendChild(el('rect', {
+          x: x + ng, y: y + 1,
+          width: Math.max(w - NODE_GAP, 2), height: Math.max(h - 2, 2),
+          rx, ry: rx,
+          fill: '#0d0c0a',
+          'fill-opacity': isSent ? '0.98' : '0.9',
+        }));
+
+        // Colored border
+        g.appendChild(el('rect', {
+          x: x + ng + 0.5, y: y + 1.5,
+          width: Math.max(w - NODE_GAP - 1, 2), height: Math.max(h - 3, 2),
+          rx, ry: rx,
+          fill: 'none',
+          stroke: topC,
+          'stroke-width': isSent ? '3' : '1.5',
+          'stroke-opacity': ok ? (isSent ? '1' : '0.52') : '0.16',
+        }));
+
+        if (ok) {
+          const disp = s.text.replace(/\n/g, '↵');
+          const textSize = Math.min(isSent ? 18 : 13, Math.max(w * 0.36, 7));
+          const canText = w >= BYTE_W * 2;
+          const textAreaH = h - BAR_H - 2;
+
+          if (canText) {
+            g.appendChild(txt('text', {
+              x: x + w / 2, y: y + textAreaH * (h > 50 ? 0.44 : 0.5),
+              'text-anchor': 'middle', 'dominant-baseline': 'middle',
+              'font-size': textSize,
+              fill: '#fff',
+              'font-family': '"PingFang SC","Noto Serif SC","STSong",serif',
+              'font-weight': isSent ? '700' : '500',
+              'pointer-events': 'none',
+            }, disp));
+          }
+
+          // Token ID – colored and bold
+          if (h >= 28 && w >= 26) {
+            g.appendChild(txt('text', {
+              x: x + ng + 4, y: y + h - BAR_H - 5,
+              'text-anchor': 'start', 'dominant-baseline': 'auto',
+              'font-size': isSent ? 10 : 9,
+              fill: topC,
+              'fill-opacity': '1',
+              'font-family': 'monospace',
+              'font-weight': '700',
+              'pointer-events': 'none',
+            }, '#' + id));
+
+            const s2 = getStat(id);
+            if (s2 && s2.ct > 0 && w >= 52) {
+              g.appendChild(txt('text', {
+                x: x + w - ng - 4, y: y + h - BAR_H - 5,
+                'text-anchor': 'end', 'dominant-baseline': 'auto',
+                'font-size': 8,
+                fill: 'rgba(255,255,255,0.5)',
+                'font-family': 'monospace',
+                'pointer-events': 'none',
+              }, fmtCt(s2.ct)));
+            }
+          }
+
+          // Rank bar – position among all tokens
+          const barFrac = maxTokenId > 0 ? id / maxTokenId : 0;
+          const barInnerW = Math.max(w - NODE_GAP - 2, 2);
+          const barW = Math.max(barInnerW * barFrac, 2);
+          g.appendChild(el('rect', {
+            x: x + ng + 1, y: y + h - BAR_H - 1,
+            width: barW, height: BAR_H - 1,
+            rx: 1, ry: 1,
+            fill: topC,
+            'fill-opacity': '0.8',
+            'pointer-events': 'none',
+          }));
+        } else {
+          // integrity=false: show byte count + byte values
+          const bytes = decodeBytes(id);
+          const innerH = h - BAR_H - 2;
+
+          if (w >= 20 && innerH >= 14) {
+            g.appendChild(txt('text', {
+              x: x + w / 2, y: y + innerH * 0.35 + 2,
+              'text-anchor': 'middle', 'dominant-baseline': 'middle',
+              'font-size': 8,
+              fill: 'rgba(255,255,255,0.45)',
+              'font-family': 'monospace',
+              'pointer-events': 'none',
+            }, bytes.length + 'B'));
+
+            if (w >= 46 && innerH >= 26) {
+              const maxShow = Math.max(1, Math.floor((w - 8) / 22));
+              const shown = bytes.slice(0, maxShow);
+              g.appendChild(txt('text', {
+                x: x + w / 2, y: y + innerH * 0.68 + 2,
+                'text-anchor': 'middle', 'dominant-baseline': 'middle',
+                'font-size': 7,
+                fill: 'rgba(255,255,255,0.28)',
+                'font-family': 'monospace',
+                'pointer-events': 'none',
+              }, shown.join(' ') + (bytes.length > maxShow ? '…' : '')));
+            }
+          } else if (w >= 10) {
+            g.appendChild(txt('text', {
+              x: x + w / 2, y: y + innerH / 2 + 2,
+              'text-anchor': 'middle', 'dominant-baseline': 'middle',
+              'font-size': 7,
+              fill: 'rgba(255,255,255,0.18)',
+              'font-family': 'monospace',
+              'pointer-events': 'none',
+            }, '·'));
+          }
+
+          // Gray rank bar
+          if (w >= 10) {
+            const barFrac = maxTokenId > 0 ? id / maxTokenId : 0;
+            const barInnerW = Math.max(w - NODE_GAP - 2, 2);
+            g.appendChild(el('rect', {
+              x: x + ng + 1, y: y + h - BAR_H - 1,
+              width: Math.max(barInnerW * barFrac, 1), height: BAR_H - 1,
+              rx: 1, ry: 1,
+              fill: 'rgba(140,130,120,0.4)',
+              'pointer-events': 'none',
+            }));
+          }
+        }
+
+        container.appendChild(g);
+        return g;
+      }
+
+      /* ── Draw bezier edge ───────────────────────── */
+      function drawEdge(container, x1, y1, x2, y2, color) {
+        const my = (y1 + y2) / 2;
+        container.appendChild(el('path', {
+          d: `M ${x1} ${y1} C ${x1} ${my} ${x2} ${my} ${x2} ${y2}`,
+          fill: 'none',
+          stroke: color,
+          'stroke-width': '1.2',
+          'stroke-opacity': '0.28',
+          'pointer-events': 'none',
+        }));
+      }
+
+      function fmtCt(n) {
+        if (n >= 100000) return Math.round(n / 10000) + '万';
+        if (n >= 10000) return (n / 10000).toFixed(1) + '万';
+        if (n >= 1000) return Math.round(n / 1000) + 'k';
+        return String(n);
+      }
+
+      function sameSpan(a, b) {
+        return a.id === b.id &&
+          Math.abs(a.x - b.x) < 0.5 &&
+          Math.abs(a.w - b.w) < 0.5;
+      }
+
+      function containsCenter(parent, child) {
+        const cx = child.x + child.w / 2;
+        return parent.x <= cx + 0.5 && parent.x + parent.w >= cx - 0.5;
+      }
+
+      function ancestorPlan(levels) {
+        const N = levels.length;
+        const rows = [];
+        for (let k = 0; k < N - 1; k++) {
+          const lower = levels[k + 1] || [];
+          const nodes = levels[k].filter(node => !lower.some(p => sameSpan(p, node)));
+          if (nodes.length) rows.push({ k, depth: N - 1 - k, nodes });
+        }
+        return rows;
+      }
+
+      function buildParentLayers(rootId, cx) {
+        const layers = [];
+        const seen = new Set([rootId]);
+        let frontier = [{ id: rootId, x: cx, w: 0 }];
+
+        for (; ;) {
+          const byId = new Map();
+          for (const child of frontier) {
+            for (const pid of parentIdx[child.id] || []) {
+              const s = getStat(pid);
+              if (!s || !s.integrity || seen.has(pid)) continue;
+              if (!byId.has(pid)) byId.set(pid, { id: pid, childIds: new Set(), anchors: [] });
+              const item = byId.get(pid);
+              item.childIds.add(child.id);
+              item.anchors.push(child.x + child.w / 2);
+            }
+          }
+
+          const layer = [...byId.values()]
+            .map(n => ({
+              ...n,
+              anchor: n.anchors.reduce((sum, x) => sum + x, 0) / n.anchors.length,
+            }))
+            .sort((a, b) => a.anchor - b.anchor || (getStat(b.id).ct || 0) - (getStat(a.id).ct || 0) || a.id - b.id);
+
+          if (!layer.length) break;
+          layer.forEach(n => { seen.add(n.id); });
+
+          const rows = [];
+          for (let i = 0; i < layer.length; i += DESC_MAX_NODES_PER_ROW) {
+            const rowItems = layer.slice(i, i + DESC_MAX_NODES_PER_ROW);
+            const rowW = rowItems.length * PARENT_W + (rowItems.length - 1) * PARENT_NODE_GAP;
+            let px = cx - rowW / 2;
+            rows.push(rowItems.map(n => {
+              const out = { id: n.id, childIds: [...n.childIds], x: px, y: 0, w: PARENT_W };
+              px += PARENT_W + PARENT_NODE_GAP;
+              return out;
+            }));
+          }
+
+          layers.push({ rows });
+          frontier = rows.flat();
+        }
+
+        return layers;
+      }
+
+      function shiftParentLayer(layer, dx) {
+        layer.rows.forEach(row => row.forEach(n => { n.x += dx; }));
+      }
+
+      function resolveParentCollisions(allParentLayers) {
+        const maxLayers = Math.max(...allParentLayers.map(layers => layers.length), 0);
+        for (let li = 0; li < maxLayers; li++) {
+          const groups = allParentLayers
+            .map(layers => layers[li])
+            .filter(Boolean)
+            .map(g => ({
+              layer: g,
+              left: Math.min(...g.rows.flat().map(n => n.x)),
+              right: Math.max(...g.rows.flat().map(n => n.x + n.w)),
+            }))
+            .sort((a, b) => a.left - b.left);
+
+          let cursor = -Infinity;
+          for (const group of groups) {
+            const shift = Number.isFinite(cursor) ? Math.max(0, cursor - group.left) : 0;
+            if (shift > 0) {
+              shiftParentLayer(group.layer, shift);
+              group.left += shift;
+              group.right += shift;
+            }
+            cursor = group.right + GROUP_GAP;
+          }
+        }
+      }
+
+      /* ── Render ─────────────────────────────────── */
+      function render() {
+        const text = textInput.value;
+        hideTooltip();
+        if (!vocab) { vizEl.innerHTML = '<p class="placeholder">数据加载中…</p>'; return; }
+        if (!text.length) { vizEl.innerHTML = '<p class="placeholder">请输入文字以查看词元树</p>'; return; }
+
+        const tokenIds = bpeEncode(text);
+        if (!tokenIds.length) return;
+
+        /* ── Sentence positions ── */
+        let xPos = SVG_PAD;
+        let bytePos = 0;
+        const sent = tokenIds.map(id => {
+          const w = Math.max(dispW(id), BYTE_W * 2);
+          const len = byteLen(id);
+          const tok = { id, x: xPos, w, b0: bytePos, b1: bytePos + len };
+          xPos += w;
+          bytePos += len;
+          return tok;
+        });
+
+        /* ── Decompose each token ── */
+        const allLevels = sent.map(t => decomposeLevels(t.id, t.x, t.w));
+
+        /* ── Parent tokens (recursive merge layers) ── */
+        const allParentLayers = sent.map(t => buildParentLayers(t.id, t.x + t.w / 2));
+        resolveParentCollisions(allParentLayers);
+        const maxParentLayers = Math.max(...allParentLayers.map(layers => layers.length), 0);
+        const parentLayerRowCounts = Array.from({ length: maxParentLayers }, (_, li) =>
+          Math.max(...allParentLayers.map(layers => layers[li] ? layers[li].rows.length : 0), 0)
+        );
+        const parentLayerHeights = parentLayerRowCounts.map(rowCount =>
+          rowCount > 0 ? rowCount * PARENT_H + (rowCount - 1) * DESC_ROW_GAP : 0
+        );
+
+        /* ── Compute SVG dimensions (accounting for parent overflow) ── */
+        const allParentNodes = allParentLayers.flatMap(layers => layers.flatMap(layer => layer.rows.flat()));
+        const allAncNodes = allLevels.flat(2);
+        const rightEdge = Math.max(
+          xPos + SVG_PAD,
+          ...allParentNodes.map(n => n.x + n.w + SVG_PAD),
+          ...allAncNodes.map(n => n.x + n.w + SVG_PAD),
+        );
+        const leftOverflow = Math.min(0, ...allParentNodes.map(n => n.x), ...allAncNodes.map(n => n.x), 0);
+        const xShift = leftOverflow < 0 ? -leftOverflow + SVG_PAD : 0;
+
+        if (xShift > 0) {
+          sent.forEach(t => { t.x += xShift; });
+          allLevels.forEach(ls => ls.forEach(level => level.forEach(n => { n.x += xShift; })));
+          allParentLayers.forEach(layers => layers.forEach(layer => shiftParentLayer(layer, xShift)));
+        }
+
+        const svgW = rightEdge + xShift;
+        const allAncestorRows = allLevels.map(ancestorPlan);
+        const visibleDepths = [...new Set(allAncestorRows.flatMap(rows => rows.map(r => r.depth)))]
+          .sort((a, b) => b - a);
+        const depthToRow = new Map(visibleDepths.map((depth, i) => [depth, i]));
+        const visibleAncRows = visibleDepths.length;
+        const ancY = depth => SVG_PAD + depthToRow.get(depth) * LEVEL_H;
+        const sentY = SVG_PAD + visibleAncRows * LEVEL_H;
+        const parBaseY = sentY + SENT_H + 14;
+        const parentLayerY = li => parBaseY + parentLayerHeights
+          .slice(0, li)
+          .reduce((sum, h) => sum + h + DESC_LAYER_GAP, 0);
+        const parAreaH = parentLayerHeights.reduce((sum, h) => sum + h, 0) +
+          Math.max(0, maxParentLayers - 1) * DESC_LAYER_GAP;
+        allParentLayers.forEach(layers => {
+          layers.forEach((layer, li) => {
+            layer.rows.forEach((row, ri) => {
+              const y = parentLayerY(li) + ri * (PARENT_H + DESC_ROW_GAP);
+              row.forEach(n => { n.y = y; });
+            });
+          });
+        });
+        const svgH = parBaseY + (maxParentLayers > 0 ? parAreaH + SVG_PAD : SVG_PAD);
+
+        /* ── Build SVG ── */
+        const svg = el('svg', {
+          width: svgW, height: svgH,
+          viewBox: `0 0 ${svgW} ${svgH}`,
+          style: 'display:block;',
+        });
+
+        buildDefs(svg);
+
+        /* ── Layer background stripes ── */
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        for (let k = 0; k < visibleAncRows; k++) {
+          const ry = SVG_PAD + k * LEVEL_H;
+          svg.appendChild(el('rect', {
+            x: 0, y: ry, width: svgW, height: LEVEL_H,
+            fill: k % 2 === 0
+              ? (isDark ? 'rgba(255,255,255,0.018)' : 'rgba(0,0,0,0.022)')
+              : (isDark ? 'rgba(255,255,255,0.038)' : 'rgba(0,0,0,0.042)'),
+            'pointer-events': 'none',
+          }));
+        }
+
+        /* ── Sentence and descendant layer emphasis ── */
         svg.appendChild(el('rect', {
-          x: left - LAYER_SEG_PAD,
-          y: py - LAYER_SEG_PAD / 2,
-          width: right - left + LAYER_SEG_PAD * 2,
-          height: parentLayerHeights[li] + LAYER_SEG_PAD,
-          rx: 10, ry: 10,
-          fill: isDark ? 'rgba(80,130,150,0.055)' : 'rgba(50,100,120,0.05)',
-          stroke: isDark ? 'rgba(120,190,210,0.10)' : 'rgba(30,90,110,0.10)',
+          x: 0, y: sentY - 8, width: svgW, height: SENT_H + 16,
+          fill: isDark ? 'rgba(220,140,50,0.105)' : 'rgba(180,100,30,0.085)',
+          stroke: isDark ? 'rgba(255,210,130,0.16)' : 'rgba(130,80,25,0.14)',
           'stroke-width': '1',
           'pointer-events': 'none',
         }));
-      });
-    });
 
-    /* Dashed level separators */
-    for (let k = 1; k < visibleAncRows; k++) {
-      svg.appendChild(el('line', {
-        x1: 0, y1: SVG_PAD + k * LEVEL_H,
-        x2: svgW, y2: SVG_PAD + k * LEVEL_H,
-        stroke: isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)',
-        'stroke-width': '1', 'stroke-dasharray': '5,4',
-        'pointer-events': 'none',
-      }));
-    }
+        for (let li = 0; li < maxParentLayers; li++) {
+          const py = parentLayerY(li);
+          const bandTopPad = li === 0 ? 8 : DESC_LAYER_GAP / 2;
+          svg.appendChild(el('rect', {
+            x: 0, y: py - bandTopPad, width: svgW,
+            height: parentLayerHeights[li] + bandTopPad + DESC_LAYER_GAP / 2,
+            fill: li % 2 === 0
+              ? (isDark ? 'rgba(255,255,255,0.012)' : 'rgba(0,0,0,0.015)')
+              : (isDark ? 'rgba(255,255,255,0.024)' : 'rgba(0,0,0,0.028)'),
+            'pointer-events': 'none',
+          }));
+        }
 
-    /* Separator lines */
-    const sepLine = (y) => svg.appendChild(el('line', {
-      x1: 0, y1: y, x2: svgW, y2: y,
-      stroke: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-      'stroke-width': '1', 'pointer-events': 'none',
-    }));
-    if (visibleAncRows > 0) { sepLine(sentY - 1); }
-    if (maxParentLayers > 0) { sepLine(sentY + SENT_H + 1); }
+        allParentLayers.forEach(layers => {
+          layers.forEach((layer, li) => {
+            const nodes = layer.rows.flat();
+            if (!nodes.length) return;
+            const py = parentLayerY(li);
+            const left = Math.min(...nodes.map(n => n.x));
+            const right = Math.max(...nodes.map(n => n.x + n.w));
+            svg.appendChild(el('rect', {
+              x: left - LAYER_SEG_PAD,
+              y: py - LAYER_SEG_PAD / 2,
+              width: right - left + LAYER_SEG_PAD * 2,
+              height: parentLayerHeights[li] + LAYER_SEG_PAD,
+              rx: 10, ry: 10,
+              fill: isDark ? 'rgba(80,130,150,0.055)' : 'rgba(50,100,120,0.05)',
+              stroke: isDark ? 'rgba(120,190,210,0.10)' : 'rgba(30,90,110,0.10)',
+              'stroke-width': '1',
+              'pointer-events': 'none',
+            }));
+          });
+        });
 
-    /* Section labels */
-    function sLabel(text2, x, y) {
-      svg.appendChild(txt('text', {
-        x, y: y + 10,
-        'text-anchor': 'start', 'dominant-baseline': 'middle',
-        'font-size': 9, 'letter-spacing': '0.08em',
-        fill: isDark ? 'rgba(200,185,160,0.32)' : 'rgba(80,60,40,0.28)',
-        'font-family': '"PingFang SC","Microsoft YaHei",sans-serif',
-        'pointer-events': 'none',
-      }, text2));
-    }
-    if (visibleAncRows > 0) sLabel('祖先词元 ↑', SVG_PAD + xShift, SVG_PAD - 14);
-    if (maxParentLayers > 0) sLabel('父级词元 ↓', SVG_PAD + xShift, sentY + SENT_H + 2);
+        /* Dashed level separators */
+        for (let k = 1; k < visibleAncRows; k++) {
+          svg.appendChild(el('line', {
+            x1: 0, y1: SVG_PAD + k * LEVEL_H,
+            x2: svgW, y2: SVG_PAD + k * LEVEL_H,
+            stroke: isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)',
+            'stroke-width': '1', 'stroke-dasharray': '5,4',
+            'pointer-events': 'none',
+          }));
+        }
 
-    /* ── Edge layer (behind nodes) ── */
-    const edgeG = el('g', { id: 'edges' });
-    svg.appendChild(edgeG);
+        /* Separator lines */
+        const sepLine = (y) => svg.appendChild(el('line', {
+          x1: 0, y1: y, x2: svgW, y2: y,
+          stroke: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+          'stroke-width': '1', 'pointer-events': 'none',
+        }));
+        if (visibleAncRows > 0) { sepLine(sentY - 1); }
+        if (maxParentLayers > 0) { sepLine(sentY + SENT_H + 1); }
 
-    /* ── Node layer ── */
-    const nodeG = el('g', { id: 'nodes' });
-    svg.appendChild(nodeG);
+        /* Section labels */
+        function sLabel(text2, x, y) {
+          svg.appendChild(txt('text', {
+            x, y: y + 10,
+            'text-anchor': 'start', 'dominant-baseline': 'middle',
+            'font-size': 9, 'letter-spacing': '0.08em',
+            fill: isDark ? 'rgba(200,185,160,0.32)' : 'rgba(80,60,40,0.28)',
+            'font-family': '"PingFang SC","Microsoft YaHei",sans-serif',
+            'pointer-events': 'none',
+          }, text2));
+        }
+        if (visibleAncRows > 0) sLabel('祖先词元 ↑', SVG_PAD + xShift, SVG_PAD - 14);
+        if (maxParentLayers > 0) sLabel('父级词元 ↓', SVG_PAD + xShift, sentY + SENT_H + 2);
 
-    /* ── Draw ancestor levels (each node exactly NODE_H tall) ── */
-    allAncestorRows.forEach((rows, ti) => {
-      const st = sent[ti];
+        /* ── Edge layer (behind nodes) ── */
+        const edgeG = el('g', { id: 'edges' });
+        svg.appendChild(edgeG);
 
-      rows.forEach((row, ri) => {
-        const y = ancY(row.depth);
-        for (const node of row.nodes) {
-          drawBox(nodeG, node.id, node.x, y, node.w, NODE_H, 'anc', {
-            key: `anc-${ti}-${row.depth}-${node.b0}-${node.b1}-${node.id}`,
+        /* ── Node layer ── */
+        const nodeG = el('g', { id: 'nodes' });
+        svg.appendChild(nodeG);
+
+        /* ── Draw ancestor levels (each node exactly NODE_H tall) ── */
+        allAncestorRows.forEach((rows, ti) => {
+          const st = sent[ti];
+
+          rows.forEach((row, ri) => {
+            const y = ancY(row.depth);
+            for (const node of row.nodes) {
+              drawBox(nodeG, node.id, node.x, y, node.w, NODE_H, 'anc', {
+                key: `anc-${ti}-${row.depth}-${node.b0}-${node.b1}-${node.id}`,
+                tokenIndex: ti,
+                b0: st.b0 + node.b0,
+                b1: st.b0 + node.b1,
+                layer: row.depth,
+              });
+
+              const cx = node.x + node.w / 2;
+              const botY = y + NODE_H;
+              let target = null;
+
+              for (let rj = ri + 1; rj < rows.length; rj++) {
+                const par = rows[rj].nodes.find(p => containsCenter(p, node));
+                if (par) {
+                  target = {
+                    x: par.x + par.w / 2,
+                    y: ancY(rows[rj].depth),
+                    colorId: par.id,
+                  };
+                  break;
+                }
+              }
+
+              if (target) {
+                drawEdge(edgeG, cx, botY, target.x, target.y, PALETTE[paletteIdx(target.colorId)][0]);
+              } else {
+                drawEdge(edgeG, cx, botY, st.x + st.w / 2, sentY, PALETTE[paletteIdx(st.id)][0]);
+              }
+            }
+          });
+        });
+
+        /* ── Draw sentence row ── */
+        sent.forEach((t, ti) => {
+          drawBox(nodeG, t.id, t.x, sentY, t.w, SENT_H, 'sent', {
+            key: `sent-${ti}-${t.id}`,
             tokenIndex: ti,
-            b0: st.b0 + node.b0,
-            b1: st.b0 + node.b1,
-            layer: row.depth,
+            b0: t.b0,
+            b1: t.b1,
+            layer: 0,
           });
+        });
 
-          const cx   = node.x + node.w / 2;
-          const botY = y + NODE_H;
-          let target = null;
-
-          for (let rj = ri + 1; rj < rows.length; rj++) {
-            const par = rows[rj].nodes.find(p => containsCenter(p, node));
-            if (par) {
-              target = {
-                x: par.x + par.w / 2,
-                y: ancY(rows[rj].depth),
-                colorId: par.id,
-              };
-              break;
-            }
-          }
-
-          if (target) {
-            drawEdge(edgeG, cx, botY, target.x, target.y, PALETTE[paletteIdx(target.colorId)][0]);
-          } else {
-            drawEdge(edgeG, cx, botY, st.x + st.w / 2, sentY, PALETTE[paletteIdx(st.id)][0]);
-          }
-        }
-      });
-    });
-
-    /* ── Draw sentence row ── */
-    sent.forEach((t, ti) => {
-      drawBox(nodeG, t.id, t.x, sentY, t.w, SENT_H, 'sent', {
-        key: `sent-${ti}-${t.id}`,
-        tokenIndex: ti,
-        b0: t.b0,
-        b1: t.b1,
-        layer: 0,
-      });
-    });
-
-    /* ── Draw parent rows ── */
-    allParentLayers.forEach((layers, ti) => {
-      const st = sent[ti];
-      const cx = st.x + st.w / 2;
-      layers.forEach((layer, li) => {
-        layer.rows.forEach(row => {
-          row.forEach(pn => {
-            drawBox(nodeG, pn.id, pn.x, pn.y, pn.w, PARENT_H, 'par', {
-              key: `par-${ti}-${li}-${pn.id}`,
-              tokenIndex: ti,
-              layer: li + 1,
-              childIds: pn.childIds,
+        /* ── Draw parent rows ── */
+        allParentLayers.forEach((layers, ti) => {
+          const st = sent[ti];
+          const cx = st.x + st.w / 2;
+          layers.forEach((layer, li) => {
+            layer.rows.forEach(row => {
+              row.forEach(pn => {
+                drawBox(nodeG, pn.id, pn.x, pn.y, pn.w, PARENT_H, 'par', {
+                  key: `par-${ti}-${li}-${pn.id}`,
+                  tokenIndex: ti,
+                  layer: li + 1,
+                  childIds: pn.childIds,
+                });
+                if (li === 0) {
+                  drawEdge(edgeG, cx, sentY + SENT_H, pn.x + pn.w / 2, pn.y,
+                    PALETTE[paletteIdx(pn.id)][0]);
+                } else {
+                  const prevNodes = layers[li - 1].rows.flat();
+                  const childNodes = prevNodes.filter(n => pn.childIds.includes(n.id));
+                  childNodes.forEach(ch => {
+                    const childCx = ch.x + ch.w / 2;
+                    drawEdge(edgeG, childCx, ch.y + PARENT_H, pn.x + pn.w / 2, pn.y,
+                      PALETTE[paletteIdx(pn.id)][0]);
+                  });
+                }
+              });
             });
-            if (li === 0) {
-              drawEdge(edgeG, cx, sentY + SENT_H, pn.x + pn.w / 2, pn.y,
-              PALETTE[paletteIdx(pn.id)][0]);
+          });
+        });
+
+        vizEl.innerHTML = '';
+        vizEl.appendChild(svg);
+        activeSvg = svg;
+        initHover(svg);
+      }
+
+      /* ── Hover behavior ─────────────────────────── */
+      function initHover(svg) {
+        let hovered = null;
+        const allGroups = () => svg.querySelectorAll('.tok-g');
+
+        function nodeKey(g) {
+          return g.dataset.key || `${g.dataset.role}-${g.dataset.tokenIndex}-${g.dataset.tid}`;
+        }
+
+        function hasSpan(g) {
+          return g.dataset.b0 !== undefined && g.dataset.b1 !== undefined;
+        }
+
+        function spanContains(a, b) {
+          return Number(a.dataset.b0) <= Number(b.dataset.b0) &&
+            Number(a.dataset.b1) >= Number(b.dataset.b1);
+        }
+
+        function childIds(g) {
+          return (g.dataset.childIds || '')
+            .split(',')
+            .filter(Boolean);
+        }
+
+        function hoverKeys(target) {
+          const groups = [...allGroups()];
+          const keys = new Set([nodeKey(target)]);
+          const ti = target.dataset.tokenIndex;
+
+          if (target.dataset.role === 'sent') {
+            groups.forEach(g => {
+              if (g.dataset.tokenIndex === ti && hasSpan(g)) keys.add(nodeKey(g));
+            });
+          } else if (hasSpan(target)) {
+            groups.forEach(g => {
+              if (g.dataset.tokenIndex === ti && hasSpan(g) && spanContains(g, target)) {
+                keys.add(nodeKey(g));
+              }
+            });
+          }
+
+          const connectedIds = new Set();
+          if (target.dataset.role === 'sent' || target.dataset.role === 'par') {
+            connectedIds.add(target.dataset.tid);
+            let changed = true;
+            while (changed) {
+              changed = false;
+              groups.forEach(g => {
+                if (g.dataset.tokenIndex !== ti || g.dataset.role !== 'par') return;
+                const links = childIds(g);
+                if (connectedIds.has(g.dataset.tid) || links.some(id => connectedIds.has(id))) {
+                  if (!keys.has(nodeKey(g))) { keys.add(nodeKey(g)); changed = true; }
+                  if (!connectedIds.has(g.dataset.tid)) { connectedIds.add(g.dataset.tid); changed = true; }
+                  links.forEach(id => {
+                    if (!connectedIds.has(id)) { connectedIds.add(id); changed = true; }
+                  });
+                }
+              });
+            }
+
+            groups.forEach(g => {
+              if (g.dataset.tokenIndex === ti && connectedIds.has(g.dataset.tid)) {
+                keys.add(nodeKey(g));
+              }
+            });
+          }
+
+          return keys;
+        }
+
+        function setHover(g0) {
+          const key = nodeKey(g0);
+          if (key === hovered) return;
+          hovered = key;
+          const lit = hoverKeys(g0);
+          allGroups().forEach(g => {
+            if (lit.has(nodeKey(g))) {
+              g.classList.remove('dimmed');
+              g.style.filter = 'url(#fglow)';
             } else {
-              const prevNodes = layers[li - 1].rows.flat();
-              const childNodes = prevNodes.filter(n => pn.childIds.includes(n.id));
-              childNodes.forEach(ch => {
-                const childCx = ch.x + ch.w / 2;
-                drawEdge(edgeG, childCx, ch.y + PARENT_H, pn.x + pn.w / 2, pn.y,
-                  PALETTE[paletteIdx(pn.id)][0]);
-              });
-            }
-          });
-        });
-      });
-    });
-
-    vizEl.innerHTML = '';
-    vizEl.appendChild(svg);
-    activeSvg = svg;
-    initHover(svg);
-  }
-
-  /* ── Hover behavior ─────────────────────────── */
-  function initHover(svg) {
-    let hovered = null;
-    const allGroups = () => svg.querySelectorAll('.tok-g');
-
-    function nodeKey(g) {
-      return g.dataset.key || `${g.dataset.role}-${g.dataset.tokenIndex}-${g.dataset.tid}`;
-    }
-
-    function hasSpan(g) {
-      return g.dataset.b0 !== undefined && g.dataset.b1 !== undefined;
-    }
-
-    function spanContains(a, b) {
-      return Number(a.dataset.b0) <= Number(b.dataset.b0) &&
-        Number(a.dataset.b1) >= Number(b.dataset.b1);
-    }
-
-    function childIds(g) {
-      return (g.dataset.childIds || '')
-        .split(',')
-        .filter(Boolean);
-    }
-
-    function hoverKeys(target) {
-      const groups = [...allGroups()];
-      const keys = new Set([nodeKey(target)]);
-      const ti = target.dataset.tokenIndex;
-
-      if (target.dataset.role === 'sent') {
-        groups.forEach(g => {
-          if (g.dataset.tokenIndex === ti && hasSpan(g)) keys.add(nodeKey(g));
-        });
-      } else if (hasSpan(target)) {
-        groups.forEach(g => {
-          if (g.dataset.tokenIndex === ti && hasSpan(g) && spanContains(g, target)) {
-            keys.add(nodeKey(g));
-          }
-        });
-      }
-
-      const connectedIds = new Set();
-      if (target.dataset.role === 'sent' || target.dataset.role === 'par') {
-        connectedIds.add(target.dataset.tid);
-        let changed = true;
-        while (changed) {
-          changed = false;
-          groups.forEach(g => {
-            if (g.dataset.tokenIndex !== ti || g.dataset.role !== 'par') return;
-            const links = childIds(g);
-            if (connectedIds.has(g.dataset.tid) || links.some(id => connectedIds.has(id))) {
-              if (!keys.has(nodeKey(g))) { keys.add(nodeKey(g)); changed = true; }
-              if (!connectedIds.has(g.dataset.tid)) { connectedIds.add(g.dataset.tid); changed = true; }
-              links.forEach(id => {
-                if (!connectedIds.has(id)) { connectedIds.add(id); changed = true; }
-              });
+              g.classList.add('dimmed');
+              g.style.filter = '';
             }
           });
         }
 
-        groups.forEach(g => {
-          if (g.dataset.tokenIndex === ti && connectedIds.has(g.dataset.tid)) {
-            keys.add(nodeKey(g));
-          }
+        function clearHover() {
+          if (hovered === null) return;
+          hovered = null;
+          allGroups().forEach(g => {
+            g.classList.remove('dimmed');
+            g.style.filter = g.dataset.baseFilter || '';
+          });
+          hideTooltip();
+        }
+
+        svg.addEventListener('mouseover', e => {
+          const g = e.target.closest('.tok-g');
+          if (!g) { clearHover(); return; }
+          setHover(g);
+          showTooltip(e, g);
+        });
+
+        svg.addEventListener('mousemove', e => {
+          if (hovered !== null) moveTip(e);
+        });
+
+        svg.addEventListener('mouseout', e => {
+          const g = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.tok-g');
+          if (!g) clearHover();
+        });
+
+        svg.addEventListener('click', e => {
+          const g = e.target.closest('.tok-g');
+          if (!g) return;
+          const s = getStat(parseInt(g.dataset.tid, 10));
+          if (!s || !s.integrity || !s.text) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          clearTimeout(debTimer);
+          textInput.value = s.text;
+          render();
+          textInput.focus({ preventScroll: true });
         });
       }
 
-      return keys;
-    }
+      /* ── Tooltip ────────────────────────────────── */
+      function tokenLineage(id) {
+        const levels = decomposeLevels(id, 0, Math.max(dispW(id), BYTE_W * 2)).reverse();
+        return levels.map((level, idx) => ({
+          label: idx === 0 ? '当前' : (idx === levels.length - 1 ? '字节' : '层 ' + idx),
+          ids: level.map(n => n.id),
+        }));
+      }
 
-    function setHover(g0) {
-      const key = nodeKey(g0);
-      if (key === hovered) return;
-      hovered = key;
-      const lit = hoverKeys(g0);
-      allGroups().forEach(g => {
-        if (lit.has(nodeKey(g))) {
-          g.classList.remove('dimmed');
-          g.style.filter = 'url(#fglow)';
-        } else {
-          g.classList.add('dimmed');
-          g.style.filter = '';
+      function tokenLabel(id) {
+        const s = getStat(id);
+        if (s && s.text) return '#' + id + ' ' + s.text.replace(/\n/g, '↵');
+        return '#' + id;
+      }
+
+      function showTooltip(e, g) {
+        const tid = g.dataset.tid;
+        const s = getStat(parseInt(tid));
+        const text2 = (s && s.text) ? s.text.replace(/\n/g, '↵') : null;
+        const count = s ? s.ct : parseInt(g.dataset.ct);
+        const bytes = decodeBytes(parseInt(tid, 10));
+        const lineage = tokenLineage(parseInt(tid, 10));
+        tipEl.innerHTML =
+          (text2 ? `<div class="tip-text">${escHtml(text2)}</div>` : '') +
+          `<div class="tip-meta">#${tid}&nbsp;&nbsp;出现 ${count > 0 ? fmtCt(count) + ' 次' : '—'}</div>` +
+          `<div class="tip-bytes"><div class="tip-label">BYTES 0-255</div>` +
+          `<div class="tip-byte-list">[${bytes.map(n => escHtml(String(n))).join(', ')}]</div></div>` +
+          `<div class="tip-lineage"><div class="tip-label">LAYER BY LAYER</div>` +
+          lineage.map(layer =>
+            `<div class="tip-layer">${escHtml(layer.label)} · ${escHtml(layer.ids.map(tokenLabel).join('  +  '))}</div>`
+          ).join('') +
+          `</div>`;
+        tipEl.style.display = 'block';
+        moveTip(e);
+      }
+
+      function moveTip(e) {
+        const pad = 14;
+        let lx = e.clientX + pad, ly = e.clientY + pad;
+        const rect = tipEl.getBoundingClientRect();
+        const tw = Math.max(rect.width, 220);
+        const th = Math.max(rect.height, 90);
+        if (lx + tw > window.innerWidth) lx = e.clientX - tw - pad;
+        if (ly + th > window.innerHeight) ly = e.clientY - th - pad;
+        lx = Math.max(8, Math.min(lx, window.innerWidth - tw - 8));
+        ly = Math.max(8, Math.min(ly, window.innerHeight - th - 8));
+        tipEl.style.left = lx + 'px';
+        tipEl.style.top = ly + 'px';
+      }
+
+      function hideTooltip() { tipEl.style.display = 'none'; }
+
+      function escHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      /* ── Load book ──────────────────────────────── */
+      async function loadBook(key) {
+        statusEl.textContent = '加载中…';
+        vocab = null; stats = null; pairToCode = null; parentIdx = null; bytesCache = {};
+        try {
+          const [v, s] = await Promise.all([
+            fetch('tokenizers/' + key + '/vocab.json').then(r => { if (!r.ok) throw r; return r.json(); }),
+            fetch('tokenizers/' + key + '/stats.json').then(r => { if (!r.ok) throw r; return r.json(); }),
+          ]);
+          vocab = v; stats = s;
+          pairToCode = buildPairToCode(vocab);
+          parentIdx = buildParentIdx(vocab);
+          maxTokenId = Object.keys(v).reduce((m, k) => Math.max(m, +k), 255);
+          statusEl.textContent = '词表规模 ' + Object.keys(vocab).length.toLocaleString() + ' 个词元';
+        } catch (e) {
+          statusEl.textContent = '加载失败，请检查 tokenizers/ 目录。';
+          console.error(e);
         }
+      }
+
+      /* ── Theme ──────────────────────────────────── */
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        themeBtn.textContent = t === 'dark' ? '☀' : '🌙';
+        ls.set('viz_theme', t);
+      }
+
+      /* ── Debounce ───────────────────────────────── */
+      let debTimer;
+      function debouncedRender() { clearTimeout(debTimer); debTimer = setTimeout(render, 360); }
+
+      /* ── Bootstrap ──────────────────────────────── */
+      BOOKS.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.key; opt.textContent = b.name;
+        bookSel.appendChild(opt);
       });
-    }
 
-    function clearHover() {
-      if (hovered === null) return;
-      hovered = null;
-      allGroups().forEach(g => {
-        g.classList.remove('dimmed');
-        g.style.filter = g.dataset.baseFilter || '';
+      bookSel.addEventListener('change', async () => {
+        ls.set('viz_book', bookSel.value);
+        await loadBook(bookSel.value);
+        render();
       });
-      hideTooltip();
-    }
 
-    svg.addEventListener('mouseover', e => {
-      const g = e.target.closest('.tok-g');
-      if (!g) { clearHover(); return; }
-      setHover(g);
-      showTooltip(e, g);
-    });
+      textInput.addEventListener('input', debouncedRender);
+      textInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { clearTimeout(debTimer); render(); }
+      });
 
-    svg.addEventListener('mousemove', e => {
-      if (hovered !== null) moveTip(e);
-    });
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        render();
+      });
 
-    svg.addEventListener('mouseout', e => {
-      const g = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.tok-g');
-      if (!g) clearHover();
-    });
+      document.addEventListener('click', e => {
+        if (!e.target.closest('#viz')) hideTooltip();
+      });
 
-    svg.addEventListener('click', e => {
-      const g = e.target.closest('.tok-g');
-      if (!g) return;
-      const s = getStat(parseInt(g.dataset.tid, 10));
-      if (!s || !s.integrity || !s.text) return;
+      // Restore preferences
+      applyTheme(ls.get('viz_theme') || 'dark');
+      const savedBook = ls.get('viz_book');
+      if (savedBook && BOOKS.some(b => b.key === savedBook)) bookSel.value = savedBook;
 
-      e.preventDefault();
-      e.stopPropagation();
-      clearTimeout(debTimer);
-      textInput.value = s.text;
-      render();
-      textInput.focus({ preventScroll: true });
-    });
-  }
+      loadBook(bookSel.value).then(render);
 
-  /* ── Tooltip ────────────────────────────────── */
-  function tokenLineage(id) {
-    const levels = decomposeLevels(id, 0, Math.max(dispW(id), BYTE_W * 2)).reverse();
-    return levels.map((level, idx) => ({
-      label: idx === 0 ? '当前' : (idx === levels.length - 1 ? '字节' : '层 ' + idx),
-      ids: level.map(n => n.id),
-    }));
-  }
+      /* ── Draggable canvas ── */
+      const vizWrap = document.getElementById('viz-wrap');
+      let drag = null;
 
-  function tokenLabel(id) {
-    const s = getStat(id);
-    if (s && s.text) return '#' + id + ' ' + s.text.replace(/\n/g, '↵');
-    return '#' + id;
-  }
+      vizWrap.addEventListener('mousedown', e => {
+        if (e.button !== 0) return;
+        if (e.target.closest && e.target.closest('.tok-g')) return;
+        drag = { sx: e.clientX, sy: e.clientY, sl: vizWrap.scrollLeft, st: vizWrap.scrollTop };
+        vizWrap.classList.add('dragging');
+        if (activeSvg) activeSvg.style.pointerEvents = 'none';
+        e.preventDefault();
+      });
 
-  function showTooltip(e, g) {
-    const tid = g.dataset.tid;
-    const s = getStat(parseInt(tid));
-    const text2 = (s && s.text) ? s.text.replace(/\n/g, '↵') : null;
-    const count  = s ? s.ct : parseInt(g.dataset.ct);
-    const bytes = decodeBytes(parseInt(tid, 10));
-    const lineage = tokenLineage(parseInt(tid, 10));
-    tipEl.innerHTML =
-      (text2 ? `<div class="tip-text">${escHtml(text2)}</div>` : '') +
-      `<div class="tip-meta">#${tid}&nbsp;&nbsp;出现 ${count > 0 ? fmtCt(count) + ' 次' : '—'}</div>` +
-      `<div class="tip-bytes"><div class="tip-label">BYTES 0-255</div>` +
-      `<div class="tip-byte-list">[${bytes.map(n => escHtml(String(n))).join(', ')}]</div></div>` +
-      `<div class="tip-lineage"><div class="tip-label">LAYER BY LAYER</div>` +
-      lineage.map(layer =>
-        `<div class="tip-layer">${escHtml(layer.label)} · ${escHtml(layer.ids.map(tokenLabel).join('  +  '))}</div>`
-      ).join('') +
-      `</div>`;
-    tipEl.style.display = 'block';
-    moveTip(e);
-  }
+      window.addEventListener('mousemove', e => {
+        if (!drag) return;
+        vizWrap.scrollLeft = drag.sl - (e.clientX - drag.sx);
+        vizWrap.scrollTop = drag.st - (e.clientY - drag.sy);
+      });
 
-  function moveTip(e) {
-    const pad = 14;
-    let lx = e.clientX + pad, ly = e.clientY + pad;
-    const rect = tipEl.getBoundingClientRect();
-    const tw = Math.max(rect.width, 220);
-    const th = Math.max(rect.height, 90);
-    if (lx + tw > window.innerWidth)  lx = e.clientX - tw - pad;
-    if (ly + th > window.innerHeight) ly = e.clientY - th - pad;
-    lx = Math.max(8, Math.min(lx, window.innerWidth - tw - 8));
-    ly = Math.max(8, Math.min(ly, window.innerHeight - th - 8));
-    tipEl.style.left = lx + 'px';
-    tipEl.style.top  = ly + 'px';
-  }
-
-  function hideTooltip() { tipEl.style.display = 'none'; }
-
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  /* ── Load book ──────────────────────────────── */
-  async function loadBook(key) {
-    statusEl.textContent = '加载中…';
-    vocab = null; stats = null; pairToCode = null; parentIdx = null; bytesCache = {};
-    try {
-      const [v, s] = await Promise.all([
-        fetch('tokenizers/' + key + '/vocab.json').then(r => { if (!r.ok) throw r; return r.json(); }),
-        fetch('tokenizers/' + key + '/stats.json').then(r => { if (!r.ok) throw r; return r.json(); }),
-      ]);
-      vocab = v; stats = s;
-      pairToCode = buildPairToCode(vocab);
-      parentIdx  = buildParentIdx(vocab);
-      maxTokenId = Object.keys(v).reduce((m, k) => Math.max(m, +k), 255);
-      statusEl.textContent = '词表规模 ' + Object.keys(vocab).length.toLocaleString() + ' 个词元';
-    } catch (e) {
-      statusEl.textContent = '加载失败，请检查 tokenizers/ 目录。';
-      console.error(e);
-    }
-  }
-
-  /* ── Theme ──────────────────────────────────── */
-  function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    themeBtn.textContent = t === 'dark' ? '☀' : '🌙';
-    ls.set('viz_theme', t);
-  }
-
-  /* ── Debounce ───────────────────────────────── */
-  let debTimer;
-  function debouncedRender() { clearTimeout(debTimer); debTimer = setTimeout(render, 360); }
-
-  /* ── Bootstrap ──────────────────────────────── */
-  BOOKS.forEach(b => {
-    const opt = document.createElement('option');
-    opt.value = b.key; opt.textContent = b.name;
-    bookSel.appendChild(opt);
-  });
-
-  bookSel.addEventListener('change', async () => {
-    ls.set('viz_book', bookSel.value);
-    await loadBook(bookSel.value);
-    render();
-  });
-
-  textInput.addEventListener('input', debouncedRender);
-  textInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { clearTimeout(debTimer); render(); }
-  });
-
-  themeBtn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    render();
-  });
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#viz')) hideTooltip();
-  });
-
-  // Restore preferences
-  applyTheme(ls.get('viz_theme') || 'dark');
-  const savedBook = ls.get('viz_book');
-  if (savedBook && BOOKS.some(b => b.key === savedBook)) bookSel.value = savedBook;
-
-  loadBook(bookSel.value).then(render);
-
-  /* ── Draggable canvas ── */
-  const vizWrap = document.getElementById('viz-wrap');
-  let drag = null;
-
-  vizWrap.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    if (e.target.closest && e.target.closest('.tok-g')) return;
-    drag = { sx: e.clientX, sy: e.clientY, sl: vizWrap.scrollLeft, st: vizWrap.scrollTop };
-    vizWrap.classList.add('dragging');
-    if (activeSvg) activeSvg.style.pointerEvents = 'none';
-    e.preventDefault();
-  });
-
-  window.addEventListener('mousemove', e => {
-    if (!drag) return;
-    vizWrap.scrollLeft = drag.sl - (e.clientX - drag.sx);
-    vizWrap.scrollTop  = drag.st - (e.clientY - drag.sy);
-  });
-
-  window.addEventListener('mouseup', () => {
-    if (!drag) return;
-    drag = null;
-    vizWrap.classList.remove('dragging');
-    if (activeSvg) activeSvg.style.pointerEvents = '';
-  });
-})();
-</script>
+      window.addEventListener('mouseup', () => {
+        if (!drag) return;
+        drag = null;
+        vizWrap.classList.remove('dragging');
+        if (activeSvg) activeSvg.style.pointerEvents = '';
+      });
+    })();
+  </script>
 </body>
+
 </html>

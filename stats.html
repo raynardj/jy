@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,64 +8,76 @@
   <meta name="description" content="金庸与四大名著词元统计图表仪表盘">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg: #eef5ff;
-      --surface: rgba(255,255,255,0.76);
-      --surface-strong: rgba(248,251,255,0.94);
+      --surface: rgba(255, 255, 255, 0.76);
+      --surface-strong: rgba(248, 251, 255, 0.94);
       --text: #102033;
       --muted: #607086;
       --soft: #dbe8f8;
-      --line: rgba(16,32,51,0.12);
+      --line: rgba(16, 32, 51, 0.12);
       --accent: #2f73ff;
       --accent-2: #13a7b8;
       --accent-3: #8a6cff;
       --accent-4: #f3a53a;
       --danger: #c2415a;
-      --bar-bg: rgba(238,245,255,0.88);
-      --ctrl-bg: rgba(255,255,255,0.78);
-      --ctrl-border: rgba(47,115,255,0.18);
-      --shadow: 0 18px 48px rgba(36,82,145,0.13);
-      --shadow-soft: 0 2px 16px rgba(36,82,145,0.11);
-      --glow: 0 0 34px rgba(47,115,255,0.16);
-      --glow-2: 0 0 42px rgba(19,167,184,0.13);
-      --focus-ring: rgba(47,115,255,0.24);
+      --bar-bg: rgba(238, 245, 255, 0.88);
+      --ctrl-bg: rgba(255, 255, 255, 0.78);
+      --ctrl-border: rgba(47, 115, 255, 0.18);
+      --shadow: 0 18px 48px rgba(36, 82, 145, 0.13);
+      --shadow-soft: 0 2px 16px rgba(36, 82, 145, 0.11);
+      --glow: 0 0 34px rgba(47, 115, 255, 0.16);
+      --glow-2: 0 0 42px rgba(19, 167, 184, 0.13);
+      --focus-ring: rgba(47, 115, 255, 0.24);
       --transition: 0.24s ease;
     }
 
     [data-theme="dark"] {
       --bg: #07111f;
-      --surface: rgba(12,29,52,0.78);
-      --surface-strong: rgba(14,35,63,0.94);
+      --surface: rgba(12, 29, 52, 0.78);
+      --surface-strong: rgba(14, 35, 63, 0.94);
       --text: #eaf2ff;
       --muted: #8ea6c7;
       --soft: #112944;
-      --line: rgba(175,207,255,0.12);
+      --line: rgba(175, 207, 255, 0.12);
       --accent: #59a7ff;
       --accent-2: #26d6e6;
       --accent-3: #a78bfa;
       --accent-4: #ffc857;
       --danger: #ff7891;
-      --bar-bg: rgba(7,17,31,0.9);
-      --ctrl-bg: rgba(16,39,68,0.88);
-      --ctrl-border: rgba(145,190,255,0.18);
-      --shadow: 0 20px 54px rgba(0,0,0,0.38), 0 0 34px rgba(50,129,255,0.09);
-      --shadow-soft: 0 2px 18px rgba(0,0,0,0.28);
-      --glow: 0 0 38px rgba(89,167,255,0.22);
-      --glow-2: 0 0 46px rgba(38,214,230,0.15);
-      --focus-ring: rgba(89,167,255,0.28);
+      --bar-bg: rgba(7, 17, 31, 0.9);
+      --ctrl-bg: rgba(16, 39, 68, 0.88);
+      --ctrl-border: rgba(145, 190, 255, 0.18);
+      --shadow: 0 20px 54px rgba(0, 0, 0, 0.38), 0 0 34px rgba(50, 129, 255, 0.09);
+      --shadow-soft: 0 2px 18px rgba(0, 0, 0, 0.28);
+      --glow: 0 0 38px rgba(89, 167, 255, 0.22);
+      --glow-2: 0 0 46px rgba(38, 214, 230, 0.15);
+      --focus-ring: rgba(89, 167, 255, 0.28);
     }
 
-    html { font-size: 16px; scroll-behavior: smooth; }
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at 12% 0%, rgba(47,115,255,0.22), transparent 27rem),
-        radial-gradient(circle at 88% 8%, rgba(19,167,184,0.17), transparent 24rem),
-        linear-gradient(135deg, rgba(138,108,255,0.08), transparent 34rem),
+        radial-gradient(circle at 12% 0%, rgba(47, 115, 255, 0.22), transparent 27rem),
+        radial-gradient(circle at 88% 8%, rgba(19, 167, 184, 0.17), transparent 24rem),
+        linear-gradient(135deg, rgba(138, 108, 255, 0.08), transparent 34rem),
         var(--bg);
       color: var(--text);
       font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
@@ -382,12 +395,29 @@
       overflow: hidden;
     }
 
-    .span-4 { grid-column: span 4; }
-    .span-5 { grid-column: span 5; }
-    .span-6 { grid-column: span 6; }
-    .span-7 { grid-column: span 7; }
-    .span-8 { grid-column: span 8; }
-    .span-12 { grid-column: span 12; }
+    .span-4 {
+      grid-column: span 4;
+    }
+
+    .span-5 {
+      grid-column: span 5;
+    }
+
+    .span-6 {
+      grid-column: span 6;
+    }
+
+    .span-7 {
+      grid-column: span 7;
+    }
+
+    .span-8 {
+      grid-column: span 8;
+    }
+
+    .span-12 {
+      grid-column: span 12;
+    }
 
     .panel-head {
       display: flex;
@@ -426,8 +456,15 @@
       overflow: hidden;
     }
 
-    .chart-wrap.tall { height: 23rem; }
-    canvas { display: block; width: 100%; height: 100%; }
+    .chart-wrap.tall {
+      height: 23rem;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
     .legend {
       display: flex;
@@ -452,9 +489,17 @@
       background: var(--accent);
     }
 
-    .swatch.teal { background: var(--accent-2); }
-    .swatch.purple { background: var(--accent-3); }
-    .swatch.gold { background: var(--accent-4); }
+    .swatch.teal {
+      background: var(--accent-2);
+    }
+
+    .swatch.purple {
+      background: var(--accent-3);
+    }
+
+    .swatch.gold {
+      background: var(--accent-4);
+    }
 
     .table-wrap {
       overflow: auto;
@@ -506,7 +551,10 @@
       letter-spacing: 0.08em;
     }
 
-    tr:last-child td { border-bottom: 0; }
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
     td.num {
       font-variant-numeric: tabular-nums;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -520,7 +568,9 @@
       overflow-wrap: anywhere;
     }
 
-    .muted { color: var(--muted); }
+    .muted {
+      color: var(--muted);
+    }
 
     .loading,
     .error {
@@ -537,7 +587,9 @@
       padding: 1.25rem;
     }
 
-    .error { color: var(--danger); }
+    .error {
+      color: var(--danger);
+    }
 
     #tip {
       position: fixed;
@@ -547,51 +599,101 @@
       max-width: 18rem;
       padding: 0.48rem 0.62rem;
       border-radius: 7px;
-      border: 1px solid rgba(255,255,255,0.13);
-      background: rgba(21,18,14,0.94);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(21, 18, 14, 0.94);
       color: #efe4d1;
-      box-shadow: 0 10px 34px rgba(0,0,0,0.36);
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.36);
       font-size: 0.76rem;
       line-height: 1.5;
     }
 
     [data-theme="light"] #tip {
-      background: rgba(255,253,249,0.96);
+      background: rgba(255, 253, 249, 0.96);
       color: #2c2416;
-      border-color: rgba(0,0,0,0.12);
-      box-shadow: 0 10px 34px rgba(64,43,20,0.18);
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 34px rgba(64, 43, 20, 0.18);
     }
 
     @media (max-width: 1180px) {
-      .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
-      .span-4 .chart-wrap, .span-5 .chart-wrap, .span-6 .chart-wrap { height: 18rem; }
+      .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .span-4,
+      .span-5,
+      .span-6,
+      .span-7,
+      .span-8 {
+        grid-column: span 12;
+      }
+
+      .span-4 .chart-wrap,
+      .span-5 .chart-wrap,
+      .span-6 .chart-wrap {
+        height: 18rem;
+      }
     }
 
     @media (max-width: 820px) {
-      #topbar { align-items: flex-start; }
-      .toolbar { margin-left: 0; width: 100%; }
-      .hero { grid-template-columns: 1fr; }
-      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .chart-wrap, .chart-wrap.tall { height: 17rem; }
+      #topbar {
+        align-items: flex-start;
+      }
+
+      .toolbar {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .chart-wrap,
+      .chart-wrap.tall {
+        height: 17rem;
+      }
     }
 
     @media (max-width: 520px) {
-      main { padding-inline: 0.75rem; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .nav-links a { padding-inline: 0.5rem; }
-      select { max-width: 100%; flex: 1; }
-      .toolbar { align-items: stretch; }
-      .hero, .dashboard-grid { gap: 0.75rem; }
+      main {
+        padding-inline: 0.75rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links a {
+        padding-inline: 0.5rem;
+      }
+
+      select {
+        max-width: 100%;
+        flex: 1;
+      }
+
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .hero,
+      .dashboard-grid {
+        gap: 0.75rem;
+      }
     }
   </style>
 </head>
+
 <body>
   <header id="topbar">
     <div class="brand">词元统计</div>
     <nav class="nav-links" aria-label="页面导航">
       <a href="four.html">四大名著</a>
-      <a href="jy.html">金庸阅读</a>
+      <a href="jy.html">金庸</a>
       <a href="index.html">词元树</a>
     </nav>
     <div class="toolbar">
@@ -636,289 +738,289 @@
   <div id="tip"></div>
 
   <script>
-  (function () {
-    'use strict';
+    (function () {
+      'use strict';
 
-    const BOOKS = [
-      { key: 'jy',  name: '金庸全集', short: '金庸',      group: '武侠合集' },
-      { key: 'wm',  name: '水浒传',   short: '水浒',      group: '四大名著' },
-      { key: 'drc', name: '红楼梦',   short: '红楼',      group: '四大名著' },
-      { key: 'rtk', name: '三国演义', short: '三国',      group: '四大名著' },
-      { key: 'xyj', name: '西游记',   short: '西游',      group: '四大名著' }
-    ];
-
-    const COLORS = {
-      accent: '#59a7ff',
-      teal: '#26d6e6',
-      purple: '#a78bfa',
-      gold: '#ffc857',
-      danger: '#ff7891',
-      muted: '#8ea6c7',
-      lightText: '#102033',
-      darkText: '#eaf2ff'
-    };
-
-    const bookSel = document.getElementById('book-sel');
-    const themeBtn = document.getElementById('theme-btn');
-    const statusText = document.getElementById('status-text');
-    const pathText = document.getElementById('path-text');
-    const metricGrid = document.getElementById('metric-grid');
-    const dashboard = document.getElementById('dashboard');
-    const tip = document.getElementById('tip');
-    const enc = new TextEncoder();
-    const dec = new TextDecoder('utf-8', { fatal: false });
-    const cache = {};
-
-    let currentModel = null;
-
-    function init() {
-      BOOKS.forEach(book => {
-        const opt = document.createElement('option');
-        opt.value = book.key;
-        opt.textContent = book.name + ' · ' + book.key;
-        bookSel.appendChild(opt);
-      });
-
-      const savedBook = localStorage.getItem('stats.book');
-      if (savedBook && BOOKS.some(b => b.key === savedBook)) bookSel.value = savedBook;
-
-      const savedTheme = localStorage.getItem('stats.theme') || localStorage.getItem('bpe-theme') || 'dark';
-      document.documentElement.dataset.theme = savedTheme;
-      syncThemeButton();
-
-      bookSel.addEventListener('change', () => loadBook(bookSel.value));
-      themeBtn.addEventListener('click', toggleTheme);
-      window.addEventListener('resize', debounce(() => currentModel && render(currentModel), 120));
-
-      loadBook(bookSel.value || BOOKS[0].key);
-    }
-
-    function toggleTheme() {
-      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem('stats.theme', next);
-      syncThemeButton();
-      if (currentModel) render(currentModel);
-    }
-
-    function syncThemeButton() {
-      themeBtn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾';
-    }
-
-    async function loadBook(key) {
-      const book = BOOKS.find(b => b.key === key) || BOOKS[0];
-      localStorage.setItem('stats.book', book.key);
-      statusText.textContent = '正在加载 ' + book.name;
-      pathText.textContent = 'tokenizers/' + book.key + '/stats.json + vocab.json';
-      dashboard.innerHTML = '<div class="loading span-12">数据加载中…</div>';
-      metricGrid.innerHTML = '';
-      setProfile(book, null);
-
-      try {
-        if (!cache[book.key]) {
-          const [statsResp, vocabResp] = await Promise.all([
-            fetch('tokenizers/' + book.key + '/stats.json'),
-            fetch('tokenizers/' + book.key + '/vocab.json')
-          ]);
-          if (!statsResp.ok || !vocabResp.ok) throw new Error('Cannot load tokenizer json');
-          cache[book.key] = {
-            stats: await statsResp.json(),
-            vocab: await vocabResp.json()
-          };
-        }
-        currentModel = buildModel(book, cache[book.key].stats, cache[book.key].vocab);
-        statusText.textContent = '已加载 ' + book.name;
-        setProfile(book, currentModel);
-        render(currentModel);
-      } catch (err) {
-        console.error(err);
-        statusText.textContent = '加载失败';
-        dashboard.innerHTML = '<div class="error span-12">无法读取 tokenizer JSON。请通过本地服务器打开页面，例如在项目目录运行 python3 -m http.server 后访问 stats.html。</div>';
-      }
-    }
-
-    function buildModel(book, stats, vocab) {
-      const bytesCache = {};
-      const ids = Object.keys(stats).map(Number).sort((a, b) => a - b);
-
-      function tokenBytes(id) {
-        if (bytesCache[id]) return bytesCache[id];
-        const pair = vocab[id];
-        if (!pair) {
-          bytesCache[id] = [id];
-        } else {
-          bytesCache[id] = tokenBytes(pair[0]).concat(tokenBytes(pair[1]));
-        }
-        return bytesCache[id];
-      }
-
-      const records = ids.map(id => {
-        const row = stats[id] || {};
-        const bytes = tokenBytes(id);
-        const text = typeof row.text === 'string' ? row.text : dec.decode(Uint8Array.from(bytes));
-        return {
-          id,
-          ct: Number(row.ct || 0),
-          text,
-          bytes,
-          byteLen: bytes.length,
-          charLen: Array.from(text).length,
-          integrity: row.integrity !== false,
-          learned: !!vocab[id]
-        };
-      });
-
-      const totalCt = records.reduce((sum, r) => sum + r.ct, 0);
-      const active = records.filter(r => r.ct > 0);
-      const learnedCount = Object.keys(vocab).length;
-      const topByFreq = active.slice().sort((a, b) => b.ct - a.ct || a.id - b.id);
-      const topByLength = active.slice().sort((a, b) => b.byteLen - a.byteLen || b.ct - a.ct || a.id - b.id);
-      const top100Coverage = topByFreq.slice(0, 100).reduce((sum, r) => sum + r.ct, 0) / Math.max(1, totalCt);
-      const weightedBytes = active.reduce((sum, r) => sum + r.byteLen * r.ct, 0) / Math.max(1, totalCt);
-      const avgBytes = records.reduce((sum, r) => sum + r.byteLen, 0) / Math.max(1, records.length);
-      const maxBytes = records.reduce((max, r) => Math.max(max, r.byteLen), 0);
-      const incomplete = records.filter(r => !r.integrity).length;
-      const singleByte = records.filter(r => r.byteLen === 1).length;
-
-      return {
-        book, stats, vocab, records, active, topByFreq, topByLength,
-        totals: {
-          vocabSize: records.length,
-          learnedCount,
-          activeCount: active.length,
-          totalCt,
-          top100Coverage,
-          weightedBytes,
-          avgBytes,
-          maxBytes,
-          incomplete,
-          singleByte
-        },
-        charts: {
-          idFreq: binById(records, 180, 'ct', 'sum'),
-          idLen: binById(records, 150, 'byteLen', 'avgmax'),
-          freqLen: byByteLength(active),
-          rankFreq: topByFreq.slice(0, 260).map((r, i) => ({ x: i + 1, y: r.ct, token: r })),
-          learnedActive: learnedActivity(records),
-          scatter: sampleScatter(active, 1800)
-        }
-      };
-    }
-
-    function binById(records, count, field, mode) {
-      const maxId = records.length ? records[records.length - 1].id : 0;
-      const size = Math.max(1, Math.ceil((maxId + 1) / count));
-      const bins = Array.from({ length: Math.ceil((maxId + 1) / size) }, (_, i) => ({
-        x0: i * size,
-        x1: Math.min(maxId, (i + 1) * size - 1),
-        y: 0,
-        max: 0,
-        n: 0
-      }));
-
-      records.forEach(r => {
-        const bin = bins[Math.floor(r.id / size)];
-        if (!bin) return;
-        const value = r[field] || 0;
-        bin.y += value;
-        bin.max = Math.max(bin.max, value);
-        bin.n += 1;
-      });
-
-      return bins.map(bin => ({
-        ...bin,
-        x: (bin.x0 + bin.x1) / 2,
-        y: mode === 'avgmax' ? bin.y / Math.max(1, bin.n) : bin.y,
-        y2: bin.max
-      }));
-    }
-
-    function byByteLength(records) {
-      const map = new Map();
-      records.forEach(r => {
-        const item = map.get(r.byteLen) || { len: r.byteLen, count: 0, totalCt: 0, maxCt: 0, examples: [] };
-        item.count += 1;
-        item.totalCt += r.ct;
-        item.maxCt = Math.max(item.maxCt, r.ct);
-        if (item.examples.length < 4) item.examples.push(r);
-        map.set(r.byteLen, item);
-      });
-      return Array.from(map.values())
-        .sort((a, b) => a.len - b.len)
-        .map(item => ({ ...item, avgCt: item.totalCt / Math.max(1, item.count) }));
-    }
-
-    function learnedActivity(records) {
-      const groups = [
-        { key: 'base', label: 'Base bytes', count: 0, active: 0 },
-        { key: 'learned', label: 'Learned tokens', count: 0, active: 0 },
-        { key: 'unused', label: 'Zero frequency', count: 0, active: 0 }
+      const BOOKS = [
+        { key: 'jy', name: '金庸全集', short: '金庸', group: '武侠合集' },
+        { key: 'wm', name: '水浒传', short: '水浒', group: '四大名著' },
+        { key: 'drc', name: '红楼梦', short: '红楼', group: '四大名著' },
+        { key: 'rtk', name: '三国演义', short: '三国', group: '四大名著' },
+        { key: 'xyj', name: '西游记', short: '西游', group: '四大名著' }
       ];
-      records.forEach(r => {
-        const g = r.ct === 0 ? groups[2] : (r.learned ? groups[1] : groups[0]);
-        g.count += 1;
-        if (r.ct > 0) g.active += 1;
-      });
-      return groups;
-    }
 
-    function sampleScatter(records, limit) {
-      if (records.length <= limit) return records;
-      const sorted = records.slice().sort((a, b) => b.ct - a.ct);
-      const keep = sorted.slice(0, 300);
-      const rest = sorted.slice(300);
-      const step = Math.max(1, Math.floor(rest.length / (limit - keep.length)));
-      for (let i = 0; i < rest.length && keep.length < limit; i += step) keep.push(rest[i]);
-      return keep;
-    }
+      const COLORS = {
+        accent: '#59a7ff',
+        teal: '#26d6e6',
+        purple: '#a78bfa',
+        gold: '#ffc857',
+        danger: '#ff7891',
+        muted: '#8ea6c7',
+        lightText: '#102033',
+        darkText: '#eaf2ff'
+      };
 
-    function render(model) {
-      renderMetrics(model);
-      dashboard.innerHTML = chartPanels();
+      const bookSel = document.getElementById('book-sel');
+      const themeBtn = document.getElementById('theme-btn');
+      const statusText = document.getElementById('status-text');
+      const pathText = document.getElementById('path-text');
+      const metricGrid = document.getElementById('metric-grid');
+      const dashboard = document.getElementById('dashboard');
+      const tip = document.getElementById('tip');
+      const enc = new TextEncoder();
+      const dec = new TextDecoder('utf-8', { fatal: false });
+      const cache = {};
 
-      drawBarLine(document.getElementById('id-frequency'), model.charts.idFreq, {
-        xLabel: 'token id',
-        yLabel: 'frequency',
-        color: cssColor('--accent'),
-        formatY: compact,
-        tooltip: d => 'id ' + Math.round(d.x0) + '-' + Math.round(d.x1) + '<br>frequency ' + formatInt(d.y)
-      });
+      let currentModel = null;
 
-      drawAvgMax(document.getElementById('id-byte-length'), model.charts.idLen, {
-        colorAvg: cssColor('--accent-2'),
-        colorMax: cssColor('--accent-3'),
-        tooltip: d => 'id ' + Math.round(d.x0) + '-' + Math.round(d.x1) + '<br>avg bytes ' + fmt(d.y, 1) + '<br>max bytes ' + fmt(d.y2, 0)
-      });
+      function init() {
+        BOOKS.forEach(book => {
+          const opt = document.createElement('option');
+          opt.value = book.key;
+          opt.textContent = book.name + ' · ' + book.key;
+          bookSel.appendChild(opt);
+        });
 
-      drawByteBars(document.getElementById('byte-frequency'), model.charts.freqLen, {
-        yKey: 'totalCt',
-        color: cssColor('--accent-4'),
-        formatY: compact,
-        tooltip: d => d.len + ' bytes<br>tokens ' + formatInt(d.count) + '<br>frequency ' + formatInt(d.totalCt)
-      });
+        const savedBook = localStorage.getItem('stats.book');
+        if (savedBook && BOOKS.some(b => b.key === savedBook)) bookSel.value = savedBook;
 
-      drawByteBars(document.getElementById('byte-count'), model.charts.freqLen, {
-        yKey: 'count',
-        color: cssColor('--accent-2'),
-        formatY: compact,
-        tooltip: d => d.len + ' bytes<br>tokens ' + formatInt(d.count) + '<br>avg frequency ' + fmt(d.avgCt, 1)
-      });
+        const savedTheme = localStorage.getItem('stats.theme') || localStorage.getItem('bpe-theme') || 'dark';
+        document.documentElement.dataset.theme = savedTheme;
+        syncThemeButton();
 
-      drawRank(document.getElementById('rank-frequency'), model.charts.rankFreq, {
-        color: cssColor('--accent'),
-        tooltip: d => '#' + d.x + ' · id ' + d.token.id + '<br>' + escapeHtml(displayText(d.token.text)) + '<br>frequency ' + formatInt(d.y)
-      });
+        bookSel.addEventListener('change', () => loadBook(bookSel.value));
+        themeBtn.addEventListener('click', toggleTheme);
+        window.addEventListener('resize', debounce(() => currentModel && render(currentModel), 120));
 
-      drawScatter(document.getElementById('freq-vs-length'), model.charts.scatter, {
-        tooltip: d => 'id ' + d.id + '<br>' + escapeHtml(displayText(d.text)) + '<br>bytes ' + d.byteLen + '<br>frequency ' + formatInt(d.ct)
-      });
+        loadBook(bookSel.value || BOOKS[0].key);
+      }
 
-      drawDonut(document.getElementById('token-mix'), model.charts.learnedActive);
-      renderTopLength(model);
-    }
+      function toggleTheme() {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('stats.theme', next);
+        syncThemeButton();
+        if (currentModel) render(currentModel);
+      }
 
-    function chartPanels() {
-      return `
+      function syncThemeButton() {
+        themeBtn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾';
+      }
+
+      async function loadBook(key) {
+        const book = BOOKS.find(b => b.key === key) || BOOKS[0];
+        localStorage.setItem('stats.book', book.key);
+        statusText.textContent = '正在加载 ' + book.name;
+        pathText.textContent = 'tokenizers/' + book.key + '/stats.json + vocab.json';
+        dashboard.innerHTML = '<div class="loading span-12">数据加载中…</div>';
+        metricGrid.innerHTML = '';
+        setProfile(book, null);
+
+        try {
+          if (!cache[book.key]) {
+            const [statsResp, vocabResp] = await Promise.all([
+              fetch('tokenizers/' + book.key + '/stats.json'),
+              fetch('tokenizers/' + book.key + '/vocab.json')
+            ]);
+            if (!statsResp.ok || !vocabResp.ok) throw new Error('Cannot load tokenizer json');
+            cache[book.key] = {
+              stats: await statsResp.json(),
+              vocab: await vocabResp.json()
+            };
+          }
+          currentModel = buildModel(book, cache[book.key].stats, cache[book.key].vocab);
+          statusText.textContent = '已加载 ' + book.name;
+          setProfile(book, currentModel);
+          render(currentModel);
+        } catch (err) {
+          console.error(err);
+          statusText.textContent = '加载失败';
+          dashboard.innerHTML = '<div class="error span-12">无法读取 tokenizer JSON。请通过本地服务器打开页面，例如在项目目录运行 python3 -m http.server 后访问 stats.html。</div>';
+        }
+      }
+
+      function buildModel(book, stats, vocab) {
+        const bytesCache = {};
+        const ids = Object.keys(stats).map(Number).sort((a, b) => a - b);
+
+        function tokenBytes(id) {
+          if (bytesCache[id]) return bytesCache[id];
+          const pair = vocab[id];
+          if (!pair) {
+            bytesCache[id] = [id];
+          } else {
+            bytesCache[id] = tokenBytes(pair[0]).concat(tokenBytes(pair[1]));
+          }
+          return bytesCache[id];
+        }
+
+        const records = ids.map(id => {
+          const row = stats[id] || {};
+          const bytes = tokenBytes(id);
+          const text = typeof row.text === 'string' ? row.text : dec.decode(Uint8Array.from(bytes));
+          return {
+            id,
+            ct: Number(row.ct || 0),
+            text,
+            bytes,
+            byteLen: bytes.length,
+            charLen: Array.from(text).length,
+            integrity: row.integrity !== false,
+            learned: !!vocab[id]
+          };
+        });
+
+        const totalCt = records.reduce((sum, r) => sum + r.ct, 0);
+        const active = records.filter(r => r.ct > 0);
+        const learnedCount = Object.keys(vocab).length;
+        const topByFreq = active.slice().sort((a, b) => b.ct - a.ct || a.id - b.id);
+        const topByLength = active.slice().sort((a, b) => b.byteLen - a.byteLen || b.ct - a.ct || a.id - b.id);
+        const top100Coverage = topByFreq.slice(0, 100).reduce((sum, r) => sum + r.ct, 0) / Math.max(1, totalCt);
+        const weightedBytes = active.reduce((sum, r) => sum + r.byteLen * r.ct, 0) / Math.max(1, totalCt);
+        const avgBytes = records.reduce((sum, r) => sum + r.byteLen, 0) / Math.max(1, records.length);
+        const maxBytes = records.reduce((max, r) => Math.max(max, r.byteLen), 0);
+        const incomplete = records.filter(r => !r.integrity).length;
+        const singleByte = records.filter(r => r.byteLen === 1).length;
+
+        return {
+          book, stats, vocab, records, active, topByFreq, topByLength,
+          totals: {
+            vocabSize: records.length,
+            learnedCount,
+            activeCount: active.length,
+            totalCt,
+            top100Coverage,
+            weightedBytes,
+            avgBytes,
+            maxBytes,
+            incomplete,
+            singleByte
+          },
+          charts: {
+            idFreq: binById(records, 180, 'ct', 'sum'),
+            idLen: binById(records, 150, 'byteLen', 'avgmax'),
+            freqLen: byByteLength(active),
+            rankFreq: topByFreq.slice(0, 260).map((r, i) => ({ x: i + 1, y: r.ct, token: r })),
+            learnedActive: learnedActivity(records),
+            scatter: sampleScatter(active, 1800)
+          }
+        };
+      }
+
+      function binById(records, count, field, mode) {
+        const maxId = records.length ? records[records.length - 1].id : 0;
+        const size = Math.max(1, Math.ceil((maxId + 1) / count));
+        const bins = Array.from({ length: Math.ceil((maxId + 1) / size) }, (_, i) => ({
+          x0: i * size,
+          x1: Math.min(maxId, (i + 1) * size - 1),
+          y: 0,
+          max: 0,
+          n: 0
+        }));
+
+        records.forEach(r => {
+          const bin = bins[Math.floor(r.id / size)];
+          if (!bin) return;
+          const value = r[field] || 0;
+          bin.y += value;
+          bin.max = Math.max(bin.max, value);
+          bin.n += 1;
+        });
+
+        return bins.map(bin => ({
+          ...bin,
+          x: (bin.x0 + bin.x1) / 2,
+          y: mode === 'avgmax' ? bin.y / Math.max(1, bin.n) : bin.y,
+          y2: bin.max
+        }));
+      }
+
+      function byByteLength(records) {
+        const map = new Map();
+        records.forEach(r => {
+          const item = map.get(r.byteLen) || { len: r.byteLen, count: 0, totalCt: 0, maxCt: 0, examples: [] };
+          item.count += 1;
+          item.totalCt += r.ct;
+          item.maxCt = Math.max(item.maxCt, r.ct);
+          if (item.examples.length < 4) item.examples.push(r);
+          map.set(r.byteLen, item);
+        });
+        return Array.from(map.values())
+          .sort((a, b) => a.len - b.len)
+          .map(item => ({ ...item, avgCt: item.totalCt / Math.max(1, item.count) }));
+      }
+
+      function learnedActivity(records) {
+        const groups = [
+          { key: 'base', label: 'Base bytes', count: 0, active: 0 },
+          { key: 'learned', label: 'Learned tokens', count: 0, active: 0 },
+          { key: 'unused', label: 'Zero frequency', count: 0, active: 0 }
+        ];
+        records.forEach(r => {
+          const g = r.ct === 0 ? groups[2] : (r.learned ? groups[1] : groups[0]);
+          g.count += 1;
+          if (r.ct > 0) g.active += 1;
+        });
+        return groups;
+      }
+
+      function sampleScatter(records, limit) {
+        if (records.length <= limit) return records;
+        const sorted = records.slice().sort((a, b) => b.ct - a.ct);
+        const keep = sorted.slice(0, 300);
+        const rest = sorted.slice(300);
+        const step = Math.max(1, Math.floor(rest.length / (limit - keep.length)));
+        for (let i = 0; i < rest.length && keep.length < limit; i += step) keep.push(rest[i]);
+        return keep;
+      }
+
+      function render(model) {
+        renderMetrics(model);
+        dashboard.innerHTML = chartPanels();
+
+        drawBarLine(document.getElementById('id-frequency'), model.charts.idFreq, {
+          xLabel: 'token id',
+          yLabel: 'frequency',
+          color: cssColor('--accent'),
+          formatY: compact,
+          tooltip: d => 'id ' + Math.round(d.x0) + '-' + Math.round(d.x1) + '<br>frequency ' + formatInt(d.y)
+        });
+
+        drawAvgMax(document.getElementById('id-byte-length'), model.charts.idLen, {
+          colorAvg: cssColor('--accent-2'),
+          colorMax: cssColor('--accent-3'),
+          tooltip: d => 'id ' + Math.round(d.x0) + '-' + Math.round(d.x1) + '<br>avg bytes ' + fmt(d.y, 1) + '<br>max bytes ' + fmt(d.y2, 0)
+        });
+
+        drawByteBars(document.getElementById('byte-frequency'), model.charts.freqLen, {
+          yKey: 'totalCt',
+          color: cssColor('--accent-4'),
+          formatY: compact,
+          tooltip: d => d.len + ' bytes<br>tokens ' + formatInt(d.count) + '<br>frequency ' + formatInt(d.totalCt)
+        });
+
+        drawByteBars(document.getElementById('byte-count'), model.charts.freqLen, {
+          yKey: 'count',
+          color: cssColor('--accent-2'),
+          formatY: compact,
+          tooltip: d => d.len + ' bytes<br>tokens ' + formatInt(d.count) + '<br>avg frequency ' + fmt(d.avgCt, 1)
+        });
+
+        drawRank(document.getElementById('rank-frequency'), model.charts.rankFreq, {
+          color: cssColor('--accent'),
+          tooltip: d => '#' + d.x + ' · id ' + d.token.id + '<br>' + escapeHtml(displayText(d.token.text)) + '<br>frequency ' + formatInt(d.y)
+        });
+
+        drawScatter(document.getElementById('freq-vs-length'), model.charts.scatter, {
+          tooltip: d => 'id ' + d.id + '<br>' + escapeHtml(displayText(d.text)) + '<br>bytes ' + d.byteLen + '<br>frequency ' + formatInt(d.ct)
+        });
+
+        drawDonut(document.getElementById('token-mix'), model.charts.learnedActive);
+        renderTopLength(model);
+      }
+
+      function chartPanels() {
+        return `
         <article class="panel span-8">
           <div class="panel-head">
             <div><h2>Token ID × Frequency</h2><p class="panel-desc">按 token id 区间聚合出现次数，简化观察训练后段词元是否仍有贡献。</p></div>
@@ -975,39 +1077,39 @@
           <div class="table-wrap"><table id="top-length"></table></div>
         </article>
       `;
-    }
+      }
 
-    function renderMetrics(model) {
-      const t = model.totals;
-      const metrics = [
-        ['Vocab Rows', formatInt(t.vocabSize), formatInt(t.learnedCount) + ' learned merges'],
-        ['Active Tokens', formatInt(t.activeCount), pct(t.activeCount / Math.max(1, t.vocabSize)) + ' of rows'],
-        ['Token Uses', compact(t.totalCt), formatInt(t.totalCt) + ' total'],
-        ['Top 100 Coverage', pct(t.top100Coverage), 'share of all token uses'],
-        ['Weighted Bytes', fmt(t.weightedBytes, 2), 'average bytes per observed token'],
-        ['Integrity Gaps', formatInt(t.incomplete), pct(t.incomplete / Math.max(1, t.vocabSize)) + ' incomplete']
-      ];
+      function renderMetrics(model) {
+        const t = model.totals;
+        const metrics = [
+          ['Vocab Rows', formatInt(t.vocabSize), formatInt(t.learnedCount) + ' learned merges'],
+          ['Active Tokens', formatInt(t.activeCount), pct(t.activeCount / Math.max(1, t.vocabSize)) + ' of rows'],
+          ['Token Uses', compact(t.totalCt), formatInt(t.totalCt) + ' total'],
+          ['Top 100 Coverage', pct(t.top100Coverage), 'share of all token uses'],
+          ['Weighted Bytes', fmt(t.weightedBytes, 2), 'average bytes per observed token'],
+          ['Integrity Gaps', formatInt(t.incomplete), pct(t.incomplete / Math.max(1, t.vocabSize)) + ' incomplete']
+        ];
 
-      metricGrid.innerHTML = metrics.map(([label, value, note]) => `
+        metricGrid.innerHTML = metrics.map(([label, value, note]) => `
         <article class="stat-card">
           <div class="stat-label">${label}</div>
           <div class="stat-value">${value}</div>
           <div class="stat-note">${note}</div>
         </article>
       `).join('');
-    }
+      }
 
-    function setProfile(book, model) {
-      document.getElementById('profile-book').textContent = book.name;
-      document.getElementById('profile-vocab').textContent = model ? compact(model.totals.vocabSize) : '-';
-      document.getElementById('profile-total').textContent = model ? compact(model.totals.totalCt) : '-';
-      document.getElementById('profile-max').textContent = model ? model.totals.maxBytes : '-';
-      document.getElementById('profile-used').textContent = model ? compact(model.totals.activeCount) : '-';
-    }
+      function setProfile(book, model) {
+        document.getElementById('profile-book').textContent = book.name;
+        document.getElementById('profile-vocab').textContent = model ? compact(model.totals.vocabSize) : '-';
+        document.getElementById('profile-total').textContent = model ? compact(model.totals.totalCt) : '-';
+        document.getElementById('profile-max').textContent = model ? model.totals.maxBytes : '-';
+        document.getElementById('profile-used').textContent = model ? compact(model.totals.activeCount) : '-';
+      }
 
-    function renderTopLength(model) {
-      const rows = model.topByLength.slice(0, 100);
-      document.getElementById('top-length').innerHTML = `
+      function renderTopLength(model) {
+        const rows = model.topByLength.slice(0, 100);
+        document.getElementById('top-length').innerHTML = `
         <colgroup>
           <col style="width:5%">
           <col style="width:9%">
@@ -1030,299 +1132,300 @@
           </tr>
         `).join('')}</tbody>
       `;
-    }
+      }
 
-    function drawBarLine(canvas, data, opts) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h, pad } = chart;
-      const maxY = Math.max(...data.map(d => d.y), 1);
-      axes(chart, { yMax: maxY, yTicks: 4, formatY: opts.formatY, xLabel: opts.xLabel, yLabel: opts.yLabel });
-      const plotW = w - pad.l - pad.r;
-      const plotH = h - pad.t - pad.b;
-      const bw = plotW / data.length;
-      ctx.fillStyle = opts.color;
-      data.forEach((d, i) => {
-        const x = pad.l + i * bw;
-        const bh = (d.y / maxY) * plotH;
-        ctx.globalAlpha = 0.74;
-        ctx.fillRect(x, pad.t + plotH - bh, Math.max(1, bw - 1), bh);
-      });
-      ctx.globalAlpha = 1;
-      attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.floor((mx - pad.l) / bw)))], opts.tooltip);
-    }
-
-    function drawAvgMax(canvas, data, opts) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h, pad } = chart;
-      const maxY = Math.max(...data.map(d => d.y2), 1);
-      const maxLog = Math.log10(Math.max(maxY, 10));
-      const minLog = 0;
-      axes(chart, { yMax: Math.pow(10, maxLog), yTicks: 4, formatY: v => fmt(v, 0), xLabel: 'token id', yLabel: 'bytes log', logY: true, minLog, maxLog });
-      const x = i => pad.l + (i / Math.max(1, data.length - 1)) * (w - pad.l - pad.r);
-      const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minLog) / Math.max(0.001, maxLog - minLog))) * (h - pad.t - pad.b);
-      line(ctx, data.map((d, i) => [x(i), y(d.y2)]), opts.colorMax, 2);
-      line(ctx, data.map((d, i) => [x(i), y(d.y)]), opts.colorAvg, 2);
-      attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.round((mx - pad.l) / Math.max(1, w - pad.l - pad.r) * (data.length - 1))))], opts.tooltip);
-    }
-
-    function drawByteBars(canvas, data, opts) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h, pad } = chart;
-      const maxY = Math.max(...data.map(d => d[opts.yKey]), 1);
-      axes(chart, { yMax: maxY, yTicks: 4, formatY: opts.formatY, xLabel: 'byte length', yLabel: opts.yKey === 'count' ? 'tokens' : 'frequency' });
-      const plotW = w - pad.l - pad.r;
-      const plotH = h - pad.t - pad.b;
-      const bw = plotW / data.length;
-      ctx.fillStyle = opts.color;
-      data.forEach((d, i) => {
-        const bh = (d[opts.yKey] / maxY) * plotH;
-        ctx.globalAlpha = 0.78;
-        ctx.fillRect(pad.l + i * bw + 1, pad.t + plotH - bh, Math.max(1, bw - 2), bh);
-      });
-      ctx.globalAlpha = 1;
-      attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.floor((mx - pad.l) / bw)))], opts.tooltip);
-    }
-
-    function drawRank(canvas, data, opts) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h, pad } = chart;
-      const maxY = Math.log10(Math.max(...data.map(d => d.y), 10));
-      const minY = Math.log10(Math.max(1, Math.min(...data.map(d => d.y))));
-      axes(chart, { yMax: Math.pow(10, maxY), yTicks: 4, formatY: compact, xLabel: 'rank', yLabel: 'frequency log', logY: true, minLog: minY, maxLog: maxY });
-      const x = i => pad.l + (i / Math.max(1, data.length - 1)) * (w - pad.l - pad.r);
-      const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minY) / Math.max(0.001, maxY - minY))) * (h - pad.t - pad.b);
-      line(ctx, data.map((d, i) => [x(i), y(d.y)]), opts.color, 2);
-      data.slice(0, 80).forEach((d, i) => dot(ctx, x(i), y(d.y), 2.3, opts.color, 0.86));
-      attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.round((mx - pad.l) / Math.max(1, w - pad.l - pad.r) * (data.length - 1))))], opts.tooltip);
-    }
-
-    function drawScatter(canvas, data, opts) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h, pad } = chart;
-      const maxX = Math.max(...data.map(d => d.byteLen), 1);
-      const maxLog = Math.log10(Math.max(...data.map(d => d.ct), 10));
-      const minLog = Math.log10(Math.max(1, Math.min(...data.map(d => d.ct))));
-      axes(chart, { yMax: Math.pow(10, maxLog), yTicks: 4, formatY: compact, xLabel: 'byte length', yLabel: 'frequency log', logY: true, minLog, maxLog });
-      const x = v => pad.l + (v / maxX) * (w - pad.l - pad.r);
-      const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minLog) / Math.max(0.001, maxLog - minLog))) * (h - pad.t - pad.b);
-      data.forEach(d => {
-        const size = d.byteLen >= 18 ? 3.2 : 2.1;
-        dot(ctx, x(d.byteLen), y(d.ct), size, d.byteLen >= 18 ? cssColor('--accent-4') : cssColor('--accent-3'), d.byteLen >= 18 ? 0.9 : 0.45);
-      });
-      attachTooltip(canvas, data, chart, (mx, my) => {
-        let best = null;
-        let bestD = Infinity;
-        data.forEach(d => {
-          const dx = x(d.byteLen) - mx;
-          const dy = y(d.ct) - my;
-          const dist = dx * dx + dy * dy;
-          if (dist < bestD) { bestD = dist; best = d; }
+      function drawBarLine(canvas, data, opts) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h, pad } = chart;
+        const maxY = Math.max(...data.map(d => d.y), 1);
+        axes(chart, { yMax: maxY, yTicks: 4, formatY: opts.formatY, xLabel: opts.xLabel, yLabel: opts.yLabel });
+        const plotW = w - pad.l - pad.r;
+        const plotH = h - pad.t - pad.b;
+        const bw = plotW / data.length;
+        ctx.fillStyle = opts.color;
+        data.forEach((d, i) => {
+          const x = pad.l + i * bw;
+          const bh = (d.y / maxY) * plotH;
+          ctx.globalAlpha = 0.74;
+          ctx.fillRect(x, pad.t + plotH - bh, Math.max(1, bw - 1), bh);
         });
-        return bestD < 420 ? best : null;
-      }, opts.tooltip);
-    }
+        ctx.globalAlpha = 1;
+        attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.floor((mx - pad.l) / bw)))], opts.tooltip);
+      }
 
-    function drawDonut(canvas, data) {
-      const chart = setupCanvas(canvas);
-      const { ctx, w, h } = chart;
-      const total = data.reduce((sum, d) => sum + d.count, 0);
-      const cx = w / 2;
-      const cy = h / 2 - 8;
-      const radius = Math.min(w, h) * 0.31;
-      const thick = Math.max(20, radius * 0.38);
-      const colors = [cssColor('--accent-2'), cssColor('--accent'), cssColor('--accent-3')];
-      let start = -Math.PI / 2;
-      data.forEach((d, i) => {
-        const angle = (d.count / Math.max(1, total)) * Math.PI * 2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, start, start + angle);
-        ctx.strokeStyle = colors[i];
-        ctx.lineWidth = thick;
-        ctx.lineCap = 'butt';
-        ctx.stroke();
-        start += angle;
-      });
-      ctx.fillStyle = textColor();
-      ctx.font = '700 ' + Math.round(radius * 0.36) + 'px "Noto Sans SC", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(compact(total), cx, cy - 5);
-      ctx.fillStyle = cssColor('--muted');
-      ctx.font = '12px "Noto Sans SC", sans-serif';
-      ctx.fillText('total rows', cx, cy + 17);
+      function drawAvgMax(canvas, data, opts) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h, pad } = chart;
+        const maxY = Math.max(...data.map(d => d.y2), 1);
+        const maxLog = Math.log10(Math.max(maxY, 10));
+        const minLog = 0;
+        axes(chart, { yMax: Math.pow(10, maxLog), yTicks: 4, formatY: v => fmt(v, 0), xLabel: 'token id', yLabel: 'bytes log', logY: true, minLog, maxLog });
+        const x = i => pad.l + (i / Math.max(1, data.length - 1)) * (w - pad.l - pad.r);
+        const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minLog) / Math.max(0.001, maxLog - minLog))) * (h - pad.t - pad.b);
+        line(ctx, data.map((d, i) => [x(i), y(d.y2)]), opts.colorMax, 2);
+        line(ctx, data.map((d, i) => [x(i), y(d.y)]), opts.colorAvg, 2);
+        attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.round((mx - pad.l) / Math.max(1, w - pad.l - pad.r) * (data.length - 1))))], opts.tooltip);
+      }
 
-      const y0 = cy + radius + 28;
-      data.forEach((d, i) => {
-        const x = 26 + (i % 2) * Math.max(150, w * 0.43);
-        const y = y0 + Math.floor(i / 2) * 24;
-        ctx.fillStyle = colors[i];
-        ctx.fillRect(x, y - 8, 10, 10);
+      function drawByteBars(canvas, data, opts) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h, pad } = chart;
+        const maxY = Math.max(...data.map(d => d[opts.yKey]), 1);
+        axes(chart, { yMax: maxY, yTicks: 4, formatY: opts.formatY, xLabel: 'byte length', yLabel: opts.yKey === 'count' ? 'tokens' : 'frequency' });
+        const plotW = w - pad.l - pad.r;
+        const plotH = h - pad.t - pad.b;
+        const bw = plotW / data.length;
+        ctx.fillStyle = opts.color;
+        data.forEach((d, i) => {
+          const bh = (d[opts.yKey] / maxY) * plotH;
+          ctx.globalAlpha = 0.78;
+          ctx.fillRect(pad.l + i * bw + 1, pad.t + plotH - bh, Math.max(1, bw - 2), bh);
+        });
+        ctx.globalAlpha = 1;
+        attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.floor((mx - pad.l) / bw)))], opts.tooltip);
+      }
+
+      function drawRank(canvas, data, opts) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h, pad } = chart;
+        const maxY = Math.log10(Math.max(...data.map(d => d.y), 10));
+        const minY = Math.log10(Math.max(1, Math.min(...data.map(d => d.y))));
+        axes(chart, { yMax: Math.pow(10, maxY), yTicks: 4, formatY: compact, xLabel: 'rank', yLabel: 'frequency log', logY: true, minLog: minY, maxLog: maxY });
+        const x = i => pad.l + (i / Math.max(1, data.length - 1)) * (w - pad.l - pad.r);
+        const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minY) / Math.max(0.001, maxY - minY))) * (h - pad.t - pad.b);
+        line(ctx, data.map((d, i) => [x(i), y(d.y)]), opts.color, 2);
+        data.slice(0, 80).forEach((d, i) => dot(ctx, x(i), y(d.y), 2.3, opts.color, 0.86));
+        attachTooltip(canvas, data, chart, (mx) => data[Math.max(0, Math.min(data.length - 1, Math.round((mx - pad.l) / Math.max(1, w - pad.l - pad.r) * (data.length - 1))))], opts.tooltip);
+      }
+
+      function drawScatter(canvas, data, opts) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h, pad } = chart;
+        const maxX = Math.max(...data.map(d => d.byteLen), 1);
+        const maxLog = Math.log10(Math.max(...data.map(d => d.ct), 10));
+        const minLog = Math.log10(Math.max(1, Math.min(...data.map(d => d.ct))));
+        axes(chart, { yMax: Math.pow(10, maxLog), yTicks: 4, formatY: compact, xLabel: 'byte length', yLabel: 'frequency log', logY: true, minLog, maxLog });
+        const x = v => pad.l + (v / maxX) * (w - pad.l - pad.r);
+        const y = v => pad.t + (1 - ((Math.log10(Math.max(1, v)) - minLog) / Math.max(0.001, maxLog - minLog))) * (h - pad.t - pad.b);
+        data.forEach(d => {
+          const size = d.byteLen >= 18 ? 3.2 : 2.1;
+          dot(ctx, x(d.byteLen), y(d.ct), size, d.byteLen >= 18 ? cssColor('--accent-4') : cssColor('--accent-3'), d.byteLen >= 18 ? 0.9 : 0.45);
+        });
+        attachTooltip(canvas, data, chart, (mx, my) => {
+          let best = null;
+          let bestD = Infinity;
+          data.forEach(d => {
+            const dx = x(d.byteLen) - mx;
+            const dy = y(d.ct) - my;
+            const dist = dx * dx + dy * dy;
+            if (dist < bestD) { bestD = dist; best = d; }
+          });
+          return bestD < 420 ? best : null;
+        }, opts.tooltip);
+      }
+
+      function drawDonut(canvas, data) {
+        const chart = setupCanvas(canvas);
+        const { ctx, w, h } = chart;
+        const total = data.reduce((sum, d) => sum + d.count, 0);
+        const cx = w / 2;
+        const cy = h / 2 - 8;
+        const radius = Math.min(w, h) * 0.31;
+        const thick = Math.max(20, radius * 0.38);
+        const colors = [cssColor('--accent-2'), cssColor('--accent'), cssColor('--accent-3')];
+        let start = -Math.PI / 2;
+        data.forEach((d, i) => {
+          const angle = (d.count / Math.max(1, total)) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, start, start + angle);
+          ctx.strokeStyle = colors[i];
+          ctx.lineWidth = thick;
+          ctx.lineCap = 'butt';
+          ctx.stroke();
+          start += angle;
+        });
         ctx.fillStyle = textColor();
+        ctx.font = '700 ' + Math.round(radius * 0.36) + 'px "Noto Sans SC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(compact(total), cx, cy - 5);
+        ctx.fillStyle = cssColor('--muted');
         ctx.font = '12px "Noto Sans SC", sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(d.label + ' ' + compact(d.count), x + 16, y - 3);
-      });
+        ctx.fillText('total rows', cx, cy + 17);
 
-      attachTooltip(canvas, data, chart, () => null, () => '');
-    }
+        const y0 = cy + radius + 28;
+        data.forEach((d, i) => {
+          const x = 26 + (i % 2) * Math.max(150, w * 0.43);
+          const y = y0 + Math.floor(i / 2) * 24;
+          ctx.fillStyle = colors[i];
+          ctx.fillRect(x, y - 8, 10, 10);
+          ctx.fillStyle = textColor();
+          ctx.font = '12px "Noto Sans SC", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText(d.label + ' ' + compact(d.count), x + 16, y - 3);
+        });
 
-    function setupCanvas(canvas) {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      const w = Math.max(320, Math.floor(rect.width));
-      const h = Math.max(220, Math.floor(rect.height));
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      const ctx = canvas.getContext('2d');
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, w, h);
-      return { ctx, w, h, pad: { l: 52, r: 18, t: 18, b: 42 } };
-    }
+        attachTooltip(canvas, data, chart, () => null, () => '');
+      }
 
-    function axes(chart, opts) {
-      const { ctx, w, h, pad } = chart;
-      const plotW = w - pad.l - pad.r;
-      const plotH = h - pad.t - pad.b;
-      ctx.strokeStyle = cssColor('--line');
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(pad.l, pad.t);
-      ctx.lineTo(pad.l, pad.t + plotH);
-      ctx.lineTo(pad.l + plotW, pad.t + plotH);
-      ctx.stroke();
+      function setupCanvas(canvas) {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(320, Math.floor(rect.width));
+        const h = Math.max(220, Math.floor(rect.height));
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        return { ctx, w, h, pad: { l: 52, r: 18, t: 18, b: 42 } };
+      }
 
-      ctx.fillStyle = cssColor('--muted');
-      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      for (let i = 0; i <= opts.yTicks; i++) {
-        const ratio = i / opts.yTicks;
-        const y = pad.t + plotH - ratio * plotH;
-        let value;
-        if (opts.logY) {
-          const log = opts.minLog + ratio * (opts.maxLog - opts.minLog);
-          value = Math.pow(10, log);
-        } else {
-          value = ratio * opts.yMax;
-        }
-        ctx.fillText(opts.formatY(value), pad.l - 8, y);
+      function axes(chart, opts) {
+        const { ctx, w, h, pad } = chart;
+        const plotW = w - pad.l - pad.r;
+        const plotH = h - pad.t - pad.b;
         ctx.strokeStyle = cssColor('--line');
-        ctx.globalAlpha = 0.45;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(pad.l, y);
-        ctx.lineTo(pad.l + plotW, y);
+        ctx.moveTo(pad.l, pad.t);
+        ctx.lineTo(pad.l, pad.t + plotH);
+        ctx.lineTo(pad.l + plotW, pad.t + plotH);
         ctx.stroke();
+
+        ctx.fillStyle = cssColor('--muted');
+        ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let i = 0; i <= opts.yTicks; i++) {
+          const ratio = i / opts.yTicks;
+          const y = pad.t + plotH - ratio * plotH;
+          let value;
+          if (opts.logY) {
+            const log = opts.minLog + ratio * (opts.maxLog - opts.minLog);
+            value = Math.pow(10, log);
+          } else {
+            value = ratio * opts.yMax;
+          }
+          ctx.fillText(opts.formatY(value), pad.l - 8, y);
+          ctx.strokeStyle = cssColor('--line');
+          ctx.globalAlpha = 0.45;
+          ctx.beginPath();
+          ctx.moveTo(pad.l, y);
+          ctx.lineTo(pad.l + plotW, y);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(opts.xLabel || '', pad.l + plotW / 2, h - 12);
+        ctx.save();
+        ctx.translate(14, pad.t + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(opts.yLabel || '', 0, 0);
+        ctx.restore();
+      }
+
+      function line(ctx, points, color, width) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+        ctx.stroke();
+      }
+
+      function dot(ctx, x, y, r, color, alpha) {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
         ctx.globalAlpha = 1;
       }
 
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(opts.xLabel || '', pad.l + plotW / 2, h - 12);
-      ctx.save();
-      ctx.translate(14, pad.t + plotH / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillText(opts.yLabel || '', 0, 0);
-      ctx.restore();
-    }
+      function attachTooltip(canvas, data, chart, pick, renderTip) {
+        canvas.onmousemove = event => {
+          const rect = canvas.getBoundingClientRect();
+          const mx = event.clientX - rect.left;
+          const my = event.clientY - rect.top;
+          const d = pick(mx, my);
+          if (!d) {
+            tip.style.display = 'none';
+            return;
+          }
+          tip.innerHTML = renderTip(d);
+          tip.style.display = 'block';
+          const left = Math.min(window.innerWidth - 300, event.clientX + 14);
+          tip.style.left = Math.max(10, left) + 'px';
+          tip.style.top = Math.max(10, event.clientY + 14) + 'px';
+        };
+        canvas.onmouseleave = () => { tip.style.display = 'none'; };
+      }
 
-    function line(ctx, points, color, width) {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
-      ctx.stroke();
-    }
+      function displayText(text) {
+        if (text === '\n') return '↵ newline';
+        if (text === '\t') return '⇥ tab';
+        if (text === ' ') return '␠ space';
+        if (!text) return '∅';
+        return Array.from(text).map(ch => {
+          const code = ch.codePointAt(0);
+          if (code < 32 || code === 127) return 'U+' + code.toString(16).toUpperCase().padStart(4, '0');
+          return ch;
+        }).join('');
+      }
 
-    function dot(ctx, x, y, r, color, alpha) {
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
+      function cssColor(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
 
-    function attachTooltip(canvas, data, chart, pick, renderTip) {
-      canvas.onmousemove = event => {
-        const rect = canvas.getBoundingClientRect();
-        const mx = event.clientX - rect.left;
-        const my = event.clientY - rect.top;
-        const d = pick(mx, my);
-        if (!d) {
-          tip.style.display = 'none';
-          return;
-        }
-        tip.innerHTML = renderTip(d);
-        tip.style.display = 'block';
-        const left = Math.min(window.innerWidth - 300, event.clientX + 14);
-        tip.style.left = Math.max(10, left) + 'px';
-        tip.style.top = Math.max(10, event.clientY + 14) + 'px';
-      };
-      canvas.onmouseleave = () => { tip.style.display = 'none'; };
-    }
+      function textColor() {
+        return document.documentElement.dataset.theme === 'dark' ? COLORS.darkText : COLORS.lightText;
+      }
 
-    function displayText(text) {
-      if (text === '\n') return '↵ newline';
-      if (text === '\t') return '⇥ tab';
-      if (text === ' ') return '␠ space';
-      if (!text) return '∅';
-      return Array.from(text).map(ch => {
-        const code = ch.codePointAt(0);
-        if (code < 32 || code === 127) return 'U+' + code.toString(16).toUpperCase().padStart(4, '0');
-        return ch;
-      }).join('');
-    }
+      function formatInt(n) {
+        return Math.round(n).toLocaleString('en-US');
+      }
 
-    function cssColor(name) {
-      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    }
+      function compact(n) {
+        return Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: n < 10 ? 1 : 0 }).format(n || 0);
+      }
 
-    function textColor() {
-      return document.documentElement.dataset.theme === 'dark' ? COLORS.darkText : COLORS.lightText;
-    }
+      function pct(n) {
+        return Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(n || 0);
+      }
 
-    function formatInt(n) {
-      return Math.round(n).toLocaleString('en-US');
-    }
+      function fmt(n, digits) {
+        return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits });
+      }
 
-    function compact(n) {
-      return Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: n < 10 ? 1 : 0 }).format(n || 0);
-    }
+      function hexByte(n) {
+        return Number(n).toString(16).toUpperCase().padStart(2, '0');
+      }
 
-    function pct(n) {
-      return Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(n || 0);
-    }
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, ch => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        })[ch]);
+      }
 
-    function fmt(n, digits) {
-      return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits });
-    }
+      function debounce(fn, ms) {
+        let timer = null;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn(...args), ms);
+        };
+      }
 
-    function hexByte(n) {
-      return Number(n).toString(16).toUpperCase().padStart(2, '0');
-    }
-
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, ch => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      })[ch]);
-    }
-
-    function debounce(fn, ms) {
-      let timer = null;
-      return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => fn(...args), ms);
-      };
-    }
-
-    init();
-  })();
+      init();
+    })();
   </script>
 </body>
+
 </html>

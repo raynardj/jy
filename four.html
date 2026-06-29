@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,45 +8,49 @@
   <meta name="description" content="四大名著原文阅读器">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
     :root {
-      --bg:            #faf8f5;
-      --text:          #2c2416;
-      --muted:         #9a8a78;
-      --bar-bg:        rgba(250, 248, 245, 0.9);
-      --bar-border:    rgba(0, 0, 0, 0.09);
-      --accent:        #8b3a1a;
-      --ctrl-bg:       rgba(255, 255, 255, 0.72);
-      --ctrl-border:   rgba(0, 0, 0, 0.14);
-      --focus-ring:    rgba(139, 58, 26, 0.22);
-      --shadow-bar:    0 2px 20px rgba(0, 0, 0, 0.07);
-      --shadow-ctrl:   0 1px 3px rgba(0, 0, 0, 0.07);
-      --divider:       rgba(0, 0, 0, 0.08);
-      --transition:    0.25s ease;
-      --reader-font:   'Noto Serif SC', serif;
+      --bg: #faf8f5;
+      --text: #2c2416;
+      --muted: #9a8a78;
+      --bar-bg: rgba(250, 248, 245, 0.9);
+      --bar-border: rgba(0, 0, 0, 0.09);
+      --accent: #8b3a1a;
+      --ctrl-bg: rgba(255, 255, 255, 0.72);
+      --ctrl-border: rgba(0, 0, 0, 0.14);
+      --focus-ring: rgba(139, 58, 26, 0.22);
+      --shadow-bar: 0 2px 20px rgba(0, 0, 0, 0.07);
+      --shadow-ctrl: 0 1px 3px rgba(0, 0, 0, 0.07);
+      --divider: rgba(0, 0, 0, 0.08);
+      --transition: 0.25s ease;
+      --reader-font: 'Noto Serif SC', serif;
     }
 
     [data-theme="dark"] {
-      --bg:            #181511;
-      --text:          #e5d9c0;
-      --muted:         #7a6e5e;
-      --bar-bg:        rgba(20, 18, 14, 0.92);
-      --bar-border:    rgba(255, 255, 255, 0.07);
-      --accent:        #d08040;
-      --ctrl-bg:       rgba(40, 36, 28, 0.88);
-      --ctrl-border:   rgba(255, 255, 255, 0.11);
-      --focus-ring:    rgba(208, 128, 64, 0.28);
-      --shadow-bar:    0 2px 20px rgba(0, 0, 0, 0.55);
-      --shadow-ctrl:   0 1px 4px rgba(0, 0, 0, 0.4);
-      --divider:       rgba(255, 255, 255, 0.07);
-      --transition:    0.25s ease;
+      --bg: #181511;
+      --text: #e5d9c0;
+      --muted: #7a6e5e;
+      --bar-bg: rgba(20, 18, 14, 0.92);
+      --bar-border: rgba(255, 255, 255, 0.07);
+      --accent: #d08040;
+      --ctrl-bg: rgba(40, 36, 28, 0.88);
+      --ctrl-border: rgba(255, 255, 255, 0.11);
+      --focus-ring: rgba(208, 128, 64, 0.28);
+      --shadow-bar: 0 2px 20px rgba(0, 0, 0, 0.55);
+      --shadow-ctrl: 0 1px 4px rgba(0, 0, 0, 0.4);
+      --divider: rgba(255, 255, 255, 0.07);
+      --transition: 0.25s ease;
     }
 
     html {
@@ -130,13 +135,13 @@
       line-height: 1;
       box-shadow: var(--shadow-ctrl);
       transition: border-color var(--transition), box-shadow var(--transition),
-                  transform 0.15s ease, color var(--transition), background-color var(--transition);
+        transform 0.15s ease, color var(--transition), background-color var(--transition);
     }
 
     .page-links a:hover {
       border-color: var(--accent);
       transform: translateY(-1px);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     }
 
     /* ── Control panel (collapsible dropdown) ────── */
@@ -153,7 +158,7 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.28s ease, box-shadow var(--transition),
-                  background var(--transition), border-color var(--transition);
+        background var(--transition), border-color var(--transition);
       z-index: 290;
     }
 
@@ -179,13 +184,19 @@
       line-height: 1;
       box-shadow: var(--shadow-ctrl);
       transition: background-color var(--transition), border-color var(--transition),
-                  box-shadow var(--transition), transform 0.15s ease;
+        box-shadow var(--transition), transform 0.15s ease;
       user-select: none;
       color: inherit;
     }
 
-    #panel-btn:hover  { transform: scale(1.1); box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
-    #panel-btn:active { transform: scale(0.94); }
+    #panel-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    #panel-btn:active {
+      transform: scale(0.94);
+    }
 
     /* ── Controls (select + button) ──────────────── */
     select {
@@ -206,7 +217,7 @@
       max-width: 175px;
       box-shadow: var(--shadow-ctrl);
       transition: border-color var(--transition), box-shadow var(--transition),
-                  background-color var(--transition), color var(--transition);
+        background-color var(--transition), color var(--transition);
     }
 
     [data-theme="dark"] select {
@@ -218,10 +229,16 @@
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
-    #chap-sel { max-width: 250px; }
-    #font-sel { max-width: 120px; }
+    #chap-sel {
+      max-width: 250px;
+    }
 
-    #theme-btn, #mode-btn {
+    #font-sel {
+      max-width: 120px;
+    }
+
+    #theme-btn,
+    #mode-btn {
       background: var(--ctrl-bg);
       border: 1px solid var(--ctrl-border);
       border-radius: 7px;
@@ -231,15 +248,21 @@
       line-height: 1;
       box-shadow: var(--shadow-ctrl);
       transition: background-color var(--transition), border-color var(--transition),
-                  box-shadow var(--transition), transform 0.15s ease;
+        box-shadow var(--transition), transform 0.15s ease;
       user-select: none;
       color: inherit;
     }
 
-    #theme-btn:hover:not(:disabled), #mode-btn:hover:not(:disabled) {
-      transform: scale(1.1); box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    #theme-btn:hover:not(:disabled),
+    #mode-btn:hover:not(:disabled) {
+      transform: scale(1.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     }
-    #theme-btn:active, #mode-btn:active { transform: scale(0.94); }
+
+    #theme-btn:active,
+    #mode-btn:active {
+      transform: scale(0.94);
+    }
 
     #mode-btn {
       font-size: 0.8rem;
@@ -289,7 +312,9 @@
       transition: opacity 0.3s ease;
     }
 
-    #reader.fading { opacity: 0; }
+    #reader.fading {
+      opacity: 0;
+    }
 
     #reader p {
       font-family: var(--reader-font), "PingFang SC", "STSong", "SimSun", serif;
@@ -336,14 +361,14 @@
       cursor: pointer;
       box-shadow: var(--shadow-ctrl);
       transition: background-color var(--transition), border-color var(--transition),
-                  color var(--transition), transform 0.15s ease, box-shadow 0.15s ease;
+        color var(--transition), transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .chap-nav button:hover:not(:disabled) {
       border-color: var(--accent);
       color: var(--accent);
       transform: translateY(-1px);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     }
 
     .chap-nav button:disabled {
@@ -379,7 +404,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* ── Mobile ───────────────────────────────────── */
@@ -394,8 +421,13 @@
         padding: 0.27rem 1.5rem 0.27rem 0.5rem;
       }
 
-      #chap-sel { max-width: 155px; }
-      #font-sel { max-width: 100px; }
+      #chap-sel {
+        max-width: 155px;
+      }
+
+      #font-sel {
+        max-width: 100px;
+      }
 
       .panel-inner {
         padding: 0.65rem 0.9rem 0.8rem;
@@ -422,6 +454,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="progress-bar"></div>
@@ -431,7 +464,7 @@
       <span class="bar-logo">四大名著</span>
       <nav class="page-links" aria-label="页面导航">
         <a href="index.html">词元树</a>
-        <a href="jy.html">金庸阅读</a>
+        <a href="jy.html">金庸</a>
         <a href="stats.html">统计</a>
       </nav>
     </div>
@@ -442,7 +475,7 @@
       <select id="book-sel" aria-label="选择书目"></select>
       <select id="chap-sel" aria-label="选择章节"></select>
       <select id="font-sel" aria-label="选择字体"></select>
-      <button id="mode-btn"  aria-label="切换词元/阅读模式">阅读</button>
+      <button id="mode-btn" aria-label="切换词元/阅读模式">阅读</button>
       <button id="theme-btn" aria-label="切换主题">☀</button>
     </div>
   </div>
@@ -462,573 +495,574 @@
   </main>
 
   <script>
-(function () {
-  'use strict';
+    (function () {
+      'use strict';
 
-  /* ── Constants ──────────────────────────────── */
-  const LS = {
-    book:    'four_book',
-    chapter: 'four_chapter',
-    scroll:  'four_scroll',
-    font:    'four_font',
-    theme:   'four_theme',
-    mode:    'four_mode',
-  };
+      /* ── Constants ──────────────────────────────── */
+      const LS = {
+        book: 'four_book',
+        chapter: 'four_chapter',
+        scroll: 'four_scroll',
+        font: 'four_font',
+        theme: 'four_theme',
+        mode: 'four_mode',
+      };
 
-  const BOOKS = [
-    { key: 'xyj', name: '西游记',   meta: 'four/xyj/meta.json' },
-    { key: 'wm',  name: '水浒传',   meta: 'four/wm/meta.json'  },
-    { key: 'rtk', name: '三国演义', meta: 'four/rtk/meta.json' },
-    { key: 'drc', name: '红楼梦',   meta: 'four/drc/meta.json' },
-  ];
+      const BOOKS = [
+        { key: 'xyj', name: '西游记', meta: 'four/xyj/meta.json' },
+        { key: 'wm', name: '水浒传', meta: 'four/wm/meta.json' },
+        { key: 'rtk', name: '三国演义', meta: 'four/rtk/meta.json' },
+        { key: 'drc', name: '红楼梦', meta: 'four/drc/meta.json' },
+      ];
 
-  const FONTS = [
-    { label: '思源宋体',  value: "'Noto Serif SC', serif" },
-    { label: '思源黑体',  value: "'Noto Sans SC', sans-serif" },
-    { label: '小薇体',    value: "'ZCOOL XiaoWei', serif" },
-    { label: '马善政楷书', value: "'Ma Shan Zheng', cursive" },
-    { label: '青柯黄油体', value: "'ZCOOL QingKe HuangYou', cursive" },
-  ];
+      const FONTS = [
+        { label: '思源宋体', value: "'Noto Serif SC', serif" },
+        { label: '思源黑体', value: "'Noto Sans SC', sans-serif" },
+        { label: '小薇体', value: "'ZCOOL XiaoWei', serif" },
+        { label: '马善政楷书', value: "'Ma Shan Zheng', cursive" },
+        { label: '青柯黄油体', value: "'ZCOOL QingKe HuangYou', cursive" },
+      ];
 
-  const COLORS = [
-    'rgba(220,80,60,.8)',
-    'rgba(60,185,195,.8)',
-    'rgba(170,100,220,.8)',
-    'rgba(80,190,100,.8)',
-    'rgba(230,160,40,.8)',
-    'rgba(60,130,230,.8)',
-  ];
+      const COLORS = [
+        'rgba(220,80,60,.8)',
+        'rgba(60,185,195,.8)',
+        'rgba(170,100,220,.8)',
+        'rgba(80,190,100,.8)',
+        'rgba(230,160,40,.8)',
+        'rgba(60,130,230,.8)',
+      ];
 
-  /* ── DOM refs ───────────────────────────────── */
-  const bookSel     = document.getElementById('book-sel');
-  const chapSel     = document.getElementById('chap-sel');
-  const fontSel     = document.getElementById('font-sel');
-  const themeBtn    = document.getElementById('theme-btn');
-  const reader      = document.getElementById('reader');
-  const chapTitle   = document.getElementById('chap-title');
-  const progressBar = document.getElementById('progress-bar');
-  const chapNav     = document.getElementById('chap-nav');
-  const prevBtn     = document.getElementById('prev-btn');
-  const nextBtn     = document.getElementById('next-btn');
-  const navLabel    = document.getElementById('nav-label');
-  const mainEl      = document.getElementById('main');
-  const topbar      = document.getElementById('topbar');
-  const panelBtn    = document.getElementById('panel-btn');
-  const controlPanel = document.getElementById('control-panel');
-  const modeBtn     = document.getElementById('mode-btn');
+      /* ── DOM refs ───────────────────────────────── */
+      const bookSel = document.getElementById('book-sel');
+      const chapSel = document.getElementById('chap-sel');
+      const fontSel = document.getElementById('font-sel');
+      const themeBtn = document.getElementById('theme-btn');
+      const reader = document.getElementById('reader');
+      const chapTitle = document.getElementById('chap-title');
+      const progressBar = document.getElementById('progress-bar');
+      const chapNav = document.getElementById('chap-nav');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const navLabel = document.getElementById('nav-label');
+      const mainEl = document.getElementById('main');
+      const topbar = document.getElementById('topbar');
+      const panelBtn = document.getElementById('panel-btn');
+      const controlPanel = document.getElementById('control-panel');
+      const modeBtn = document.getElementById('mode-btn');
 
-  /* ── State ──────────────────────────────────── */
-  let metadata     = null;
-  let loading      = false;
-  let tokenMode    = true;
-  let vocabCache   = {};
-  let chapterCache = {};
+      /* ── State ──────────────────────────────────── */
+      let metadata = null;
+      let loading = false;
+      let tokenMode = true;
+      let vocabCache = {};
+      let chapterCache = {};
 
-  /* ── Storage ────────────────────────────────── */
-  function lsGet(k)    { try { return localStorage.getItem(k); }    catch(e) { return null; } }
-  function lsSet(k, v) { try { localStorage.setItem(k, String(v)); } catch(e) {} }
+      /* ── Storage ────────────────────────────────── */
+      function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      function lsSet(k, v) { try { localStorage.setItem(k, String(v)); } catch (e) { } }
 
-  /* ── Build font selector ────────────────────── */
-  FONTS.forEach(f => {
-    const opt = document.createElement('option');
-    opt.value       = f.value;
-    opt.textContent = f.label;
-    fontSel.appendChild(opt);
-  });
-
-  /* ── Apply preferences ──────────────────────── */
-  function applyFont(val) {
-    document.documentElement.style.setProperty('--reader-font', val);
-    if (fontSel.value !== val) fontSel.value = val;
-  }
-
-  function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    themeBtn.textContent = t === 'dark' ? '☀' : '🌙';
-  }
-
-  /* ── Control panel toggle ───────────────────── */
-  function openPanel() {
-    controlPanel.classList.add('panel-open');
-    panelBtn.setAttribute('aria-expanded', 'true');
-    controlPanel.setAttribute('aria-hidden', 'false');
-    panelBtn.textContent = '✕';
-    setTimeout(adjustPadding, 30);
-  }
-
-  function closePanel() {
-    controlPanel.classList.remove('panel-open');
-    panelBtn.setAttribute('aria-expanded', 'false');
-    controlPanel.setAttribute('aria-hidden', 'true');
-    panelBtn.textContent = '⚙';
-    setTimeout(adjustPadding, 30);
-  }
-
-  function togglePanel() {
-    if (controlPanel.classList.contains('panel-open')) {
-      closePanel();
-    } else {
-      openPanel();
-    }
-  }
-
-  /* ── Layout ─────────────────────────────────── */
-  function adjustPadding() {
-    mainEl.style.paddingTop = (topbar.offsetHeight + controlPanel.offsetHeight + 28) + 'px';
-  }
-
-  /* ── Progress bar ───────────────────────────── */
-  function updateProgress() {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
-    progressBar.style.width = pct + '%';
-  }
-
-  /* ── Debounce ───────────────────────────────── */
-  function debounce(fn, ms) {
-    let t;
-    return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-  }
-
-  const onScrollSave = debounce(() => lsSet(LS.scroll, window.scrollY), 300);
-
-  window.addEventListener('scroll', () => {
-    updateProgress();
-    onScrollSave();
-  }, { passive: true });
-
-  window.addEventListener('resize', debounce(adjustPadding, 80));
-
-  /* ── Book key helper ────────────────────────── */
-  function getBookKey(bookName) {
-    const b = BOOKS.find(b => b.name === bookName);
-    return b ? b.key : bookName;
-  }
-
-  /* ── BPE ────────────────────────────────────── */
-  function buildPairToCode(vocab) {
-    const map = new Map();
-    for (const [id, pair] of Object.entries(vocab)) {
-      map.set(pair[0] + ',' + pair[1], parseInt(id, 10));
-    }
-    return map;
-  }
-
-  function bpeEncode(text, pairToCode) {
-    let codes = Array.from(new TextEncoder().encode(text));
-    if (codes.length < 2) return codes;
-    while (codes.length > 1) {
-      let minToken = Infinity, minPair = null;
-      for (let i = 0; i < codes.length - 1; i++) {
-        const tok = pairToCode.get(codes[i] + ',' + codes[i + 1]);
-        if (tok !== undefined && tok < minToken) {
-          minToken = tok;
-          minPair  = [codes[i], codes[i + 1]];
-        }
-      }
-      if (!minPair) break;
-      const next = [];
-      let i = 0;
-      while (i < codes.length) {
-        if (i < codes.length - 1 && codes[i] === minPair[0] && codes[i + 1] === minPair[1]) {
-          next.push(minToken);
-          i += 2;
-        } else {
-          next.push(codes[i]);
-          i++;
-        }
-      }
-      codes = next;
-    }
-    return codes;
-  }
-
-  function bpeDecodeBytes(token, vocab) {
-    let result = [token];
-    while (true) {
-      let maxTok = -1;
-      for (const t of result) {
-        if (vocab[t] !== undefined && t > maxTok) maxTok = t;
-      }
-      if (maxTok === -1) break;
-      const [c1, c2] = vocab[maxTok];
-      const next = [];
-      for (const t of result) {
-        if (t === maxTok) { next.push(c1); next.push(c2); }
-        else               { next.push(t); }
-      }
-      result = next;
-    }
-    return result;
-  }
-
-  function bpeDecode(token, vocab) {
-    return new TextDecoder('utf-8', { fatal: false }).decode(
-      Uint8Array.from(bpeDecodeBytes(token, vocab))
-    );
-  }
-
-  function byTokenDecode(tokens, vocab) {
-    return tokens.map(t => bpeDecode(t, vocab));
-  }
-
-  // Returns true only when `bytes` ends on a UTF-8 character boundary
-  function isUtf8Complete(bytes) {
-    let i = 0;
-    while (i < bytes.length) {
-      const b = bytes[i];
-      const len = b < 0x80 ? 1 : b < 0xC0 ? -1 : b < 0xE0 ? 2 : b < 0xF0 ? 3 : 4;
-      if (len < 0 || i + len > bytes.length) return false;
-      i += len;
-    }
-    return i === bytes.length;
-  }
-
-  // Groups tokens so each fragment contains only complete UTF-8 characters.
-  // Adjacent tokens whose bytes straddle a character boundary are merged.
-  function groupByCharBoundary(tokens, vocab) {
-    const frags = [];
-    let pending = [];
-    for (const tok of tokens) {
-      for (const b of bpeDecodeBytes(tok, vocab)) pending.push(b);
-      if (isUtf8Complete(pending)) {
-        frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
-        pending = [];
-      }
-    }
-    if (pending.length) {
-      frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
-    }
-    return frags;
-  }
-
-  async function loadVocab(bookKey) {
-    if (vocabCache[bookKey]) return vocabCache[bookKey];
-    const resp = await fetch('tokenizers/' + bookKey + '/vocab.json');
-    if (!resp.ok) throw new Error('Vocab HTTP ' + resp.status);
-    const vocab = await resp.json();
-    const pairToCode = buildPairToCode(vocab);
-    vocabCache[bookKey] = { vocab, pairToCode };
-    return vocabCache[bookKey];
-  }
-
-  function renderTokenParagraph(text, vocab, pairToCode, colorRef) {
-    const p = document.createElement('p');
-    const lines = text.split('\n');
-    lines.forEach((line, li) => {
-      if (li > 0) p.appendChild(document.createElement('br'));
-      if (!line.trim()) return;
-      // Split at sentence-ending punctuation so BPE runs on short chunks (performance)
-      const sentences = line.match(/[^。！？；]+[。！？；]?/g) || [line];
-      for (const sent of sentences) {
-        if (!sent.trim()) continue;
-        const tokens = bpeEncode(sent, pairToCode);
-        const frags  = groupByCharBoundary(tokens, vocab);
-        frags.forEach(frag => {
-          const span  = document.createElement('span');
-          span.textContent = frag;
-          const color = COLORS[colorRef.idx % COLORS.length];
-          span.style.textDecoration      = 'underline overline';
-          span.style.textDecorationColor = color;
-          span.style.textDecorationThickness = '1.5px';
-          colorRef.idx++;
-          p.appendChild(span);
-        });
-      }
-    });
-    return p;
-  }
-
-  /* ── Text parsing ───────────────────────────── */
-  function parseText(raw) {
-    const lines = raw.split('\n');
-    let heading = '';
-    const content = [];
-
-    for (const line of lines) {
-      if (line.startsWith('# chapter:')) {
-        heading = line.slice('# chapter:'.length).trim();
-        continue;
-      }
-      if (line.startsWith('#')) continue;
-      content.push(line);
-    }
-
-    // Group lines into paragraphs by blank-line separation
-    const paragraphs = [];
-    let buf = [];
-    for (const line of content) {
-      if (line.trim() === '') {
-        if (buf.length) {
-          paragraphs.push(buf.map(l => l.trim()).join('\n'));
-          buf = [];
-        }
-      } else {
-        buf.push(line);
-      }
-    }
-    if (buf.length) paragraphs.push(buf.map(l => l.trim()).join('\n'));
-
-    return {
-      heading,
-      paragraphs: paragraphs.filter(p => p.length > 0),
-    };
-  }
-
-  /* ── Chapter list helpers ───────────────────── */
-  function chapNums(bookName) {
-    if (!metadata || !metadata[bookName]) return [];
-    return Object.keys(metadata[bookName].chapters)
-      .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
-  }
-
-  /* ── Update prev/next buttons ───────────────── */
-  function updateNavButtons(bookName, chapNum) {
-    const nums = chapNums(bookName);
-    const idx  = nums.indexOf(String(chapNum));
-    prevBtn.disabled = idx <= 0;
-    nextBtn.disabled = idx < 0 || idx >= nums.length - 1;
-    navLabel.textContent = idx >= 0 ? `第 ${idx + 1} / ${nums.length} 回` : '';
-    chapNav.hidden = false;
-  }
-
-  /* ── Load and render a chapter ──────────────── */
-  async function loadChapter(bookName, chapNum, restoreScroll) {
-    if (loading) return;
-    const book     = metadata && metadata[bookName];
-    const chapData = book && book.chapters[String(chapNum)];
-    if (!chapData) return;
-
-    loading = true;
-    reader.classList.add('fading');
-
-    const cacheKey = getBookKey(bookName) + ':' + chapNum;
-
-    // Show spinner after a brief delay so instant loads feel fast
-    const spinnerTimer = setTimeout(() => {
-      reader.innerHTML = '<div class="spinner"></div>';
-    }, 120);
-
-    try {
-      let raw = chapterCache[cacheKey];
-      if (!raw) {
-        const resp = await fetch('four/' + chapData.page);
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        raw = await resp.text();
-        chapterCache[cacheKey] = raw;
-      }
-
-      const { heading, paragraphs } = parseText(raw);
-
-      let vocabData = null;
-      if (tokenMode) {
-        vocabData = await loadVocab(getBookKey(bookName));
-      }
-
-      clearTimeout(spinnerTimer);
-
-      chapTitle.textContent = heading || chapData.chapter;
-
-      const frag     = document.createDocumentFragment();
-      const colorRef = { idx: 0 };
-      paragraphs.forEach(text => {
-        let p;
-        if (tokenMode && vocabData) {
-          p = renderTokenParagraph(text, vocabData.vocab, vocabData.pairToCode, colorRef);
-        } else {
-          p = document.createElement('p');
-          text.split('\n').forEach((part, i) => {
-            if (i > 0) p.appendChild(document.createElement('br'));
-            p.appendChild(document.createTextNode(part));
-          });
-        }
-        frag.appendChild(p);
+      /* ── Build font selector ────────────────────── */
+      FONTS.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f.value;
+        opt.textContent = f.label;
+        fontSel.appendChild(opt);
       });
 
-      reader.innerHTML = '';
-      reader.appendChild(frag);
+      /* ── Apply preferences ──────────────────────── */
+      function applyFont(val) {
+        document.documentElement.style.setProperty('--reader-font', val);
+        if (fontSel.value !== val) fontSel.value = val;
+      }
 
-      lsSet(LS.book,    bookName);
-      lsSet(LS.chapter, chapNum);
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        themeBtn.textContent = t === 'dark' ? '☀' : '🌙';
+      }
 
-      // Keep selectors in sync (in case loadChapter was called from nav buttons)
-      if (bookSel.value !== bookName)       bookSel.value = bookName;
-      if (chapSel.value !== String(chapNum)) chapSel.value = String(chapNum);
+      /* ── Control panel toggle ───────────────────── */
+      function openPanel() {
+        controlPanel.classList.add('panel-open');
+        panelBtn.setAttribute('aria-expanded', 'true');
+        controlPanel.setAttribute('aria-hidden', 'false');
+        panelBtn.textContent = '✕';
+        setTimeout(adjustPadding, 30);
+      }
 
-      updateNavButtons(bookName, chapNum);
+      function closePanel() {
+        controlPanel.classList.remove('panel-open');
+        panelBtn.setAttribute('aria-expanded', 'false');
+        controlPanel.setAttribute('aria-hidden', 'true');
+        panelBtn.textContent = '⚙';
+        setTimeout(adjustPadding, 30);
+      }
 
-      requestAnimationFrame(() => {
-        reader.classList.remove('fading');
-        if (restoreScroll) {
-          const y = parseInt(lsGet(LS.scroll) || '0', 10);
-          window.scrollTo(0, y);
+      function togglePanel() {
+        if (controlPanel.classList.contains('panel-open')) {
+          closePanel();
         } else {
-          window.scrollTo(0, 0);
-          lsSet(LS.scroll, 0);
+          openPanel();
         }
+      }
+
+      /* ── Layout ─────────────────────────────────── */
+      function adjustPadding() {
+        mainEl.style.paddingTop = (topbar.offsetHeight + controlPanel.offsetHeight + 28) + 'px';
+      }
+
+      /* ── Progress bar ───────────────────────────── */
+      function updateProgress() {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
+        progressBar.style.width = pct + '%';
+      }
+
+      /* ── Debounce ───────────────────────────────── */
+      function debounce(fn, ms) {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+      }
+
+      const onScrollSave = debounce(() => lsSet(LS.scroll, window.scrollY), 300);
+
+      window.addEventListener('scroll', () => {
         updateProgress();
-        loading = false;
-      });
+        onScrollSave();
+      }, { passive: true });
 
-    } catch (err) {
-      clearTimeout(spinnerTimer);
-      reader.innerHTML = '<p class="placeholder">加载失败，请稍后重试。</p>';
-      reader.classList.remove('fading');
-      console.error('Chapter load failed:', err);
-      loading = false;
-    }
-  }
+      window.addEventListener('resize', debounce(adjustPadding, 80));
 
-  /* ── Populate chapter selector ──────────────── */
-  function populateChapters(bookName, selectChap) {
-    chapSel.innerHTML = '';
-    const nums     = chapNums(bookName);
-    const chapters = metadata[bookName].chapters;
+      /* ── Book key helper ────────────────────────── */
+      function getBookKey(bookName) {
+        const b = BOOKS.find(b => b.name === bookName);
+        return b ? b.key : bookName;
+      }
 
-    nums.forEach(num => {
-      const opt = document.createElement('option');
-      opt.value       = num;
-      opt.textContent = chapters[num].chapter;
-      chapSel.appendChild(opt);
-    });
+      /* ── BPE ────────────────────────────────────── */
+      function buildPairToCode(vocab) {
+        const map = new Map();
+        for (const [id, pair] of Object.entries(vocab)) {
+          map.set(pair[0] + ',' + pair[1], parseInt(id, 10));
+        }
+        return map;
+      }
 
-    chapSel.value = (selectChap && chapters[selectChap]) ? selectChap : (nums[0] || '');
-  }
+      function bpeEncode(text, pairToCode) {
+        let codes = Array.from(new TextEncoder().encode(text));
+        if (codes.length < 2) return codes;
+        while (codes.length > 1) {
+          let minToken = Infinity, minPair = null;
+          for (let i = 0; i < codes.length - 1; i++) {
+            const tok = pairToCode.get(codes[i] + ',' + codes[i + 1]);
+            if (tok !== undefined && tok < minToken) {
+              minToken = tok;
+              minPair = [codes[i], codes[i + 1]];
+            }
+          }
+          if (!minPair) break;
+          const next = [];
+          let i = 0;
+          while (i < codes.length) {
+            if (i < codes.length - 1 && codes[i] === minPair[0] && codes[i + 1] === minPair[1]) {
+              next.push(minToken);
+              i += 2;
+            } else {
+              next.push(codes[i]);
+              i++;
+            }
+          }
+          codes = next;
+        }
+        return codes;
+      }
 
-  /* ── Populate book selector ─────────────────── */
-  function populateBooks(selectBook) {
-    bookSel.innerHTML = '';
-    BOOKS.forEach(b => {
-      const opt = document.createElement('option');
-      opt.value       = b.name;
-      opt.textContent = b.name;
-      bookSel.appendChild(opt);
-    });
+      function bpeDecodeBytes(token, vocab) {
+        let result = [token];
+        while (true) {
+          let maxTok = -1;
+          for (const t of result) {
+            if (vocab[t] !== undefined && t > maxTok) maxTok = t;
+          }
+          if (maxTok === -1) break;
+          const [c1, c2] = vocab[maxTok];
+          const next = [];
+          for (const t of result) {
+            if (t === maxTok) { next.push(c1); next.push(c2); }
+            else { next.push(t); }
+          }
+          result = next;
+        }
+        return result;
+      }
 
-    if (selectBook && metadata[selectBook]) {
-      bookSel.value = selectBook;
-    } else {
-      bookSel.value = BOOKS[0].name;
-    }
-  }
+      function bpeDecode(token, vocab) {
+        return new TextDecoder('utf-8', { fatal: false }).decode(
+          Uint8Array.from(bpeDecodeBytes(token, vocab))
+        );
+      }
 
-  /* ── Event listeners ────────────────────────── */
-  bookSel.addEventListener('change', () => {
-    populateChapters(bookSel.value, null);
-    loadChapter(bookSel.value, chapSel.value, false);
-    closePanel();
-  });
+      function byTokenDecode(tokens, vocab) {
+        return tokens.map(t => bpeDecode(t, vocab));
+      }
 
-  chapSel.addEventListener('change', () => {
-    loadChapter(bookSel.value, chapSel.value, false);
-    closePanel();
-  });
+      // Returns true only when `bytes` ends on a UTF-8 character boundary
+      function isUtf8Complete(bytes) {
+        let i = 0;
+        while (i < bytes.length) {
+          const b = bytes[i];
+          const len = b < 0x80 ? 1 : b < 0xC0 ? -1 : b < 0xE0 ? 2 : b < 0xF0 ? 3 : 4;
+          if (len < 0 || i + len > bytes.length) return false;
+          i += len;
+        }
+        return i === bytes.length;
+      }
 
-  fontSel.addEventListener('change', () => {
-    applyFont(fontSel.value);
-    lsSet(LS.font, fontSel.value);
-  });
+      // Groups tokens so each fragment contains only complete UTF-8 characters.
+      // Adjacent tokens whose bytes straddle a character boundary are merged.
+      function groupByCharBoundary(tokens, vocab) {
+        const frags = [];
+        let pending = [];
+        for (const tok of tokens) {
+          for (const b of bpeDecodeBytes(tok, vocab)) pending.push(b);
+          if (isUtf8Complete(pending)) {
+            frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
+            pending = [];
+          }
+        }
+        if (pending.length) {
+          frags.push(new TextDecoder('utf-8', { fatal: false }).decode(Uint8Array.from(pending)));
+        }
+        return frags;
+      }
 
-  themeBtn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    lsSet(LS.theme, next);
-  });
+      async function loadVocab(bookKey) {
+        if (vocabCache[bookKey]) return vocabCache[bookKey];
+        const resp = await fetch('tokenizers/' + bookKey + '/vocab.json');
+        if (!resp.ok) throw new Error('Vocab HTTP ' + resp.status);
+        const vocab = await resp.json();
+        const pairToCode = buildPairToCode(vocab);
+        vocabCache[bookKey] = { vocab, pairToCode };
+        return vocabCache[bookKey];
+      }
 
-  panelBtn.addEventListener('click', togglePanel);
-
-  function applyMode(m) {
-    tokenMode = m;
-    modeBtn.textContent = m ? '阅读' : '词元';
-  }
-
-  modeBtn.addEventListener('click', () => {
-    applyMode(!tokenMode);
-    lsSet(LS.mode, tokenMode ? '1' : '0');
-    loadChapter(bookSel.value, chapSel.value, true);
-  });
-
-  // Close panel when clicking outside topbar + control panel
-  document.addEventListener('click', e => {
-    if (!controlPanel.classList.contains('panel-open')) return;
-    if (topbar.contains(e.target) || controlPanel.contains(e.target)) return;
-    closePanel();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    const nums = chapNums(bookSel.value);
-    const idx  = nums.indexOf(chapSel.value);
-    if (idx > 0) loadChapter(bookSel.value, nums[idx - 1], false);
-  });
-
-  nextBtn.addEventListener('click', () => {
-    const nums = chapNums(bookSel.value);
-    const idx  = nums.indexOf(chapSel.value);
-    if (idx >= 0 && idx < nums.length - 1) loadChapter(bookSel.value, nums[idx + 1], false);
-  });
-
-  // Arrow-key chapter navigation (when focus is not in a select)
-  document.addEventListener('keydown', e => {
-    const tag = document.activeElement && document.activeElement.tagName;
-    if (tag === 'SELECT' || tag === 'INPUT' || tag === 'TEXTAREA') return;
-    if (e.key === 'ArrowLeft'  && !prevBtn.disabled) prevBtn.click();
-    if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
-  });
-
-  /* ── Initialise ─────────────────────────────── */
-  async function init() {
-    // Apply saved prefs before anything renders
-    applyTheme(lsGet(LS.theme) || 'dark');
-    applyFont(lsGet(LS.font)   || FONTS[0].value);
-    applyMode(lsGet(LS.mode) !== '0');
-    adjustPadding();
-
-    // Fetch all 4 meta.json files in parallel
-    try {
-      const results = await Promise.all(
-        BOOKS.map(b => fetch(b.meta).then(r => {
-          if (!r.ok) throw new Error('HTTP ' + r.status + ' — ' + b.meta);
-          return r.json();
-        }))
-      );
-
-      metadata = {};
-      BOOKS.forEach((b, bi) => {
-        metadata[b.name] = { chapters: {} };
-        results[bi].forEach((item, i) => {
-          metadata[b.name].chapters[String(i + 1)] = {
-            chapter: item.chapter.trim(),
-            page:    item.path,
-          };
+      function renderTokenParagraph(text, vocab, pairToCode, colorRef) {
+        const p = document.createElement('p');
+        const lines = text.split('\n');
+        lines.forEach((line, li) => {
+          if (li > 0) p.appendChild(document.createElement('br'));
+          if (!line.trim()) return;
+          // Split at sentence-ending punctuation so BPE runs on short chunks (performance)
+          const sentences = line.match(/[^。！？；]+[。！？；]?/g) || [line];
+          for (const sent of sentences) {
+            if (!sent.trim()) continue;
+            const tokens = bpeEncode(sent, pairToCode);
+            const frags = groupByCharBoundary(tokens, vocab);
+            frags.forEach(frag => {
+              const span = document.createElement('span');
+              span.textContent = frag;
+              const color = COLORS[colorRef.idx % COLORS.length];
+              span.style.textDecoration = 'underline overline';
+              span.style.textDecorationColor = color;
+              span.style.textDecorationThickness = '1.5px';
+              colorRef.idx++;
+              p.appendChild(span);
+            });
+          }
         });
+        return p;
+      }
+
+      /* ── Text parsing ───────────────────────────── */
+      function parseText(raw) {
+        const lines = raw.split('\n');
+        let heading = '';
+        const content = [];
+
+        for (const line of lines) {
+          if (line.startsWith('# chapter:')) {
+            heading = line.slice('# chapter:'.length).trim();
+            continue;
+          }
+          if (line.startsWith('#')) continue;
+          content.push(line);
+        }
+
+        // Group lines into paragraphs by blank-line separation
+        const paragraphs = [];
+        let buf = [];
+        for (const line of content) {
+          if (line.trim() === '') {
+            if (buf.length) {
+              paragraphs.push(buf.map(l => l.trim()).join('\n'));
+              buf = [];
+            }
+          } else {
+            buf.push(line);
+          }
+        }
+        if (buf.length) paragraphs.push(buf.map(l => l.trim()).join('\n'));
+
+        return {
+          heading,
+          paragraphs: paragraphs.filter(p => p.length > 0),
+        };
+      }
+
+      /* ── Chapter list helpers ───────────────────── */
+      function chapNums(bookName) {
+        if (!metadata || !metadata[bookName]) return [];
+        return Object.keys(metadata[bookName].chapters)
+          .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+      }
+
+      /* ── Update prev/next buttons ───────────────── */
+      function updateNavButtons(bookName, chapNum) {
+        const nums = chapNums(bookName);
+        const idx = nums.indexOf(String(chapNum));
+        prevBtn.disabled = idx <= 0;
+        nextBtn.disabled = idx < 0 || idx >= nums.length - 1;
+        navLabel.textContent = idx >= 0 ? `第 ${idx + 1} / ${nums.length} 回` : '';
+        chapNav.hidden = false;
+      }
+
+      /* ── Load and render a chapter ──────────────── */
+      async function loadChapter(bookName, chapNum, restoreScroll) {
+        if (loading) return;
+        const book = metadata && metadata[bookName];
+        const chapData = book && book.chapters[String(chapNum)];
+        if (!chapData) return;
+
+        loading = true;
+        reader.classList.add('fading');
+
+        const cacheKey = getBookKey(bookName) + ':' + chapNum;
+
+        // Show spinner after a brief delay so instant loads feel fast
+        const spinnerTimer = setTimeout(() => {
+          reader.innerHTML = '<div class="spinner"></div>';
+        }, 120);
+
+        try {
+          let raw = chapterCache[cacheKey];
+          if (!raw) {
+            const resp = await fetch('four/' + chapData.page);
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            raw = await resp.text();
+            chapterCache[cacheKey] = raw;
+          }
+
+          const { heading, paragraphs } = parseText(raw);
+
+          let vocabData = null;
+          if (tokenMode) {
+            vocabData = await loadVocab(getBookKey(bookName));
+          }
+
+          clearTimeout(spinnerTimer);
+
+          chapTitle.textContent = heading || chapData.chapter;
+
+          const frag = document.createDocumentFragment();
+          const colorRef = { idx: 0 };
+          paragraphs.forEach(text => {
+            let p;
+            if (tokenMode && vocabData) {
+              p = renderTokenParagraph(text, vocabData.vocab, vocabData.pairToCode, colorRef);
+            } else {
+              p = document.createElement('p');
+              text.split('\n').forEach((part, i) => {
+                if (i > 0) p.appendChild(document.createElement('br'));
+                p.appendChild(document.createTextNode(part));
+              });
+            }
+            frag.appendChild(p);
+          });
+
+          reader.innerHTML = '';
+          reader.appendChild(frag);
+
+          lsSet(LS.book, bookName);
+          lsSet(LS.chapter, chapNum);
+
+          // Keep selectors in sync (in case loadChapter was called from nav buttons)
+          if (bookSel.value !== bookName) bookSel.value = bookName;
+          if (chapSel.value !== String(chapNum)) chapSel.value = String(chapNum);
+
+          updateNavButtons(bookName, chapNum);
+
+          requestAnimationFrame(() => {
+            reader.classList.remove('fading');
+            if (restoreScroll) {
+              const y = parseInt(lsGet(LS.scroll) || '0', 10);
+              window.scrollTo(0, y);
+            } else {
+              window.scrollTo(0, 0);
+              lsSet(LS.scroll, 0);
+            }
+            updateProgress();
+            loading = false;
+          });
+
+        } catch (err) {
+          clearTimeout(spinnerTimer);
+          reader.innerHTML = '<p class="placeholder">加载失败，请稍后重试。</p>';
+          reader.classList.remove('fading');
+          console.error('Chapter load failed:', err);
+          loading = false;
+        }
+      }
+
+      /* ── Populate chapter selector ──────────────── */
+      function populateChapters(bookName, selectChap) {
+        chapSel.innerHTML = '';
+        const nums = chapNums(bookName);
+        const chapters = metadata[bookName].chapters;
+
+        nums.forEach(num => {
+          const opt = document.createElement('option');
+          opt.value = num;
+          opt.textContent = chapters[num].chapter;
+          chapSel.appendChild(opt);
+        });
+
+        chapSel.value = (selectChap && chapters[selectChap]) ? selectChap : (nums[0] || '');
+      }
+
+      /* ── Populate book selector ─────────────────── */
+      function populateBooks(selectBook) {
+        bookSel.innerHTML = '';
+        BOOKS.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.name;
+          opt.textContent = b.name;
+          bookSel.appendChild(opt);
+        });
+
+        if (selectBook && metadata[selectBook]) {
+          bookSel.value = selectBook;
+        } else {
+          bookSel.value = BOOKS[0].name;
+        }
+      }
+
+      /* ── Event listeners ────────────────────────── */
+      bookSel.addEventListener('change', () => {
+        populateChapters(bookSel.value, null);
+        loadChapter(bookSel.value, chapSel.value, false);
+        closePanel();
       });
-    } catch (err) {
-      reader.innerHTML = '<p class="placeholder">无法加载书目数据，请检查网络连接。</p>';
-      console.error('Metadata load failed:', err);
-      return;
-    }
 
-    const savedBook  = lsGet(LS.book);
-    const savedChap  = lsGet(LS.chapter);
+      chapSel.addEventListener('change', () => {
+        loadChapter(bookSel.value, chapSel.value, false);
+        closePanel();
+      });
 
-    populateBooks(savedBook);
+      fontSel.addEventListener('change', () => {
+        applyFont(fontSel.value);
+        lsSet(LS.font, fontSel.value);
+      });
 
-    const book         = bookSel.value;
-    const sameBook     = savedBook && book === savedBook;
-    const chapToSelect = sameBook ? savedChap : null;
-    populateChapters(book, chapToSelect);
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        lsSet(LS.theme, next);
+      });
 
-    const chap        = chapSel.value;
-    const doRestore   = sameBook && savedChap && chap === savedChap;
+      panelBtn.addEventListener('click', togglePanel);
 
-    await loadChapter(book, chap, doRestore);
+      function applyMode(m) {
+        tokenMode = m;
+        modeBtn.textContent = m ? '阅读' : '词元';
+      }
 
-    // Re-measure after content loads (fonts may have shifted layout)
-    adjustPadding();
-  }
+      modeBtn.addEventListener('click', () => {
+        applyMode(!tokenMode);
+        lsSet(LS.mode, tokenMode ? '1' : '0');
+        loadChapter(bookSel.value, chapSel.value, true);
+      });
 
-  init();
-})();
+      // Close panel when clicking outside topbar + control panel
+      document.addEventListener('click', e => {
+        if (!controlPanel.classList.contains('panel-open')) return;
+        if (topbar.contains(e.target) || controlPanel.contains(e.target)) return;
+        closePanel();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        const nums = chapNums(bookSel.value);
+        const idx = nums.indexOf(chapSel.value);
+        if (idx > 0) loadChapter(bookSel.value, nums[idx - 1], false);
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const nums = chapNums(bookSel.value);
+        const idx = nums.indexOf(chapSel.value);
+        if (idx >= 0 && idx < nums.length - 1) loadChapter(bookSel.value, nums[idx + 1], false);
+      });
+
+      // Arrow-key chapter navigation (when focus is not in a select)
+      document.addEventListener('keydown', e => {
+        const tag = document.activeElement && document.activeElement.tagName;
+        if (tag === 'SELECT' || tag === 'INPUT' || tag === 'TEXTAREA') return;
+        if (e.key === 'ArrowLeft' && !prevBtn.disabled) prevBtn.click();
+        if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
+      });
+
+      /* ── Initialise ─────────────────────────────── */
+      async function init() {
+        // Apply saved prefs before anything renders
+        applyTheme(lsGet(LS.theme) || 'dark');
+        applyFont(lsGet(LS.font) || FONTS[0].value);
+        applyMode(lsGet(LS.mode) !== '0');
+        adjustPadding();
+
+        // Fetch all 4 meta.json files in parallel
+        try {
+          const results = await Promise.all(
+            BOOKS.map(b => fetch(b.meta).then(r => {
+              if (!r.ok) throw new Error('HTTP ' + r.status + ' — ' + b.meta);
+              return r.json();
+            }))
+          );
+
+          metadata = {};
+          BOOKS.forEach((b, bi) => {
+            metadata[b.name] = { chapters: {} };
+            results[bi].forEach((item, i) => {
+              metadata[b.name].chapters[String(i + 1)] = {
+                chapter: item.chapter.trim(),
+                page: item.path,
+              };
+            });
+          });
+        } catch (err) {
+          reader.innerHTML = '<p class="placeholder">无法加载书目数据，请检查网络连接。</p>';
+          console.error('Metadata load failed:', err);
+          return;
+        }
+
+        const savedBook = lsGet(LS.book);
+        const savedChap = lsGet(LS.chapter);
+
+        populateBooks(savedBook);
+
+        const book = bookSel.value;
+        const sameBook = savedBook && book === savedBook;
+        const chapToSelect = sameBook ? savedChap : null;
+        populateChapters(book, chapToSelect);
+
+        const chap = chapSel.value;
+        const doRestore = sameBook && savedChap && chap === savedChap;
+
+        await loadChapter(book, chap, doRestore);
+
+        // Re-measure after content loads (fonts may have shifted layout)
+        adjustPadding();
+      }
+
+      init();
+    })();
   </script>
 </body>
+
 </html>
